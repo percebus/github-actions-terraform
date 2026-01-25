@@ -1,0 +1,36 @@
+{
+  "name": "github-actions-terraform",
+  "version": "0.1.0",
+  "description": "GitHub re-usable actions and/or workflows for terraform",
+  "keywords": [
+    "GitHub",
+    "actions",
+    "workflows",
+    "re-usable",
+    "terraform"
+  ],
+  "homepage": "https://github.com/percebus/github-actions-terraform#readme",
+  "bugs": {
+    "url": "https://github.com/percebus/github-actions-terraform/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/percebus/github-actions-terraform.git"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "author": "JCystems",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "_prettier": "prettier .",
+    "prettier:check": "npm run _prettier -- --check",
+    "prettier:write": "npm run _prettier -- --write",
+    "lint": "npm run prettier:check",
+    "format": "npm run prettier:write",
+    "postformat": "npm run lint",
+    "test": "exit 0"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.1"
+  }
+}
