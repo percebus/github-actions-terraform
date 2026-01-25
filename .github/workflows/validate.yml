@@ -16,6 +16,7 @@ on:
         default: "./terra"
 
 env:
+  # From ${{ github.event.repository.name }}
   TF_VAR_REPOSITORY_NAME: ${{ inputs.repository_name }}
 
 jobs:
