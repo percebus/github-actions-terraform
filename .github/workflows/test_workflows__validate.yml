@@ -19,7 +19,7 @@ env:
 
 jobs:
   default:
-    name: default
+    name: terraform
     uses: ./.github/workflows/validate.yml
 
   working-directory__matrix:
@@ -27,10 +27,10 @@ jobs:
 
     strategy:
       matrix:
-        working-directory:
+        project:
           - azurerm/some-rg
 
-    name: ${{ matrix.working-directory }}
+    name: "project: ${{ matrix.project }}"
     uses: ./.github/workflows/validate.yml
     with:
-      working-directory: ${{ matrix.working-directory }}
+      working-directory: ./assets/terra/${{ matrix.working-directory }}

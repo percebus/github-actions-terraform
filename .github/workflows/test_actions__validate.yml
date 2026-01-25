@@ -51,25 +51,27 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        working-directory:
+        project:
           - azurerm/some-rg
 
-    name: ${{ matrix.working-directory }}
+    name: "project: ${{ matrix.project }}"
+    env:
+      TF_DIR: ./assets/terra/${{ matrix.working-directory }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
 
       - uses: ./.github/actions/init
         with:
-          working-directory: ${{ matrix.working-directory }}
+          working-directory: ${{ env.TF_DIR }}
 
       - uses: ./.github/actions/fmt-check
         with:
-          working-directory: ${{ matrix.working-directory }}
+          working-directory: ${{ env.TF_DIR }}
 
       - name: variables.ba.sh
-        run: bash ./assets/terra/${{ matrix.working-directory }}/variables.ba.sh
+        run: bash ${{ env.TF_DIR }}/variables.ba.sh
 
       - uses: ./.github/actions/validate
         with:
-          working-directory: ${{ matrix.working-directory }}
+          working-directory: ${{ env.TF_DIR }}
