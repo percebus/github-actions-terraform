@@ -30,9 +30,12 @@
     "terraform:fmt": "npm run _terraform -- fmt -recursive -diff -list=true",
     "terraform:fmt-check": "npm run terraform:fmt -- -check",
     "terraform:validate": "npm run _terraform -- validate",
-    "lint": "npm run prettier:check && npm run terraform:fmt-check",
-    "format": "npm run prettier:write && npm run terraform:fmt",
+    "lint": "npm run prettier:check",
+    "lint_all": "npm run prettier:check && npm run terraform:fmt-check",
+    "format": "npm run prettier:write",
     "postformat": "npm run lint",
+    "format_all": "npm run prettier:write && npm run terraform:fmt",
+    "postformat_all": "npm run lint_all",
     "test": "exit 0"
   },
   "devDependencies": {
