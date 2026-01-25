@@ -1,0 +1,36 @@
+name: "Test worfklows/validate"
+
+on:
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  default:
+    name: terraform
+    uses: ./.github/workflows/validate.yml
+    with:
+      repository_name: ${{ github.event.repository.name }}
+
+  working-directory__matrix:
+    needs: default
+
+    strategy:
+      matrix:
+        project:
+          - azurerm/some-rg
+
+    name: terraform -chdir=.../${{ matrix.project }}
+    uses: ./.github/workflows/validate.yml
+    with:
+      repository_name: ${{ github.event.repository.name }}
+      working-directory: ./assets/terra/${{ matrix.project }}

@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   default:
-    name: default
+    name: Setup terraform
     runs-on: ubuntu-latest
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
