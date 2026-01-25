@@ -39,9 +39,9 @@ jobs:
         project:
           - azurerm/some-rg
 
-    name: terraform validate -chdir=${{ matrix.project }}
+    name: terraform validate -chdir=.../${{ matrix.project }}
     env:
-      TF_DIR: ./assets/terra/${{ matrix.working-directory }}
+      TF_DIR: ./assets/terra/${{ matrix.project }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup

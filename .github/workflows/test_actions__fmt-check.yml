@@ -66,7 +66,7 @@ jobs:
         project:
           - azurerm/some-rg
 
-    name: terraform fmt -check -chdir=${{ matrix.project }}
+    name: terraform fmt -check -chdir=.../${{ matrix.project }}
     env:
       TF_DIR: ./assets/terra/${{ matrix.project }}
     steps:

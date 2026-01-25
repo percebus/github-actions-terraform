@@ -66,7 +66,7 @@ jobs:
         project:
           - azurerm/some-rg
 
-    name: terraform init -chdir=${{ matrix.project }}
+    name: terraform init -chdir=.../${{ matrix.project }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup

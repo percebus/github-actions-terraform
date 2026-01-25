@@ -30,7 +30,7 @@ jobs:
         project:
           - azurerm/some-rg
 
-    name: terraform -chdir=${{ matrix.project }}
+    name: terraform -chdir=.../${{ matrix.project }}
     uses: ./.github/workflows/validate.yml
     with:
       working-directory: ./assets/terra/${{ matrix.project }}
