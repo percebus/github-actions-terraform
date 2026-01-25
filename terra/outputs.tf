@@ -10,7 +10,7 @@ output "stack" {
   }
 }
 
-output "ARM_region" {
+output "ARM_LOCATION" {
   value = local.location
 }
 

@@ -4,7 +4,7 @@ variable "ENVIRONMENT" {
   default = "local"
 }
 
-variable "ARM_REGION" {
+variable "ARM_LOCATION" {
   type = string
 }
 
