@@ -14,6 +14,9 @@ concurrency:
 permissions:
   contents: read
 
+env:
+  REPOSITORY_NAME: ${GITHUB_REPOSITORY#*/}
+
 jobs:
   default:
     name: default
@@ -22,6 +25,10 @@ jobs:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
+
+      - name: variables.ba.sh
+        run: bash ./terra/variables.ba.sh
+
       - uses: ./.github/actions/validate
 
   with_fmt-check:
@@ -33,4 +40,36 @@ jobs:
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
       - uses: ./.github/actions/fmt-check
+
+      - name: variables.ba.sh
+        run: bash ./terra/variables.ba.sh
+
       - uses: ./.github/actions/validate
+
+  working-directory__matrix:
+    needs: default
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        working-directory:
+          - azurerm/some-rg
+
+    name: ${{ matrix.working-directory }}
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: ./.github/actions/setup
+
+      - uses: ./.github/actions/init
+        with:
+          working-directory: ${{ matrix.working-directory }}
+
+      - uses: ./.github/actions/fmt-check
+        with:
+          working-directory: ${{ matrix.working-directory }}
+
+      - name: variables.ba.sh
+        run: bash ./assets/terra/${{ matrix.working-directory }}/variables.ba.sh
+
+      - uses: ./.github/actions/validate
+        with:
+          working-directory: ${{ matrix.working-directory }}

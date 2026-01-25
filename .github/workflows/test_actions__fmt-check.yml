@@ -23,3 +23,64 @@ jobs:
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
       - uses: ./.github/actions/fmt-check
+
+
+  terraform_fmt_options__matrix:
+    needs: default
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        terraform_fmt_options:
+          # - "-recursive -diff -list=true" # default case already tested in "default" job
+          - "-diff"
+          - "-list=false"
+
+    name: "terraform fmt options: ${{ matrix.terraform_fmt_options }}"
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/init
+      - uses: ./.github/actions/fmt-check
+        with:
+          terraform_fmt_options: ${{ matrix.terraform_fmt_options }}
+
+
+  TF_CLI_ARGS_fmt__matrix:
+    needs: default
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        TF_CLI_ARGS_fmt:
+          - "-no-color=true"
+
+    name: "TF_CLI_ARGS for fmt: ${{ matrix.TF_CLI_ARGS_fmt }}"
+    env:
+      # NOTE: case is important here
+      TF_CLI_ARGS_fmt: ${{ matrix.TF_CLI_ARGS_fmt }}
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/init
+      - uses: ./.github/actions/fmt-check
+
+
+  working-directory__matrix:
+    needs: default
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        working-directory:
+          - azurerm/some-rg
+
+    name: "working-directory: ${{ matrix.working-directory }}"
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: ./.github/actions/setup
+
+      - uses: ./.github/actions/init
+        with:
+          working-directory: ${{ matrix.working-directory }}
+
+      - uses: ./.github/actions/fmt-check
+        with:
+          working-directory: ${{ matrix.working-directory }}

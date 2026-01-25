@@ -1,0 +1,40 @@
+name: "Test actions/validate"
+
+on:
+  workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
+    inputs:
+      repository_name: # Example input
+        description: "The name of the repository"
+        type: string
+        required: false
+        default: ${GITHUB_REPOSITORY#*/}
+
+      working-directory:
+        description: "The working directory for Terraform commands"
+        type: string
+        required: false
+        default: "./terra"
+
+env:
+  REPOSITORY_NAME: ${{ inputs.repository_name }}
+
+jobs:
+  validate:
+    name: default
+    runs-on: ubuntu-latest
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+        # with: TODO
+
+      - uses: percebus/github-actions-terraform/.github/actions/setup@main
+
+      - uses: percebus/github-actions-terraform/.github/actions/init@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+
+      - name: variables.ba.sh
+        run: bash ${{ inputs.working-directory }}/variables.ba.sh
+
+      - uses: percebus/github-actions-terraform/.github/actions/validate@main
+        with:
+          working-directory: ${{ inputs.working-directory }}

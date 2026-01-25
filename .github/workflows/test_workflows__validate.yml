@@ -1,0 +1,36 @@
+name: "Test worfklows/validate"
+
+on:
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  REPOSITORY_NAME: ${GITHUB_REPOSITORY#*/}
+
+jobs:
+  default:
+    name: default
+    uses: ./.github/workflows/validate.yml
+
+  working-directory__matrix:
+    needs: default
+
+    strategy:
+      matrix:
+        working-directory:
+          - azurerm/some-rg
+
+    name: ${{ matrix.working-directory }}
+    uses: ./.github/workflows/validate.yml
+    with:
+      working-directory: ${{ matrix.working-directory }}

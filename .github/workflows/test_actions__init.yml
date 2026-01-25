@@ -22,3 +22,55 @@ jobs:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
+
+  terraform_init_options__matrix:
+    needs: default
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        terraform_init_options:
+          # - "-input=false -upgrade" # default case already tested in "default" job
+          - "-input=false"
+          - "-input=false -backend=false"
+
+    name: "terraform init options: ${{ matrix.terraform_init_options }}"
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/init
+        with:
+          terraform_init_options: ${{ matrix.terraform_init_options }}
+
+  TF_CLI_ARGS_init__matrix:
+    needs: default
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        TF_CLI_ARGS_init:
+          - "-backend=false"
+
+    name: "TF_CLI_ARGS for init: ${{ matrix.TF_CLI_ARGS_init }}"
+    env:
+      # NOTE: case is important here
+      TF_CLI_ARGS_init: ${{ matrix.TF_CLI_ARGS_init }}
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/init
+
+  working-directory__matrix:
+    needs: default
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        working-directory:
+          - azurerm/some-rg
+
+    name: "working-directory: ${{ matrix.working-directory }}"
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: ./.github/actions/setup
+
+      - uses: ./.github/actions/init
+        with:
+          working-directory: ${{ matrix.working-directory }}
