@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   default:
-    name: default
+    name: terraform init
     runs-on: ubuntu-latest
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
@@ -33,7 +33,7 @@ jobs:
           - "-input=false"
           - "-input=false -backend=false"
 
-    name: "terraform init options: ${{ matrix.terraform_init_options }}"
+    name: terraform init ${{ matrix.terraform_init_options }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
@@ -49,7 +49,7 @@ jobs:
         TF_CLI_ARGS_init:
           - "-backend=false"
 
-    name: "TF_CLI_ARGS for init: ${{ matrix.TF_CLI_ARGS_init }}"
+    name: terraform init ${{ matrix.TF_CLI_ARGS_init }}
     env:
       # NOTE: case is important here
       TF_CLI_ARGS_init: ${{ matrix.TF_CLI_ARGS_init }}
@@ -66,7 +66,7 @@ jobs:
         project:
           - azurerm/some-rg
 
-    name: "project: ${{ matrix.project }}"
+    name: terraform init -chdir=${{ matrix.project }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
