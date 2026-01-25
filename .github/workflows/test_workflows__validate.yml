@@ -14,15 +14,12 @@ concurrency:
 permissions:
   contents: read
 
-env:
-  REPOSITORY_NAME: ${{ github.event.repository.name }}
-
 jobs:
   default:
     name: terraform
     uses: ./.github/workflows/validate.yml
     with:
-      repository_name: ${{ env.REPOSITORY_NAME }}
+      repository_name: ${{ github.event.repository.name }}
 
   working-directory__matrix:
     needs: default
@@ -35,5 +32,5 @@ jobs:
     name: terraform -chdir=.../${{ matrix.project }}
     uses: ./.github/workflows/validate.yml
     with:
-      repository_name: ${{ env.REPOSITORY_NAME }}
+      repository_name: ${{ github.event.repository.name }}
       working-directory: ./assets/terra/${{ matrix.project }}
