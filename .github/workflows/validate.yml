@@ -16,7 +16,7 @@ on:
         default: "./terra"
 
 env:
-  REPOSITORY_NAME: ${{ inputs.repository_name }}
+  TF_VAR_REPOSITORY_NAME: ${{ inputs.repository_name }}
 
 jobs:
   validate:
