@@ -1,23 +1,14 @@
 
 variable "ENVIRONMENT" {
-  type    = string
-  default = "local"
-}
-
-variable "ARM_LOCATION" {
   type = string
 }
 
-variable "ARM_RESOURCES_PREFIX" {
+variable "STACK_ID" {
   type    = string
-  default = "local-"
-}
-
-variable "ARM_RESOURCES_SUFFIX" {
-  type    = string
-  default = "1"
+  default = ""
 }
 
 variable "REPOSITORY_NAME" {
-  type = string
+  type    = string
+  default = "github-actions-terraform"
 }

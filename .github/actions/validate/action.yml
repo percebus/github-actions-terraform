@@ -7,7 +7,7 @@ inputs:
     required: false
     default: ./terra
 
-  terraform_validate_options:
+  TF_CLI_ARGS_validate:
     description: Additional options to pass to 'terraform validate'
     required: false
     default: ""
@@ -15,7 +15,15 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: echo TF_CLI_ARGS_validate
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        echo "TF_CLI_ARGS_validate"
+        echo "env: '${{ env.TF_CLI_ARGS_validate }}'"
+        echo "inputs: '${{ inputs.TF_CLI_ARGS_validate }}'"
+
     - name: terraform validate
       shell: bash
       working-directory: ${{ inputs.working-directory }}
-      run: terraform validate ${{ inputs.terraform_validate_options }}
+      run: terraform validate ${{ inputs.TF_CLI_ARGS_validate }}
