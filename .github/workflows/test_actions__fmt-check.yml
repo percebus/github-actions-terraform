@@ -23,25 +23,25 @@ jobs:
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/fmt-check
 
-  terraform_fmt_options__matrix:
+  TF_CLI_ARGS_fmt__inputs_matrix:
     needs: default
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        terraform_fmt_options:
+        TF_CLI_ARGS_fmt:
           # - "-recursive -diff -list=true" # default case already tested in "default" job
           - "-diff"
           - "-list=false"
 
-    name: terraform fmt -check ${{ matrix.terraform_fmt_options }}
+    name: terraform fmt -check ${{ matrix.TF_CLI_ARGS_fmt }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/fmt-check
         with:
-          terraform_fmt_options: ${{ matrix.terraform_fmt_options }}
+          TF_CLI_ARGS_fmt: ${{ matrix.TF_CLI_ARGS_fmt }}
 
-  TF_CLI_ARGS_fmt__matrix:
+  TF_CLI_ARGS_fmt__env_matrix:
     needs: default
     runs-on: ubuntu-latest
     strategy:
@@ -63,12 +63,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        project:
-          - azurerm/some-rg
+        path:
+          # - ./terra # already tested by default
+          - ./assets/terra
 
-    name: terraform fmt -check -chdir=.../${{ matrix.project }}
+    name: terraform fmt -check -chdir=${{ matrix.path }}
     env:
-      TF_DIR: ./assets/terra/${{ matrix.project }}
+      TF_DIR: ${{ matrix.path }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup

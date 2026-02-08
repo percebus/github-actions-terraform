@@ -23,25 +23,25 @@ jobs:
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
 
-  terraform_init_options__matrix:
+  TF_CLI_ARGS_init__inputs_matrix:
     needs: default
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        terraform_init_options:
-          # - "-input=false -upgrade" # default case already tested in "default" job
-          - "-input=false"
+        TF_CLI_ARGS_init:
+          # - "-input=false" # default case already tested in "default" job
+          - "-input=false -upgrade"
           - "-input=false -backend=false"
 
-    name: terraform init ${{ matrix.terraform_init_options }}
+    name: terraform init ${{ matrix.TF_CLI_ARGS_init }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
         with:
-          terraform_init_options: ${{ matrix.terraform_init_options }}
+          TF_CLI_ARGS_init: ${{ matrix.TF_CLI_ARGS_init }}
 
-  TF_CLI_ARGS_init__matrix:
+  TF_CLI_ARGS_init__env_matrix:
     needs: default
     runs-on: ubuntu-latest
     strategy:

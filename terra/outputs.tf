@@ -1,8 +1,4 @@
 
-output "environment" {
-  value = local.environment
-}
-
 output "stack" {
   value = {
     id  = random_id.stack.id
@@ -10,13 +6,6 @@ output "stack" {
   }
 }
 
-output "ARM_LOCATION" {
-  value = local.location
-}
-
-output "ARM_resource_group" {
-  value = {
-    id   = azurerm_resource_group.rg.id
-    name = azurerm_resource_group.rg.name
-  }
+output "tags" {
+  value = local.tags
 }

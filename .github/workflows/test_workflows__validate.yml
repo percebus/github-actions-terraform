@@ -28,6 +28,7 @@ jobs:
       matrix:
         project:
           - azurerm/some-rg
+          - azurerm/advanced-rg
 
     name: terraform -chdir=.../${{ matrix.project }}
     uses: ./.github/workflows/validate.yml

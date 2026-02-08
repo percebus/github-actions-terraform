@@ -5,18 +5,11 @@ resource "random_id" "stack" {
 
 locals {
   environment       = var.ENVIRONMENT
-  location          = var.ARM_LOCATION
-  name_suffix       = var.ARM_RESOURCES_SUFFIX != "" ? var.ARM_RESOURCES_SUFFIX : random_id.stack.hex
-  name_prefix_long  = "${var.ARM_RESOURCES_PREFIX}${var.REPOSITORY_NAME}-${local.environment}-${local.location}-${local.name_suffix}"
-  name_prefix_short = "${local.environment}-${local.name_suffix}"
+  stack_id         = var.STACK_ID != "" ? var.STACK_ID : random_id.stack.hex
   repo_name         = var.REPOSITORY_NAME
   tags = {
     created_by  = local.repo_name
     environment = local.environment
+    stack_id    = local.stack_id
   }
-}
-
-resource "azurerm_resource_group" "rg" {
-  name     = "${local.name_prefix_long}-rg"
-  location = local.location
 }

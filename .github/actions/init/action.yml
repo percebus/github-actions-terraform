@@ -7,17 +7,33 @@ inputs:
     required: false
     default: ./terra
 
-  terraform_init_options:
+  ls_cli_options:
+    description: Additional options to pass to 'ls-cli'
+    required: false
+    default: "-la"
+
+  TF_CLI_ARGS_init:
     description: Additional options to pass to 'terraform init'
     required: false
-    default: "-input=false -upgrade"
+    default: "-input=false"
 
 runs:
   using: composite
   steps:
-    # TODO add ls
+    - name: ls
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: ls ${{ inputs.ls_cli_options }}
+
+    - name: echo TF_CLI_ARGS_init
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        echo "TF_CLI_ARGS_init"
+        echo '${{ env.TF_CLI_ARGS_init }}'"
+        echo '${{ inputs.TF_CLI_ARGS_init }}'"
 
     - name: terraform init
       shell: bash
       working-directory: ${{ inputs.working-directory }}
-      run: terraform init ${{ inputs.terraform_init_options }}
+      run: terraform init ${{ inputs.TF_CLI_ARGS_init }}
