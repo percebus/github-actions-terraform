@@ -20,8 +20,8 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       run: |
         echo "TF_CLI_ARGS_fmt"
-        echo '${{ env.TF_CLI_ARGS_fmt }}'"
-        echo '${{ inputs.TF_CLI_ARGS_fmt }}'"
+        echo "env: '${{ env.TF_CLI_ARGS_fmt }}'"
+        echo "inputs: '${{ inputs.TF_CLI_ARGS_fmt }}'"
 
     - name: terraform fmt -check
       shell: bash

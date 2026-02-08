@@ -30,8 +30,8 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       run: |
         echo "TF_CLI_ARGS_init"
-        echo '${{ env.TF_CLI_ARGS_init }}'"
-        echo '${{ inputs.TF_CLI_ARGS_init }}'"
+        echo "env: '${{ env.TF_CLI_ARGS_init }}'"
+        echo "inputs: '${{ inputs.TF_CLI_ARGS_init }}'"
 
     - name: terraform init
       shell: bash

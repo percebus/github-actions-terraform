@@ -20,8 +20,8 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       run: |
         echo "TF_CLI_ARGS_validate"
-        echo '${{ env.TF_CLI_ARGS_validate }}'"
-        echo '${{ inputs.TF_CLI_ARGS_validate }}'"
+        echo "env: '${{ env.TF_CLI_ARGS_validate }}'"
+        echo "inputs: '${{ inputs.TF_CLI_ARGS_validate }}'"
 
     - name: terraform validate
       shell: bash

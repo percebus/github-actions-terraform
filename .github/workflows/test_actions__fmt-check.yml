@@ -49,10 +49,10 @@ jobs:
         TF_CLI_ARGS_fmt:
           - "-no-color"
 
-    name: terraform fmt -check ${{ matrix.TF_CLI_ARGS_fmt }}
     env:
       # NOTE: case is important here
       TF_CLI_ARGS_fmt: ${{ matrix.TF_CLI_ARGS_fmt }}
+    name: "terraform fmt -check (env: ${{ env.TF_CLI_ARGS_fmt }})"
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
