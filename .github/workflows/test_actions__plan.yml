@@ -1,0 +1,34 @@
+name: "Test actions/plan"
+
+on:
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  TF_VAR_REPOSITORY_NAME: ${{ github.event.repository.name }}
+  TF_VAR_ENVIRONMENT: ci
+  # TF_VAR_STACK_ID: # TODO branch id or something
+
+jobs:
+  default:
+    name: terraform plan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/init
+
+      - name: variables.ba.sh
+        run: bash ./terra/variables.ba.sh
+
+      - uses: ./.github/actions/plan

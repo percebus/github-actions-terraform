@@ -19,7 +19,7 @@ jobs:
     name: terraform
     uses: ./.github/workflows/validate.yml
     with:
-      repository_name: ${{ github.event.repository.name }}
+      working-directory: ${{ github.event.inputs.working-directory }}
 
   working-directory__matrix:
     needs: default
@@ -30,8 +30,7 @@ jobs:
           - azurerm/some-rg
           - azurerm/advanced-rg
 
-    name: terraform -chdir=.../${{ matrix.project }}
+    name: terraform -chdir=.../${{ matrix.project }} validate
     uses: ./.github/workflows/validate.yml
     with:
-      repository_name: ${{ github.event.repository.name }}
       working-directory: ./assets/terra/${{ matrix.project }}

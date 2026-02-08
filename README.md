@@ -14,6 +14,7 @@ GitHub re-usable actions and/or workflows for terraform
 | [`init`](./.github/actions/init)           | [![Test actions/init](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__init.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__init.yml)                |
 | [`fmt-check`](./.github/actions/fmt-check) | [![Test actions/fmt-check](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__fmt-check.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__fmt-check.yml) |
 | [`validate`](./.github/actions/validate)   | [![Test actions/validate](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__validate.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__validate.yml)    |
+| [`plan`](./.github/actions/plan)           | [![Test actions/plan](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__plan.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__plan.yml)                |
 
 ### Workflows
 
