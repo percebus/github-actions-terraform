@@ -67,7 +67,7 @@ jobs:
           # - ./terra # already tested by default
           - ./assets/terra
 
-    name: terraform fmt -check -chdir=${{ matrix.path }}
+    name: terraform -chdir=${{ matrix.path }} fmt -check
     env:
       TF_DIR: ${{ matrix.path }}
     steps:

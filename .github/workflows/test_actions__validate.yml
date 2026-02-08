@@ -36,7 +36,7 @@ jobs:
         project:
           - azurerm/some-rg
 
-    name: terraform validate -chdir=.../${{ matrix.project }}
+    name: terraform -chdir=.../${{ matrix.project }} validate
     env:
       TF_DIR: ./assets/terra/${{ matrix.project }}
     steps:
