@@ -33,9 +33,6 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
 
-      - name: variables.ba.sh
-        run: bash ${{ inputs.working-directory }}/variables.ba.sh
-
       - uses: percebus/github-actions-terraform/.github/actions/validate@main
         with:
           working-directory: ${{ inputs.working-directory }}

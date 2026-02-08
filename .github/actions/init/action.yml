@@ -25,6 +25,12 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       run: ls ${{ inputs.ls_cli_options }}
 
+    - name: echo TF_CLI_ARGS
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        echo "TF_CLI_ARGS=${{ env.TF_CLI_ARGS }}'"
+
     - name: echo TF_CLI_ARGS_init
       shell: bash
       working-directory: ${{ inputs.working-directory }}
@@ -35,5 +41,4 @@ runs:
 
     - name: terraform init
       shell: bash
-      working-directory: ${{ inputs.working-directory }}
-      run: terraform init ${{ inputs.TF_CLI_ARGS_init }}
+      run: terraform -chdir=${{ inputs.working-directory }} init ${{ inputs.TF_CLI_ARGS_init }}

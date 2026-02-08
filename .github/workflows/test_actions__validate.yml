@@ -14,9 +14,6 @@ concurrency:
 permissions:
   contents: read
 
-env:
-  REPOSITORY_NAME: ${GITHUB_REPOSITORY#*/}
-
 jobs:
   default:
     name: terraform validate
@@ -53,9 +50,6 @@ jobs:
       - uses: ./.github/actions/fmt-check
         with:
           working-directory: ${{ env.TF_DIR }}
-
-      - name: variables.ba.sh
-        run: bash ${{ env.TF_DIR }}/variables.ba.sh
 
       - uses: ./.github/actions/validate
         with:
