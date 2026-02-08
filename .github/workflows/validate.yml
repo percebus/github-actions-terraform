@@ -3,21 +3,19 @@ name: terraform validate
 on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
     inputs:
-      repository_name: # Example input
-        description: "The name of the repository"
-        type: string
-        required: false
-        default: ${GITHUB_REPOSITORY#*/}
-
       working-directory:
         description: "The working directory for Terraform commands"
         type: string
         required: false
         default: "./terra"
 
-env:
-  # From ${{ github.event.repository.name }}
-  TF_VAR_REPOSITORY_NAME: ${{ inputs.repository_name }}
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+    inputs:
+      working-directory:
+        description: "The working directory for Terraform commands"
+        type: string
+        required: false
+        default: "./terra"
 
 jobs:
   validate:
