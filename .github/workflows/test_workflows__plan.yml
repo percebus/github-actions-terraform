@@ -22,4 +22,7 @@ jobs:
     name: terraform
     uses: ./.github/workflows/plan.yml
     with:
+      # NOTE:
+      # - ci_branch      has ci_branch ENVIRONMENT
+      # - ci_branch_plan has ci_branch ENVIRONMENT as well
       environment: ${{ github.ref_name == 'main' && 'ci_main_plan' || 'ci_branch_plan' }}

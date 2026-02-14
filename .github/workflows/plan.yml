@@ -31,9 +31,6 @@ jobs:
   plan:
     name: plan
     runs-on: ubuntu-latest
-    # NOTE:
-    # - ci_branch      has ci_branch ENVIRONMENT
-    # - ci_branch_plan has ci_branch ENVIRONMENT as well
     environment: ${{ inputs.environment }}
     env:
       TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars"
