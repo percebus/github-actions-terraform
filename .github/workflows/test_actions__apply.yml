@@ -1,4 +1,4 @@
-name: "Test actions/plan"
+name: "Test actions/apply"
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
@@ -15,20 +15,21 @@ permissions:
   contents: read
 
 env:
-  TF_VAR_STACK_ID: ${{ github.event.pull_request.number }}
-  TF_VAR_REPOSITORY_NAME: ${{ github.event.repository.name }}
+  environment: ${{ github.ref_name == 'main' && 'ci_main_plan' || 'ci_branch_plan' }}
+  TF_CLI_ARGS_apply: "-auto-approve -var-file=./env/${{ vars.ENVIRONMENT }}.tfvars"
 
 jobs:
   default:
-    name: terraform plan
+    name: terraform apply tfplan
     runs-on: ubuntu-latest
-    environment: ${{ github.ref_name == 'main' && 'ci_main_plan' || 'ci_branch_plan' }}
-    env:
-      TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars"
+    environment: ${{ vars.environment }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
       - uses: ./.github/actions/plan
+      - uses: ./.github/actions/apply
+        with:
+          TF_CLI_ARGS_apply: ""
 
-  # TODO: add destroy
+  # TODO add destroy
