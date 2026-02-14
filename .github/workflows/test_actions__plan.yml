@@ -30,5 +30,3 @@ jobs:
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
       - uses: ./.github/actions/plan
-
-  # TODO: add destroy
