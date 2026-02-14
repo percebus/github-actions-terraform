@@ -7,7 +7,6 @@ inputs:
     required: false
     default: ./terra
 
-  # NOTE: dist is relative to `chdir`
   TF_CLI_ARGS_apply:
     description: Additional options to pass to 'terraform apply'
     required: false
