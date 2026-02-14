@@ -22,7 +22,7 @@ jobs:
   default:
     name: terraform plan
     runs-on: ubuntu-latest
-    environment: ci_branch_plan
+    environment: ${{ github.ref_name == 'main' && 'ci_main_plan' || 'ci_branch_plan' }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup

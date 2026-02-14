@@ -51,12 +51,13 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
 
+      # TODO? use commit hash instead?
       - name: Set environment variable for main branch
         run: |
           if [[ "${{ github.ref_name }}" == "main" ]]; then
-            echo "TF_VAR_STACK_ID=pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+            echo "TF_VAR_STACK_ID=\"main\"" >> $GITHUB_ENV
           else
-            echo "TF_VAR_STACK_ID=''" >> $GITHUB_ENV
+            echo "TF_VAR_STACK_ID=\"pr-${{ github.event.pull_request.number }}\"" >> $GITHUB_ENV
           fi
 
       - uses: percebus/github-actions-terraform/.github/actions/plan@main
