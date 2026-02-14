@@ -1,5 +1,5 @@
-name: terraform validate
-description: Validate Terraform configuration
+name: terraform plan
+description: Terraform plan
 
 inputs:
   working-directory:
