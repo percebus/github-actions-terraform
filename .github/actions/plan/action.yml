@@ -32,6 +32,3 @@ runs:
     - name: terraform plan
       shell: bash
       run: terraform -chdir=${{ inputs.working-directory }} plan ${{ inputs.TF_CLI_ARGS_plan }}
-
-    # TODO UPLOAD tfplan file
-    # Or in workflow

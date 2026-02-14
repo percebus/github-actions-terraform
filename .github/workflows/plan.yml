@@ -1,0 +1,54 @@
+name: terraform plan
+
+on:
+  workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
+    inputs:
+      working-directory:
+        description: "The working directory for Terraform commands"
+        type: string
+        required: false
+        default: "./terra"
+
+      environment:
+        description: "The environment to validate (e.g., dev, staging, prod)"
+        type: string
+        required: true
+
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+    inputs:
+      working-directory:
+        description: "The working directory for Terraform commands"
+        type: string
+        required: false
+        default: "./terra"
+
+      environment:
+        description: "The environment to validate (e.g., dev, staging, prod)"
+        type: string
+        required: true
+
+jobs:
+  validate:
+    name: validate
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+        # with: TODO
+
+      - uses: percebus/github-actions-terraform/.github/actions/setup@main
+
+      - uses: percebus/github-actions-terraform/.github/actions/init@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+
+      - uses: percebus/github-actions-terraform/.github/actions/validate@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+
+      - uses: percebus/github-actions-terraform/.github/actions/plan@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+
+    # TODO UPLOAD tfplan file
+    # Or in workflow

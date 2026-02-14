@@ -8,7 +8,7 @@ inputs:
     default: ./terra
 
   ls_cli_options:
-    description: Additional options to pass to 'ls-cli'
+    description: Additional options to pass to 'ls'
     required: false
     default: "-la"
 

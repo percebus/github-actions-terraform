@@ -1,5 +1,9 @@
 
 
+# NOTE: We want to carefully track it
+!*.tfvars*
+local.tfvars*
+
 
 # NOTE: vvv Do NOT add below this point
 # It is meant to be a copy+paste from well established .gitignore files
@@ -187,8 +191,9 @@ crash.*.log
 # password, private keys, and other secrets. These should not be part of version
 # control as they are data points which are potentially sensitive and subject
 # to change depending on the environment.
-*.tfvars
-*.tfvars.json
+# NOTE: We want to carefully track it
+# *.tfvars
+# *.tfvars.json
 
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in

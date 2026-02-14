@@ -1,8 +1,4 @@
 
-resource "random_id" "stack" {
-  byte_length = 4
-}
-
 locals {
   environment = var.ENVIRONMENT
   stack_id    = var.STACK_ID != "" ? var.STACK_ID : random_id.stack.hex
