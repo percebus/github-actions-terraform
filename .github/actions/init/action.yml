@@ -8,7 +8,7 @@ inputs:
     default: ./terra
 
   ls_cli_options:
-    description: Additional options to pass to 'ls-cli'
+    description: Additional options to pass to 'ls'
     required: false
     default: "-la"
 
@@ -24,6 +24,8 @@ runs:
       shell: bash
       working-directory: ${{ inputs.working-directory }}
       run: ls ${{ inputs.ls_cli_options }}
+
+    # bash scripts/terraform/variables.ba.sh
 
     - name: echo TF_CLI_ARGS
       shell: bash

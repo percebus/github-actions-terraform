@@ -18,8 +18,6 @@ jobs:
   default:
     name: terraform
     uses: ./.github/workflows/validate.yml
-    with:
-      working-directory: ${{ github.event.inputs.working-directory }}
 
   working-directory__matrix:
     needs: default

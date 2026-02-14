@@ -1,0 +1,25 @@
+name: "Test worfklows/plan"
+
+on:
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  TF_VAR_STACK_ID: pr-${{ github.event.pull_request.number }}
+
+jobs:
+  default:
+    name: terraform
+    uses: ./.github/workflows/plan.yml
+    with:
+      environment: ${{ github.ref_name == 'main' && 'ci_main_plan' || 'ci_branch_plan' }}
