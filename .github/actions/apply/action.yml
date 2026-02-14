@@ -1,0 +1,29 @@
+name: terraform apply
+description: Terraform apply
+
+inputs:
+  working-directory:
+    description: The working directory for Terraform commands
+    required: false
+    default: ./terra
+
+  # NOTE: dist is relative to `chdir`
+  TF_CLI_ARGS_apply:
+    description: Additional options to pass to 'terraform apply'
+    required: false
+    default: "-input=false dist/update.tfplan"
+
+runs:
+  using: composite
+  steps:
+    - name: echo TF_CLI_ARGS_apply
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        echo "TF_CLI_ARGS_apply"
+        echo "env: '${{ env.TF_CLI_ARGS_apply }}'"
+        echo "inputs: '${{ inputs.TF_CLI_ARGS_apply }}'"
+
+    - name: terraform apply
+      shell: bash
+      run: terraform -chdir=${{ inputs.working-directory }} apply ${{ inputs.TF_CLI_ARGS_apply }}
