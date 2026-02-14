@@ -15,14 +15,14 @@ permissions:
   contents: read
 
 env:
+  TF_VAR_STACK_ID: ${{ github.event.pull_request.number }}
   TF_VAR_REPOSITORY_NAME: ${{ github.event.repository.name }}
-  TF_VAR_ENVIRONMENT: ci
-  # TF_VAR_STACK_ID: # TODO branch id or something
 
 jobs:
   default:
     name: terraform plan
     runs-on: ubuntu-latest
+    environment: ci_branch
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
