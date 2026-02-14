@@ -1,8 +1,4 @@
 
-resource "random_id" "stack" {
-  byte_length = 4
-}
-
 locals {
   environment      = var.ENVIRONMENT
   location         = var.ARM_LOCATION
@@ -13,9 +9,4 @@ locals {
     created_by  = local.repo_name
     environment = local.environment
   }
-}
-
-resource "azurerm_resource_group" "rg" {
-  name     = "${local.name_prefix_long}-rg"
-  location = local.location
 }
