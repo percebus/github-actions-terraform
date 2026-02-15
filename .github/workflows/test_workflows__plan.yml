@@ -18,11 +18,28 @@ env:
   TF_VAR_STACK_ID: pr-${{ github.event.pull_request.number }}
 
 jobs:
+  setup:
+    name: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set STACK_ID
+        id: set-id
+        run: |
+          if [[ "${{ github.ref_name }}" == "main" ]]; then
+            echo "stack_id=main" >> $GITHUB_OUTPUT
+          else
+            echo "stack_id=pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+          fi
+    outputs:
+      stack_id: ${{ steps.set-id.outputs.stack_id }}
+
   default:
     name: terraform
+    needs: setup
     uses: ./.github/workflows/plan.yml
     with:
       # NOTE:
       # - ci_branch      has ci_branch ENVIRONMENT
       # - ci_branch_plan has ci_branch ENVIRONMENT as well
       environment: ${{ github.ref_name == 'main' && 'ci_main_plan' || 'ci_branch_plan' }}
+      TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.stack_id }}"
