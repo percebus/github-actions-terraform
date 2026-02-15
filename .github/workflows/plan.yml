@@ -14,6 +14,12 @@ on:
         type: string
         required: true
 
+      TF_CLI_ARGS_plan:
+        description: "Additional options to pass to 'terraform plan'"
+        type: string
+        required: false
+        default: ""
+
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
       working-directory:
@@ -27,13 +33,19 @@ on:
         type: string
         required: true
 
+      TF_CLI_ARGS_plan:
+        description: "Additional options to pass to 'terraform plan'"
+        type: string
+        required: false
+        default: ""
+
 jobs:
   plan:
     name: plan
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
-      TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars"
+      TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars ${{ inputs.TF_CLI_ARGS_plan }}"
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         # with: TODO
@@ -47,15 +59,6 @@ jobs:
       - uses: percebus/github-actions-terraform/.github/actions/validate@main
         with:
           working-directory: ${{ inputs.working-directory }}
-
-      # TODO? use commit hash instead?
-      - name: Set environment variable for main branch
-        run: |
-          if [[ "${{ github.ref_name }}" == "main" ]]; then
-            echo "TF_VAR_STACK_ID=main" >> $GITHUB_ENV
-          else
-            echo "TF_VAR_STACK_ID=pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
-          fi
 
       - uses: percebus/github-actions-terraform/.github/actions/plan@main
         with:
