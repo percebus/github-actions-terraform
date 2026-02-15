@@ -22,7 +22,7 @@ jobs:
     name: setup
     runs-on: ubuntu-latest
     steps:
-      - name: Set STACK_ID
+      - name: Set stack_id
         id: set-id
         run: |
           if [[ "${{ github.ref_name }}" == "main" ]]; then
