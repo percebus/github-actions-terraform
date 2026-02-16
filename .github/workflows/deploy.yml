@@ -6,20 +6,12 @@ on:
     branches:
       - main
 
-  workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
-    inputs:
-      environment:
-        description: The environment to plan (e.g., dev, staging, prod)
-        type: string
-        required: false
-        default: ci_main
-
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
       environment:
         description: Target environment
-        type: choice
         required: true
+        type: choice
         options:
           # ci
           - ci_main
@@ -49,7 +41,7 @@ jobs:
         run: |
           echo "STACK_ID=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_OUTPUT
           if [[ "${{ github.ref_name }}" == "main" ]]; then
-            echo "environment=${{ inputs.environment }}" >> $GITHUB_OUTPUT
+            echo "environment=${{ inputs.environment || 'ci_main' }}" >> $GITHUB_OUTPUT
           else
             echo "environment=ci_branch" >> $GITHUB_OUTPUT
           fi
