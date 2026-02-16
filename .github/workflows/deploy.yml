@@ -35,7 +35,7 @@ jobs:
       - name: Set STACK_ID
         id: set-id
         run: |
-          echo "STACK_ID=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_OUTPUT
+          echo "STACK_ID=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
     outputs:
       STACK_ID: ${{ steps.set-id.outputs.STACK_ID }}
 
