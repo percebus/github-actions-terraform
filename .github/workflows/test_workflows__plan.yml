@@ -24,11 +24,14 @@ jobs:
         run: |
           if [[ "${{ github.ref_name }}" == "main" ]]; then
             echo "STACK_ID=main" >> $GITHUB_OUTPUT
+            echo "environment=ci_main" >> $GITHUB_OUTPUT
           else
             echo "STACK_ID=pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+            echo "environment=ci_branch" >> $GITHUB_OUTPUT
           fi
     outputs:
       STACK_ID: ${{ steps.set_variables.outputs.STACK_ID }}
+      environment: ${{ steps.set_variables.outputs.environment }}
 
   default:
     name: terraform
@@ -38,5 +41,5 @@ jobs:
       # NOTE:
       # - ci_branch      has ci_branch ENVIRONMENT
       # - ci_branch_plan has ci_branch ENVIRONMENT as well
-      environment: ${{ github.ref_name == 'main' && 'ci_main_plan' || 'ci_branch_plan' }}
+      environment: ${{ needs.setup.outputs.environment }}_plan
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
