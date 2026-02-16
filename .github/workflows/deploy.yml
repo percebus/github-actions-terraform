@@ -6,18 +6,28 @@ on:
     branches:
       - main
 
+  workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
+    inputs:
+      environment:
+        description: The environment to plan (e.g., dev, staging, prod)
+        type: string
+        required: false
+        default: ci_main
+
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
       environment:
         description: Target environment
         type: choice
-        required: false
+        required: true
         options:
+          # ci
           - ci_main
           - ci_branch
+          #
+          # requires approval
           - dev
           - prod
-        default: ci_main
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
