@@ -46,21 +46,27 @@ jobs:
 
   terraform_apply_plan:
     name: terraform
-    needs: terraform_plan
+    needs:
+      - terraform_plan
+      - setup
     uses: ./.github/workflows/apply.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}
 
   terraform_plan-destroy:
     name: terraform
-    needs: terraform_apply_plan
+    needs:
+      - terraform_apply_plan
+      - setup
     uses: ./.github/workflows/plan-destroy.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}_plan
 
   terraform_apply-destroy:
     name: terraform
-    needs: terraform_plan-destroy
+    needs:
+      - terraform_plan-destroy
+      - setup
     uses: ./.github/workflows/apply-destroy.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}
