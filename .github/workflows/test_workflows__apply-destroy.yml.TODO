@@ -1,63 +1,66 @@
-# name: "Test worfklows/apply-destroy"
+name: "Test worfklows/apply-destroy"
 
-# on:
-#   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
-#   pull_request:
-#   push:
-#     branches:
-#       - main
+on:
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+  pull_request:
+  push:
+    branches:
+      - main
 
-# concurrency:
-#   group: ${{ github.ref }}-${{ github.workflow }}
-#   cancel-in-progress: true
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
 
-# permissions:
-#   contents: read
+permissions:
+  contents: read
 
-# env:
-#   environment: ${{ github.ref_name == 'main' && 'ci_main' || 'ci_branch' }}
+env:
+  environment: ${{ github.ref_name == 'main' && 'ci_main' || 'ci_branch' }}
 
-# jobs:
-#   setup:
-#     name: setup
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Set STACK_ID
-#         id: set-id
-#         run: |
-#           if [[ "${{ github.ref_name }}" == "main" ]]; then
-#             echo "STACK_ID=main" >> $GITHUB_OUTPUT
-#           else
-#             echo "STACK_ID=pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
-#           fi
-#     outputs:
-#       STACK_ID: ${{ steps.set-id.outputs.STACK_ID }}
+jobs:
+  setup:
+    name: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: GITHUB_OUTPUT
+        id: set_variables
+        run: |
+          if [[ "${{ github.ref_name }}" == "main" ]]; then
+            echo "STACK_ID=main" >> $GITHUB_OUTPUT
+            echo "environment=ci_main" >> $GITHUB_OUTPUT
+          else
+            echo "STACK_ID=pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+            echo "environment=ci_branch" >> $GITHUB_OUTPUT
+          fi
+    outputs:
+      STACK_ID: ${{ steps.set_variables.outputs.STACK_ID }}
+      environment: ${{ steps.set_variables.outputs.environment }}
 
-#   terraform_plan:
-#     name: terraform
-#     needs: setup
-#     uses: ./.github/workflows/plan.yml
-#     with:
-#       environment: ${{ vars.environment }}_plan
-#       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
+  terraform_plan:
+    name: terraform
+    needs: setup
+    uses: ./.github/workflows/plan.yml
+    with:
+      environment: ${{ needs.setup.outputs.environment }}_plan
+      TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
 
-#   terraform_apply_plan:
-#     name: terraform
-#     needs: terraform_plan
-#     uses: ./.github/workflows/apply.yml
-#     with:
-#       environment: ${{ vars.environment }}
+  terraform_apply_plan:
+    name: terraform
+    needs: terraform_plan
+    uses: ./.github/workflows/apply.yml
+    with:
+      environment: ${{ needs.setup.outputs.environment }}
 
-#   terraform_plan-destroy:
-#     name: terraform
-#     needs: terraform_apply_plan
-#     uses: ./.github/workflows/plan-destroy.yml
-#     with:
-#       environment: ${{ vars.environment }}_plan
+  terraform_plan-destroy:
+    name: terraform
+    needs: terraform_apply_plan
+    uses: ./.github/workflows/plan-destroy.yml
+    with:
+      environment: ${{ needs.setup.outputs.environment }}_plan
 
-#   terraform_apply-destroy:
-#     name: terraform
-#     needs: terraform_plan-destroy
-#     uses: ./.github/workflows/apply-destroy.yml
-#     with:
-#       environment: ${{ vars.environment }}
+  terraform_apply-destroy:
+    name: terraform
+    needs: terraform_plan-destroy
+    uses: ./.github/workflows/apply-destroy.yml
+    with:
+      environment: ${{ needs.setup.outputs.environment }}

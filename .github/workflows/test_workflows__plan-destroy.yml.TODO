@@ -22,23 +22,26 @@ jobs:
     name: setup
     runs-on: ubuntu-latest
     steps:
-      - name: Set STACK_ID
-        id: set-id
+      - name: GITHUB_OUTPUT
+        id: set_variables
         run: |
           if [[ "${{ github.ref_name }}" == "main" ]]; then
             echo "STACK_ID=main" >> $GITHUB_OUTPUT
+            echo "environment=ci_main" >> $GITHUB_OUTPUT
           else
             echo "STACK_ID=pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+            echo "environment=ci_branch" >> $GITHUB_OUTPUT
           fi
     outputs:
-      STACK_ID: ${{ steps.set-id.outputs.STACK_ID }}
+      STACK_ID: ${{ steps.set_variables.outputs.STACK_ID }}
+      environment: ${{ steps.set_variables.outputs.environment }}
 
   terraform_plan:
     name: terraform
     needs: setup
     uses: ./.github/workflows/plan.yml
     with:
-      environment: ${{ vars.environment }}_plan
+      environment: ${{ needs.setup.outputs.environment }}_plan
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
 
   terraform_apply_plan:
@@ -46,7 +49,7 @@ jobs:
     needs: terraform_plan
     uses: ./.github/workflows/apply.yml
     with:
-      environment: ${{ vars.environment }}
+      environment: ${{ needs.setup.outputs.environment }}
 
   # NEED TO UPLOAD TFSTATE
 
@@ -55,4 +58,4 @@ jobs:
     needs: terraform_apply_plan
     uses: ./.github/workflows/plan-destroy.yml
     with:
-      environment: ${{ vars.environment }}_plan
+      environment: ${{ needs.setup.outputs.environment }}_plan

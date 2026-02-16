@@ -40,12 +40,28 @@ on:
         default: ""
 
 jobs:
+  setup:
+    name: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: GITHUB_OUTPUT
+        id: set_variables
+        run: |
+          if [[ "${{ github.ref_name }}" == "main" ]]; then
+            echo "environment=ci_main" >> $GITHUB_OUTPUT
+          else
+            echo "environment=ci_branch" >> $GITHUB_OUTPUT
+          fi
+    outputs:
+      environment: ${{ steps.set_variables.outputs.environment }}
+
   plan:
     name: plan
+    needs: setup
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    environment: ${{ steps.set_variables.outputs.environment }}
     env:
-      TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars ${{ inputs.TF_CLI_ARGS_plan }}"
+      TF_CLI_ARGS_plan: "-var-file=./env/${{ steps.set_variables.outputs.environment }}.tfvars ${{ inputs.TF_CLI_ARGS_plan }}"
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         # with: TODO
