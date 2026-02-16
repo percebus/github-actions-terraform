@@ -38,7 +38,7 @@
 #     needs: setup
 #     uses: ./.github/workflows/plan.yml
 #     with:
-#       environment: ${{ env.environment }}_plan
+#       environment: ${{ vars.environment }}_plan
 #       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
 
 #   terraform_apply_plan:
@@ -46,7 +46,7 @@
 #     needs: terraform_plan
 #     uses: ./.github/workflows/apply.yml
 #     with:
-#       environment: ${{ env.environment }}
+#       environment: ${{ vars.environment }}
 
 #   # NEED TO UPLOAD TFSTATE
 
@@ -55,4 +55,4 @@
 #     needs: terraform_apply_plan
 #     uses: ./.github/workflows/plan-destroy.yml
 #     with:
-#       environment: ${{ env.environment }}_plan
+#       environment: ${{ vars.environment }}_plan

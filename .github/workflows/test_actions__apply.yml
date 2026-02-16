@@ -23,9 +23,9 @@ jobs:
   terraform_apply:
     name: terraform apply
     runs-on: ubuntu-latest
-    environment: ${{ env.environment }}
+    environment: ${{ vars.environment }}
     env:
-      TF_CLI_ARGS_plan: "-var-file=./env/${{ env.environment }}.tfvars"
+      TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.environment }}.tfvars"
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
@@ -38,9 +38,9 @@ jobs:
     name: terraform apply -destroy
     runs-on: ubuntu-latest
     needs: terraform_apply
-    environment: ${{ env.environment }}
+    environment: ${{ vars.environment }}
     env:
-      TF_CLI_ARGS_plan: "-var-file=./env/${{ env.environment }}.tfvars"
+      TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.environment }}.tfvars"
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
