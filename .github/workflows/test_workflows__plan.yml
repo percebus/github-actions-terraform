@@ -19,8 +19,8 @@ jobs:
     name: setup
     runs-on: ubuntu-latest
     steps:
-      - name: Set STACK_ID
-        id: set-id
+      - name: GITHUB_OUTPUT
+        id: set_variables
         run: |
           if [[ "${{ github.ref_name }}" == "main" ]]; then
             echo "STACK_ID=main" >> $GITHUB_OUTPUT
@@ -28,7 +28,7 @@ jobs:
             echo "STACK_ID=pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
           fi
     outputs:
-      STACK_ID: ${{ steps.set-id.outputs.STACK_ID }}
+      STACK_ID: ${{ steps.set_variables.outputs.STACK_ID }}
 
   default:
     name: terraform

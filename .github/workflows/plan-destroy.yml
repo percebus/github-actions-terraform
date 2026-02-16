@@ -59,9 +59,9 @@ jobs:
     name: plan
     needs: setup
     runs-on: ubuntu-latest
-    environment: ${{ steps.set_variables.outputs.environment }}
+    environment: ${{ needs.setup.outputs.environment }}
     env:
-      TF_CLI_ARGS_plan: "-var-file=./env/${{ steps.set_variables.outputs.environment }}.tfvars ${{ inputs.TF_CLI_ARGS_plan }}"
+      TF_CLI_ARGS_plan: "-var-file=./env/${{ needs.setup.outputs.environment }}.tfvars ${{ inputs.TF_CLI_ARGS_plan }}"
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         # with: TODO
