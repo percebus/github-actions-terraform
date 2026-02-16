@@ -19,7 +19,7 @@ jobs:
     name: setup
     runs-on: ubuntu-latest
     steps:
-      - name: Set GITHUB_OUTPUT
+      - name: GITHUB_OUTPUT
         id: set_variables
         run: |
           if [[ "${{ github.ref_name }}" == "main" ]]; then

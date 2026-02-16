@@ -34,7 +34,7 @@ jobs:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
 
       # TODO move to github-actions-common or -git
-      - name: Set GITHUB_OUTPUT
+      - name: GITHUB_OUTPUT
         id: set_variables
         run: |
           echo "STACK_ID=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_OUTPUT
