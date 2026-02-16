@@ -55,7 +55,7 @@ jobs:
           working-directory: ${{ inputs.working-directory }}
 
       # TODO move to common
-      - uses: actions/upload-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: dist
           path: ${{ inputs.working-directory }}/dist
