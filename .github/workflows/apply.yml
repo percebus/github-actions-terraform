@@ -1,0 +1,65 @@
+name: terraform apply
+
+on:
+  workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
+    inputs:
+      working-directory:
+        description: "The working directory for Terraform commands"
+        type: string
+        required: false
+        default: "./terra"
+
+      environment:
+        description: "The environment to plan (e.g., dev, staging, prod)"
+        type: string
+        required: true
+
+      TF_CLI_ARGS_apply:
+        description: "Additional options to pass to 'terraform apply'"
+        type: string
+        required: false
+        default: ""
+
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+    inputs:
+      working-directory:
+        description: "The working directory for Terraform commands"
+        type: string
+        required: false
+        default: "./terra"
+
+      environment:
+        description: "The environment to apply (e.g., dev, staging, prod)"
+        type: string
+        required: true
+
+      TF_CLI_ARGS_apply:
+        description: "Additional options to pass to 'terraform apply'"
+        type: string
+        required: false
+        default: ""
+
+jobs:
+  apply:
+    name: apply
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+        # with: TODO
+
+      - uses: percebus/github-actions-terraform/.github/actions/setup@main
+
+      - uses: percebus/github-actions-terraform/.github/actions/init@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+
+      # TODO move to common
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: ${{ inputs.working-directory }}/dist
+
+      - uses: percebus/github-actions-terraform/.github/actions/apply@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
