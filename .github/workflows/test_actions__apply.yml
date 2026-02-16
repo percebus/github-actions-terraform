@@ -15,7 +15,6 @@ permissions:
   contents: read
 
 env:
-  environment: ${{ github.ref_name == 'main' && 'ci_main' || 'ci_branch' }}
   TF_VAR_STACK_ID: ${{ github.event.pull_request.number }}
   TF_VAR_REPOSITORY_NAME: ${{ github.event.repository.name }}
 
