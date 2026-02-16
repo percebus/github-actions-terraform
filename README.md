@@ -1,6 +1,8 @@
 # github-actions-terraform
 
-[![[C]ontinuous [I]ntegration](https://github.com/percebus/github-actions-terraform/actions/workflows/always.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/always.yml) [![Pull Request](https://github.com/percebus/github-actions-terraform/actions/workflows/pull_request.yml/badge.svg?event=pull_request)](https://github.com/percebus/github-actions-terraform/actions/workflows/pull_request.yml)
+[![[C]ontinuous [I]ntegration](https://github.com/percebus/github-actions-terraform/actions/workflows/always.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/always.yml)
+[![Pull Request](https://github.com/percebus/github-actions-terraform/actions/workflows/pull_request.yml/badge.svg?event=pull_request)](https://github.com/percebus/github-actions-terraform/actions/workflows/pull_request.yml)
+[![Deployment](https://github.com/percebus/github-actions-terraform/actions/workflows/deploy.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/deploy.yml)
 
 GitHub re-usable actions and/or workflows for terraform
 
@@ -19,8 +21,10 @@ GitHub re-usable actions and/or workflows for terraform
 
 ### Workflows
 
-| Name                                         | Test                                                                                                                                                                                                                                             |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [`validate`](.github/workflows/validate.yml) | [![Test worfklows/validate](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__validate.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__validate.yml) |
-| [`plan`](.github/workflows/plan.yml)         | [![Test worfklows/plan](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__plan.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__plan.yml)             |
-| [`apply`](.github/workflows/apply.yml)       | [![Test worfklows/apply](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__apply.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__apply.yml)          |
+| Name                                                 | Test                                                                                                                                                                                                                                             |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [`validate`](.github/workflows/validate.yml)         | [![Test worfklows/validate](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__validate.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__validate.yml) |
+| [`plan`](.github/workflows/plan.yml)                 | [![Test worfklows/plan](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__plan.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__plan.yml)             |
+| [`apply`](.github/workflows/apply.yml)               | [![Test worfklows/apply](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__apply.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__apply.yml)          |
+| [`plan-destroy`](.github/workflows/plan-destroy.yml) | TODO                                                                                                                                                                                                                                             |
+| [`apply-destroy`](.github/workflows/destroy.yml)     | TODO                                                                                                                                                                                                                                             |

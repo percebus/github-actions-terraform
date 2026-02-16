@@ -1,4 +1,4 @@
-name: "Test worfklows/plan"
+name: "Test worfklows/plan-destroy"
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
@@ -33,13 +33,30 @@ jobs:
       STACK_ID: ${{ steps.set_variables.outputs.STACK_ID }}
       environment: ${{ steps.set_variables.outputs.environment }}
 
-  default:
+  terraform_plan:
     name: terraform
     needs: setup
     uses: ./.github/workflows/plan.yml
     with:
-      # NOTE:
-      # - ci_branch      has ci_branch ENVIRONMENT
-      # - ci_branch_plan has ci_branch ENVIRONMENT as well
       environment: ${{ needs.setup.outputs.environment }}_plan
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
+
+  terraform_apply_plan:
+    name: terraform
+    needs:
+      - terraform_plan
+      - setup
+    uses: ./.github/workflows/apply.yml
+    with:
+      environment: ${{ needs.setup.outputs.environment }}
+
+  # NEED TO UPLOAD TFSTATE
+
+  terraform_plan-destroy:
+    name: terraform
+    needs:
+      - terraform_apply_plan
+      - setup
+    uses: ./.github/workflows/plan-destroy.yml
+    with:
+      environment: ${{ needs.setup.outputs.environment }}_plan

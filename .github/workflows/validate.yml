@@ -4,18 +4,18 @@ on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
     inputs:
       working-directory:
-        description: "The working directory for Terraform commands"
+        description: The working directory for Terraform commands
         type: string
         required: false
-        default: "./terra"
+        default: ./terra
 
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
       working-directory:
-        description: "The working directory for Terraform commands"
+        description: The working directory for Terraform commands
         type: string
         required: false
-        default: "./terra"
+        default: ./terra
 
 jobs:
   validate:

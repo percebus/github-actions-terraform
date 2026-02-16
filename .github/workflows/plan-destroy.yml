@@ -1,4 +1,4 @@
-name: terraform plan
+name: terraform plan -destroy
 
 on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
@@ -72,6 +72,7 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
 
+      # TODO? add a flag to skip validate in case of destroy? or just run it as is?
       - uses: percebus/github-actions-terraform/.github/actions/validate@main
         with:
           working-directory: ${{ inputs.working-directory }}
@@ -79,6 +80,7 @@ jobs:
       - uses: percebus/github-actions-terraform/.github/actions/plan@main
         with:
           working-directory: ${{ inputs.working-directory }}
+          TF_CLI_ARGS_plan: "-destroy -out=dist/destroy.tfplan"
 
       # TODO move to common
       - uses: actions/upload-artifact@v4

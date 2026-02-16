@@ -1,4 +1,4 @@
-name: terraform apply
+name: terraform apply -destroy
 
 on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
@@ -63,3 +63,4 @@ jobs:
       - uses: percebus/github-actions-terraform/.github/actions/apply@main
         with:
           working-directory: ${{ inputs.working-directory }}
+          TF_CLI_ARGS_apply: -input=false dist/destroy.tfplan

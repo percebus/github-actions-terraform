@@ -13,6 +13,8 @@ description: Install terraform
 runs:
   using: composite
   steps:
+    # TODO: replace w/ hashicorp/setup-terraform@v3
+
     # TODO move to a github-actions-apt
     - name: apt-get update
       shell: bash
