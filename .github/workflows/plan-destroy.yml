@@ -1,4 +1,4 @@
-name: terraform apply
+name: terraform plan -destroy
 
 on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
@@ -14,8 +14,8 @@ on:
         type: string
         required: true
 
-      TF_CLI_ARGS_apply:
-        description: Additional options to pass to 'terraform apply'
+      TF_CLI_ARGS_plan:
+        description: Additional options to pass to 'terraform plan'
         type: string
         required: false
         default: ""
@@ -29,21 +29,23 @@ on:
         default: ./terra
 
       environment:
-        description: The environment to apply (e.g., dev, staging, prod)
+        description: The environment to plan (e.g., dev, staging, prod)
         type: string
         required: true
 
-      TF_CLI_ARGS_apply:
-        description: Additional options to pass to 'terraform apply'
+      TF_CLI_ARGS_plan:
+        description: Additional options to pass to 'terraform plan'
         type: string
         required: false
         default: ""
 
 jobs:
-  apply:
-    name: apply
+  plan:
+    name: plan
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
+    env:
+      TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars ${{ inputs.TF_CLI_ARGS_plan }}"
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         # with: TODO
@@ -54,12 +56,19 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
 
-      # TODO move to common
-      - uses: actions/download-artifact@v5
-        with:
-          name: dist
-          path: ${{ inputs.working-directory }}/dist
-
-      - uses: percebus/github-actions-terraform/.github/actions/apply@main
+      # TODO? add a flag to skip validate in case of destroy? or just run it as is?
+      - uses: percebus/github-actions-terraform/.github/actions/validate@main
         with:
           working-directory: ${{ inputs.working-directory }}
+
+      - uses: percebus/github-actions-terraform/.github/actions/plan@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          TF_CLI_ARGS_plan: "-destroy -out=dist/destroy.tfplan"
+
+      # TODO move to common
+      - uses: actions/upload-artifact@v4
+        with:
+          path: ${{ inputs.working-directory }}/dist
+          name: dist
+          if-no-files-found: error

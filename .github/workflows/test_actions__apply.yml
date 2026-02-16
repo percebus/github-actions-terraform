@@ -15,20 +15,46 @@ permissions:
   contents: read
 
 env:
+  environment: ${{ github.ref_name == 'main' && 'ci_main' || 'ci_branch' }}
   TF_VAR_STACK_ID: ${{ github.event.pull_request.number }}
   TF_VAR_REPOSITORY_NAME: ${{ github.event.repository.name }}
+
 jobs:
-  default:
-    name: terraform apply tfplan
+  terraform_apply:
+    name: terraform apply
     runs-on: ubuntu-latest
-    environment: ${{ github.ref_name == 'main' && 'ci_main' || 'ci_branch' }}
+    environment: ${{ env.environment }}
     env:
-      TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars"
+      TF_CLI_ARGS_plan: "-var-file=./env/${{ env.environment }}.tfvars"
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
       - uses: ./.github/actions/plan
       - uses: ./.github/actions/apply
+      # TODO upload tfstate ?
 
-  # TODO add destroy
+  terraform_apply-destroy:
+    name: terraform apply -destroy
+    runs-on: ubuntu-latest
+    needs: terraform_apply
+    environment: ${{ env.environment }}
+    env:
+      TF_CLI_ARGS_plan: "-var-file=./env/${{ env.environment }}.tfvars"
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/init
+
+      # TODO download tfstate from default ?
+
+      - uses: ./.github/actions/plan
+      - uses: ./.github/actions/apply
+
+      - uses: ./.github/actions/plan
+        with:
+          TF_CLI_ARGS_plan: "-destroy -out=dist/destroy.tfplan"
+
+      - uses: ./.github/actions/apply
+        with:
+          TF_CLI_ARGS_apply: "-destroy dist/destroy.tfplan"

@@ -4,18 +4,18 @@ on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
     inputs:
       working-directory:
-        description: "The working directory for Terraform commands"
+        description: The working directory for Terraform commands
         type: string
         required: false
-        default: "./terra"
+        default: ./terra
 
       environment:
-        description: "The environment to plan (e.g., dev, staging, prod)"
+        description: The environment to plan (e.g., dev, staging, prod)
         type: string
         required: true
 
       TF_CLI_ARGS_plan:
-        description: "Additional options to pass to 'terraform plan'"
+        description: Additional options to pass to 'terraform plan'
         type: string
         required: false
         default: ""
@@ -23,18 +23,18 @@ on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
       working-directory:
-        description: "The working directory for Terraform commands"
+        description: The working directory for Terraform commands
         type: string
         required: false
-        default: "./terra"
+        default: ./terra
 
       environment:
-        description: "The environment to plan (e.g., dev, staging, prod)"
+        description: The environment to plan (e.g., dev, staging, prod)
         type: string
         required: true
 
       TF_CLI_ARGS_plan:
-        description: "Additional options to pass to 'terraform plan'"
+        description: Additional options to pass to 'terraform plan'
         type: string
         required: false
         default: ""

@@ -14,8 +14,8 @@ on:
         type: choice
         required: false
         options:
-          - ci_branch
           - ci_main
+          - ci_branch
           - dev
           - prod
         default: ci_main
@@ -33,6 +33,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
+
+      # TODO move to github-actions-common or -git
       - name: Set STACK_ID
         id: set-id
         run: |
