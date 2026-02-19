@@ -23,7 +23,7 @@ jobs:
   default:
     name: terraform plan
     runs-on: ubuntu-latest
-    environment: ${{ github.ref_name == 'main' && 'ci_main_plan' || 'ci_branch_plan' }}
+    environment: ${{ github.ref_name == 'main' && 'ci-main_plan' || 'ci-branch_plan' }}
     env:
       TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars"
     steps:
