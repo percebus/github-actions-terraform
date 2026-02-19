@@ -14,7 +14,7 @@ on:
         type: choice
         options:
           # ci
-          - ci_main
+          - ci-main
           - ci-branch
           #
           # requires approval
@@ -37,7 +37,7 @@ jobs:
         run: |
           echo "STACK_ID=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_OUTPUT
           if [[ "${{ github.ref_name }}" == "main" ]]; then
-            echo "environment=${{ inputs.environment || 'ci_main' }}" >> $GITHUB_OUTPUT
+            echo "environment=${{ inputs.environment || 'ci-main' }}" >> $GITHUB_OUTPUT
           else
             echo "environment=ci-branch" >> $GITHUB_OUTPUT
           fi

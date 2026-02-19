@@ -28,9 +28,9 @@ jobs:
         id: set_variables
         run: |
           if [[ "${{ github.ref_name }}" == "main" ]]; then
-            echo "environment=ci_main" >> $GITHUB_OUTPUT
+            echo "environment=ci-main" >> $GITHUB_OUTPUT
           else
-            echo "environment=ci_branch" >> $GITHUB_OUTPUT
+            echo "environment=ci-branch" >> $GITHUB_OUTPUT
           fi
     outputs:
       environment: ${{ steps.set_variables.outputs.environment }}

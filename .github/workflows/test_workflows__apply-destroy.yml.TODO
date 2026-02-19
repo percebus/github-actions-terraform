@@ -24,7 +24,7 @@ jobs:
         run: |
           if [[ "${{ github.ref_name }}" == "main" ]]; then
             echo "STACK_ID=main" >> $GITHUB_OUTPUT
-            echo "environment=ci_main" >> $GITHUB_OUTPUT
+            echo "environment=ci-main" >> $GITHUB_OUTPUT
           else
             echo "STACK_ID=pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
             echo "environment=ci-branch" >> $GITHUB_OUTPUT
