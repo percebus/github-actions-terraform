@@ -9,7 +9,8 @@ on:
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
-  cancel-in-progress: true
+  # NOTE: Cancelling an apply might corrupt the state.
+  cancel-in-progress: false
 
 permissions:
   contents: read

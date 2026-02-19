@@ -57,7 +57,7 @@ jobs:
       # TODO move to common
       - uses: actions/download-artifact@v5
         with:
-          name: dist
+          name: tfplan_update
           path: ${{ inputs.working-directory }}/dist
 
       - uses: percebus/github-actions-terraform/.github/actions/apply@main

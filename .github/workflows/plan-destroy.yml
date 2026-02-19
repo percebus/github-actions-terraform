@@ -70,5 +70,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           path: ${{ inputs.working-directory }}/dist
-          name: dist
+          name: tfplan_destroy
           if-no-files-found: error
+          overwrite: true

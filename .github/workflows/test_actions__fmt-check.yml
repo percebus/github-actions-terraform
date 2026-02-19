@@ -9,6 +9,7 @@ on:
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
+  # NOTE: Apparently terraform init does NOT create a lock.
   cancel-in-progress: true
 
 permissions:
