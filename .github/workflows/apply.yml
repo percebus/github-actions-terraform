@@ -63,3 +63,9 @@ jobs:
       - uses: percebus/github-actions-terraform/.github/actions/apply@main
         with:
           working-directory: ${{ inputs.working-directory }}
+
+      # NOTE: re-run plan, to ensure that the plan is up-to-date after apply
+      # And there is no drift
+      - uses: percebus/github-actions-terraform/.github/actions/plan@main
+        with:
+          working-directory: ${{ inputs.working-directory }}

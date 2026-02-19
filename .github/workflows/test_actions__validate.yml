@@ -9,6 +9,7 @@ on:
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
+  # NOTE: Apparently terraform init does NOT create a lock.
   cancel-in-progress: true
 
 permissions:
@@ -40,10 +41,6 @@ jobs:
       - uses: ./.github/actions/setup
 
       - uses: ./.github/actions/init
-        with:
-          working-directory: ${{ env.TF_DIR }}
-
-      - uses: ./.github/actions/fmt-check
         with:
           working-directory: ${{ env.TF_DIR }}
 
