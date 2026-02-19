@@ -28,7 +28,7 @@ jobs:
             echo "environment=ci_main" >> $GITHUB_OUTPUT
           else
             echo "STACK_ID=pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
-            echo "environment=ci_branch" >> $GITHUB_OUTPUT
+            echo "environment=ci-branch" >> $GITHUB_OUTPUT
           fi
     outputs:
       STACK_ID: ${{ steps.set_variables.outputs.STACK_ID }}
@@ -40,7 +40,7 @@ jobs:
     uses: ./.github/workflows/plan.yml
     with:
       # NOTE:
-      # - ci_branch      has ci_branch ENVIRONMENT
-      # - ci_branch_plan has ci_branch ENVIRONMENT as well
+      # - ci-branch      has ci-branch ENVIRONMENT
+      # - ci-branch_plan has ci-branch ENVIRONMENT as well
       environment: ${{ needs.setup.outputs.environment }}_plan
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
