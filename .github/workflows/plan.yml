@@ -3,6 +3,12 @@ name: terraform plan
 on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
     inputs:
+      name:
+        description: The name of the step
+        type: string
+        required: false
+        default: plan
+
       working-directory:
         description: The working directory for Terraform commands
         type: string
@@ -22,6 +28,12 @@ on:
 
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
+      name:
+        description: The name of the step
+        type: string
+        required: false
+        default: plan
+
       working-directory:
         description: The working directory for Terraform commands
         type: string
@@ -41,7 +53,7 @@ on:
 
 jobs:
   plan:
-    name: plan
+    name: ${{ inputs.name }}
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
@@ -68,5 +80,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           path: ${{ inputs.working-directory }}/dist
-          name: dist
+          name: tfplan_update
           if-no-files-found: error
+          overwrite: true
