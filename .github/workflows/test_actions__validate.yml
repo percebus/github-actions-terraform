@@ -26,6 +26,9 @@ jobs:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
+        with:
+          backend_override: true
+
       - uses: ./.github/actions/validate
 
   working-directory__matrix:
@@ -46,6 +49,7 @@ jobs:
       - uses: ./.github/actions/init
         with:
           working-directory: ${{ env.TF_DIR }}
+          backend_override: true
 
       - uses: ./.github/actions/validate
         with:

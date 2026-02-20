@@ -15,9 +15,6 @@ concurrency:
 permissions:
   contents: read
 
-env:
-  TF_CLI_ARGS_init: -reconfigure -backend=false
-
 jobs:
   default:
     name: terraform fmt -check
