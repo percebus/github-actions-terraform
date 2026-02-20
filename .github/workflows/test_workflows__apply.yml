@@ -23,6 +23,7 @@ jobs:
       - name: GITHUB_OUTPUT
         id: set_variables
         run: |
+          echo "TF_CLI_ARGS_init=-reconfigure -backend=false" >> $GITHUB_OUTPUT
           if [[ "${{ github.ref_name }}" == "main" ]]; then
             echo "STACK_ID=main" >> $GITHUB_OUTPUT
             echo "environment=ci-main" >> $GITHUB_OUTPUT
@@ -33,6 +34,7 @@ jobs:
     outputs:
       STACK_ID: ${{ steps.set_variables.outputs.STACK_ID }}
       environment: ${{ steps.set_variables.outputs.environment }}
+      TF_CLI_ARGS_init: ${{ steps.set_variables.outputs.TF_CLI_ARGS_init }}
 
   terraform_plan:
     name: terraform
@@ -40,6 +42,7 @@ jobs:
     uses: ./.github/workflows/plan.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}_plan
+      TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
 
   terraform_apply_plan:
@@ -50,3 +53,4 @@ jobs:
     uses: ./.github/workflows/apply.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}
+      TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}

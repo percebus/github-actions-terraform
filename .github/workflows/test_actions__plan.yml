@@ -16,7 +16,7 @@ permissions:
   contents: read
 
 env:
-  # TF_CLI_ARGS_init: -reconfigure -backend=false
+  TF_CLI_ARGS_init: -reconfigure -backend=false
   TF_VAR_STACK_ID: ${{ github.event.pull_request.number }}
   TF_VAR_REPOSITORY_NAME: ${{ github.event.repository.name }}
 
