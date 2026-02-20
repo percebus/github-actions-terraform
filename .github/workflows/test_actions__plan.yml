@@ -8,8 +8,8 @@ on:
       - main
 
 concurrency:
+  # NOTE: Cancelling an apply might corrupt the state.
   group: ${{ github.ref }}-${{ github.workflow }}
-  # NOTE: Cancelling a plan might corrupt the state.
   cancel-in-progress: false
 
 permissions:
@@ -25,6 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name == 'main' && 'ci-main_plan' || 'ci-branch_plan' }}
     env:
+      TF_CLI_ARGS_init: -backend=false
       TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars"
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main

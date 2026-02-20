@@ -14,6 +14,12 @@ on:
         type: string
         required: true
 
+      TF_CLI_ARGS_init:
+        description: Additional options to pass to 'terraform init'
+        type: string
+        required: false
+        default: ""
+
       TF_CLI_ARGS_apply:
         description: Additional options to pass to 'terraform apply'
         type: string
@@ -33,6 +39,12 @@ on:
         type: string
         required: true
 
+      TF_CLI_ARGS_init:
+        description: Additional options to pass to 'terraform init'
+        type: string
+        required: false
+        default: ""
+
       TF_CLI_ARGS_apply:
         description: Additional options to pass to 'terraform apply'
         type: string
@@ -44,6 +56,9 @@ jobs:
     name: apply
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
+    env:
+      TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
+      TF_CLI_ARGS_apply: ${{ inputs.TF_CLI_ARGS_apply }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         # with: TODO
@@ -64,3 +79,5 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           TF_CLI_ARGS_apply: -input=false dist/destroy.tfplan
+
+      # TODO add post-apply plan to detect drift and/or issues with the apply

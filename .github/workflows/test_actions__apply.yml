@@ -8,8 +8,8 @@ on:
       - main
 
 concurrency:
-  group: ${{ github.ref }}-${{ github.workflow }}
   # NOTE: Cancelling an apply might corrupt the state.
+  group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: false
 
 permissions:
@@ -41,14 +41,16 @@ jobs:
     needs: setup
     environment: ${{ needs.setup.outputs.environment }}
     env:
+      TF_CLI_ARGS_init: -backend=false
       TF_CLI_ARGS_plan: "-var-file=./env/${{ needs.setup.outputs.environment }}.tfvars"
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
+
       - uses: ./.github/actions/plan
       - uses: ./.github/actions/apply
-      # TODO upload tfstate ?
+      - uses: ./.github/actions/plan
 
   terraform_apply-destroy:
     name: terraform apply -destroy
@@ -58,16 +60,16 @@ jobs:
       - setup
     environment: ${{ needs.setup.outputs.environment }}
     env:
+      TF_CLI_ARGS_init: -backend=false
       TF_CLI_ARGS_plan: "-var-file=./env/${{ needs.setup.outputs.environment }}.tfvars"
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
 
-      # TODO download tfstate from default ?
-
       - uses: ./.github/actions/plan
       - uses: ./.github/actions/apply
+      - uses: ./.github/actions/plan
 
       - uses: ./.github/actions/plan
         with:

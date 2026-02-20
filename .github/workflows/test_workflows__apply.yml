@@ -3,13 +3,13 @@ name: "Test worfklows/apply"
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
   pull_request:
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
 
 concurrency:
-  group: ${{ github.ref }}-${{ github.workflow }}
   # NOTE: Cancelling an apply might corrupt the state.
+  group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: false
 
 permissions:
@@ -40,6 +40,7 @@ jobs:
     uses: ./.github/workflows/plan.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}_plan
+      TF_CLI_ARGS_init: -backend=false
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
 
   terraform_apply_plan:
@@ -50,3 +51,4 @@ jobs:
     uses: ./.github/workflows/apply.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}
+      TF_CLI_ARGS_init: -backend=false

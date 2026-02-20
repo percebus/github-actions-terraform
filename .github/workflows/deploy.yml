@@ -21,6 +21,11 @@ on:
           - dev
           - prod
 
+concurrency:
+  # NOTE: Cancelling an apply might corrupt the state.
+  group: ${{ github.ref }}-default
+  cancel-in-progress: false
+
 permissions:
   contents: read
 

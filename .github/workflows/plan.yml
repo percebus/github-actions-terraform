@@ -20,6 +20,12 @@ on:
         type: string
         required: true
 
+      TF_CLI_ARGS_init:
+        description: Additional options to pass to 'terraform init'
+        type: string
+        required: false
+        default: ""
+
       TF_CLI_ARGS_plan:
         description: Additional options to pass to 'terraform plan'
         type: string
@@ -45,6 +51,12 @@ on:
         type: string
         required: true
 
+      TF_CLI_ARGS_init:
+        description: Additional options to pass to 'terraform init'
+        type: string
+        required: false
+        default: ""
+
       TF_CLI_ARGS_plan:
         description: Additional options to pass to 'terraform plan'
         type: string
@@ -57,6 +69,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
+      TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
       TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars ${{ inputs.TF_CLI_ARGS_plan }}"
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
@@ -68,6 +81,7 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
 
+      # TODO? add a flag to skip validate in case of destroy? or just run it as is?
       - uses: percebus/github-actions-terraform/.github/actions/validate@main
         with:
           working-directory: ${{ inputs.working-directory }}
