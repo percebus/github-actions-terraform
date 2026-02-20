@@ -33,3 +33,4 @@ jobs:
     uses: ./.github/workflows/validate.yml
     with:
       working-directory: ./assets/terra/${{ matrix.project }}
+      TF_CLI_ARGS_init: -reconfigure -backend=false

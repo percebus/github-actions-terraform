@@ -19,6 +19,8 @@ jobs:
   default:
     name: terraform init
     runs-on: ubuntu-latest
+    env:
+      TF_CLI_ARGS_init: -reconfigure -backend=false
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
@@ -35,6 +37,8 @@ jobs:
           - "-input=false -backend=false"
 
     name: terraform init ${{ matrix.TF_CLI_ARGS_init }}
+    env:
+      TF_CLI_ARGS_init: -reconfigure -backend=false
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
@@ -48,7 +52,8 @@ jobs:
     strategy:
       matrix:
         TF_CLI_ARGS_init:
-          - "-backend=false"
+          - "-reconfigure -backend=false"
+          # - TODO something else
 
     env:
       # NOTE: case is important here

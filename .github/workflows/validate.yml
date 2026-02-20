@@ -9,6 +9,13 @@ on:
         required: false
         default: ./terra
 
+      TF_CLI_ARGS_init:
+        description: Additional options to pass to 'terraform init'
+        type: string
+        required: false
+        default: ""
+
+
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
       working-directory:
@@ -17,10 +24,18 @@ on:
         required: false
         default: ./terra
 
+      TF_CLI_ARGS_init:
+        description: Additional options to pass to 'terraform init'
+        type: string
+        required: false
+        default: ""
+
 jobs:
   validate:
     name: validate
     runs-on: ubuntu-latest
+    env:
+      TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         # with: TODO
