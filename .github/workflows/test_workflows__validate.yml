@@ -15,10 +15,15 @@ concurrency:
 permissions:
   contents: read
 
+env:
+  TF_CLI_ARGS_init: -reconfigure -backend=false
+
 jobs:
   default:
     name: terraform
     uses: ./.github/workflows/validate.yml
+    with:
+      TF_CLI_ARGS_init: ${{ env.TF_CLI_ARGS_init }}
 
   working-directory__matrix:
     needs: default
@@ -33,4 +38,4 @@ jobs:
     uses: ./.github/workflows/validate.yml
     with:
       working-directory: ./assets/terra/${{ matrix.project }}
-      TF_CLI_ARGS_init: -reconfigure -backend=false
+      TF_CLI_ARGS_init: ${{ env.TF_CLI_ARGS_init }}

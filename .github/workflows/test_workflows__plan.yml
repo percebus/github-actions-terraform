@@ -15,6 +15,9 @@ concurrency:
 permissions:
   contents: read
 
+env:
+  TF_CLI_ARGS_init: -reconfigure -backend=false
+
 jobs:
   setup:
     name: setup
@@ -43,5 +46,5 @@ jobs:
       # - ci-branch      has ci-branch ENVIRONMENT
       # - ci-branch_plan has ci-branch ENVIRONMENT as well
       environment: ${{ needs.setup.outputs.environment }}_plan
-      TF_CLI_ARGS_init: -reconfigure -backend=false
-      TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
+      TF_CLI_ARGS_init: ${{ env.TF_CLI_ARGS_init }}
+      TF_CLI_ARGS_plan: " -backend=false -var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"

@@ -31,7 +31,7 @@ runs:
       shell: bash
       working-directory: ${{ inputs.working-directory }}
       run: |
-        echo "TF_CLI_ARGS=${{ env.TF_CLI_ARGS }}'"
+        echo "TF_CLI_ARGS='${{ env.TF_CLI_ARGS }}'"
 
     - name: echo TF_CLI_ARGS_init
       shell: bash
