@@ -16,6 +16,7 @@ permissions:
   contents: read
 
 env:
+  TF_CLI_ARGS_init: -reconfigure -backend=false
   TF_VAR_STACK_ID: ${{ github.event.pull_request.number }}
   TF_VAR_REPOSITORY_NAME: ${{ github.event.repository.name }}
 
@@ -41,7 +42,6 @@ jobs:
     needs: setup
     environment: ${{ needs.setup.outputs.environment }}
     env:
-      TF_CLI_ARGS_init: -reconfigure -backend=false
       TF_CLI_ARGS_plan: "-var-file=./env/${{ needs.setup.outputs.environment }}.tfvars"
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
@@ -60,7 +60,6 @@ jobs:
       - setup
     environment: ${{ needs.setup.outputs.environment }}
     env:
-      TF_CLI_ARGS_init: -reconfigure -backend=false
       TF_CLI_ARGS_plan: "-var-file=./env/${{ needs.setup.outputs.environment }}.tfvars"
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main

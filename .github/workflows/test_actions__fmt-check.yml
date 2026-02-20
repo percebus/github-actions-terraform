@@ -15,12 +15,13 @@ concurrency:
 permissions:
   contents: read
 
+env:
+  TF_CLI_ARGS_init: -reconfigure -backend=false
+
 jobs:
   default:
     name: terraform fmt -check
     runs-on: ubuntu-latest
-    env:
-      TF_CLI_ARGS_init: -reconfigure -backend=false
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
@@ -37,8 +38,6 @@ jobs:
           - "-list=false"
 
     name: terraform fmt -check ${{ matrix.TF_CLI_ARGS_fmt }}
-    env:
-      TF_CLI_ARGS_init: -reconfigure -backend=false
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
@@ -58,7 +57,6 @@ jobs:
     env:
       # NOTE: case is important here
       TF_CLI_ARGS_fmt: ${{ matrix.TF_CLI_ARGS_fmt }}
-      TF_CLI_ARGS_init: -reconfigure -backend=false
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
@@ -76,7 +74,6 @@ jobs:
     name: terraform -chdir=${{ matrix.path }} fmt -check
     env:
       TF_DIR: ${{ matrix.path }}
-      TF_CLI_ARGS_init: -reconfigure -backend=false
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
