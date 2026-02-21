@@ -73,7 +73,9 @@ jobs:
 
   terraform_plan2:
     name: terraform
-    needs: terraform_apply_plan
+    needs:
+      - terraform_apply_plan
+      - setup
     uses: ./.github/workflows/plan.yml
     with:
       name: plan (post apply)
