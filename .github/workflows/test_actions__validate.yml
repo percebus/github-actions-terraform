@@ -38,6 +38,7 @@ jobs:
       matrix:
         project:
           - azurerm/some-rg
+          - azurerm/advanced-rg
 
     name: terraform -chdir=.../${{ matrix.project }} validate
     env:
@@ -49,7 +50,6 @@ jobs:
       - uses: ./.github/actions/init
         with:
           working-directory: ${{ env.TF_DIR }}
-          backend_override: true
 
       - uses: ./.github/actions/validate
         with:
