@@ -6,15 +6,8 @@ terraform {
     }
   }
 
-  # TODO
-  # backend "remote" {
-  #   hostname = "app.terraform.io"
-  #   organization = "JCystems"
-
-  #   workspaces {
-  #     prefix = "github-actions-terraform_default_"
-  #   }
-  # }
+  # Settings will be provided via -backend-config
+  backend "remote" {}
 
   required_version = "~> 1.14.3"
 }

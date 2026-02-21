@@ -21,6 +21,11 @@ on:
           - dev
           - prod
 
+concurrency:
+  # NOTE: Cancelling an apply might corrupt the state.
+  group: ${{ github.ref }}-default
+  cancel-in-progress: false
+
 permissions:
   contents: read
 
@@ -51,6 +56,7 @@ jobs:
     uses: ./.github/workflows/plan.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}_plan
+      backend_override: true
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
 
   terraform_apply_plan:
@@ -61,3 +67,4 @@ jobs:
     uses: ./.github/workflows/apply.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}
+      backend_override: true

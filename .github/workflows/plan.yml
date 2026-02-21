@@ -9,16 +9,28 @@ on:
         required: false
         default: plan
 
+      environment:
+        description: The environment to plan (e.g., dev, staging, prod)
+        type: string
+        required: true
+
       working-directory:
         description: The working directory for Terraform commands
         type: string
         required: false
         default: ./terra
 
-      environment:
-        description: The environment to plan (e.g., dev, staging, prod)
+      backend_override:
+        description: Rename backend_override.tf.example to backend_override.tf before running 'terraform init'
+        type: boolean
+        required: false
+        default: false
+
+      TF_CLI_ARGS_init:
+        description: Additional options to pass to 'terraform init'
         type: string
-        required: true
+        required: false
+        default: ""
 
       TF_CLI_ARGS_plan:
         description: Additional options to pass to 'terraform plan'
@@ -34,16 +46,28 @@ on:
         required: false
         default: plan
 
+      environment:
+        description: The environment to plan (e.g., dev, staging, prod)
+        type: string
+        required: true
+
       working-directory:
         description: The working directory for Terraform commands
         type: string
         required: false
         default: ./terra
 
-      environment:
-        description: The environment to plan (e.g., dev, staging, prod)
+      backend_override:
+        description: Rename backend_override.tf.example to backend_override.tf before running 'terraform init'
+        type: boolean
+        required: false
+        default: false
+
+      TF_CLI_ARGS_init:
+        description: Additional options to pass to 'terraform init'
         type: string
-        required: true
+        required: false
+        default: ""
 
       TF_CLI_ARGS_plan:
         description: Additional options to pass to 'terraform plan'
@@ -57,6 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
+      TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
       TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars ${{ inputs.TF_CLI_ARGS_plan }}"
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
@@ -67,7 +92,9 @@ jobs:
       - uses: percebus/github-actions-terraform/.github/actions/init@main
         with:
           working-directory: ${{ inputs.working-directory }}
+          backend_override: ${{ inputs.backend_override }}
 
+      # TODO? add a flag to skip validate in case of destroy? or just run it as is?
       - uses: percebus/github-actions-terraform/.github/actions/validate@main
         with:
           working-directory: ${{ inputs.working-directory }}

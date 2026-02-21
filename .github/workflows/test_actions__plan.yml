@@ -8,14 +8,15 @@ on:
       - main
 
 concurrency:
+  # NOTE: Cancelling an apply might corrupt the state.
   group: ${{ github.ref }}-${{ github.workflow }}
-  # NOTE: Cancelling a plan might corrupt the state.
   cancel-in-progress: false
 
 permissions:
   contents: read
 
 env:
+  TF_CLI_ARGS_init: -reconfigure
   TF_VAR_STACK_ID: ${{ github.event.pull_request.number }}
   TF_VAR_REPOSITORY_NAME: ${{ github.event.repository.name }}
 
@@ -30,4 +31,7 @@ jobs:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
+        with:
+          backend_override: true
+
       - uses: ./.github/actions/plan

@@ -17,6 +17,11 @@ inputs:
     required: false
     default: "-input=false"
 
+  backend_override:
+    description: Override TF_CLI_ARGS for 'terraform init'
+    required: false
+    default: "false"
+
 runs:
   using: composite
   steps:
@@ -31,7 +36,7 @@ runs:
       shell: bash
       working-directory: ${{ inputs.working-directory }}
       run: |
-        echo "TF_CLI_ARGS=${{ env.TF_CLI_ARGS }}'"
+        echo "TF_CLI_ARGS='${{ env.TF_CLI_ARGS }}'"
 
     - name: echo TF_CLI_ARGS_init
       shell: bash
@@ -40,6 +45,14 @@ runs:
         echo "TF_CLI_ARGS_init"
         echo "env: '${{ env.TF_CLI_ARGS_init }}'"
         echo "inputs: '${{ inputs.TF_CLI_ARGS_init }}'"
+
+    - name: backend_override.tf
+      if: ${{ inputs.backend_override == 'true' }}
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        cp backend_override.tf.example backend_override.tf
+        cat backend_override.tf
 
     - name: terraform init
       shell: bash
