@@ -31,6 +31,12 @@ on:
         required: false
         default: ""
 
+      workspace:
+        description: Switch to the workspace matching the environment before running 'terraform plan'
+        type: boolean
+        required: false
+        default: false
+
       TF_CLI_ARGS_apply:
         description: Additional options to pass to 'terraform apply'
         type: string
@@ -62,6 +68,12 @@ on:
         required: false
         default: ""
 
+      workspace:
+        description: Switch to the workspace matching the environment before running 'terraform plan'
+        type: boolean
+        required: false
+        default: false
+
       TF_CLI_ARGS_apply:
         description: Additional options to pass to 'terraform apply'
         type: string
@@ -88,6 +100,11 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           backend_override: ${{ inputs.backend_override }}
+
+      - name: terraform workspace select ${{ inputs.environment }}
+        if: ${{ inputs.workspace }}
+        working-directory: ${{ inputs.working-directory }}
+        run: terraform workspace select ${{ inputs.environment }}
 
       # TODO move to common
       - uses: actions/download-artifact@v5

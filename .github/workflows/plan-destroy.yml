@@ -31,6 +31,12 @@ on:
         required: false
         default: ""
 
+      workspace:
+        description: Switch to the workspace matching the environment before running 'terraform plan'
+        type: boolean
+        required: false
+        default: false
+
       TF_CLI_ARGS_plan:
         description: Additional options to pass to 'terraform plan'
         type: string
@@ -62,6 +68,12 @@ on:
         required: false
         default: ""
 
+      workspace:
+        description: Switch to the workspace matching the environment before running 'terraform plan'
+        type: boolean
+        required: false
+        default: false
+
       TF_CLI_ARGS_plan:
         description: Additional options to pass to 'terraform plan'
         type: string
@@ -87,6 +99,11 @@ jobs:
       - uses: percebus/github-actions-terraform/.github/actions/init@main
         with:
           working-directory: ${{ inputs.working-directory }}
+
+      - name: terraform workspace select ${{ inputs.environment }}
+        if: ${{ inputs.workspace }}
+        working-directory: ${{ inputs.working-directory }}
+        run: terraform workspace select ${{ inputs.environment }}
 
       # TODO? add a flag to skip validate in case of destroy? or just run it as is?
       - uses: percebus/github-actions-terraform/.github/actions/validate@main
