@@ -2,6 +2,11 @@ name: terraform plan
 
 on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
+    secrets:
+      TF_API_TOKEN:
+        description: Terraform Cloud API token
+        required: false
+
     inputs:
       name:
         description: The name of the step
@@ -88,6 +93,8 @@ jobs:
         # with: TODO
 
       - uses: percebus/github-actions-terraform/.github/actions/setup@main
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - uses: percebus/github-actions-terraform/.github/actions/init@main
         with:

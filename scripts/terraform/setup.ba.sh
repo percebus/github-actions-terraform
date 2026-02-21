@@ -3,6 +3,7 @@
 set -e
 set -x
 
+# SRC: http://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
 sudo apt-get update
 
 sudo apt-get install -y gnupg
