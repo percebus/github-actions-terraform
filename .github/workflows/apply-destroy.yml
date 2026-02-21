@@ -25,12 +25,6 @@ on:
         required: false
         default: ""
 
-      workspace:
-        description: Switch to the workspace matching the environment before running 'terraform plan'
-        type: boolean
-        required: false
-        default: false
-
       TF_CLI_ARGS_apply:
         description: Additional options to pass to 'terraform apply'
         type: string
@@ -56,12 +50,6 @@ on:
         required: false
         default: ""
 
-      workspace:
-        description: Switch to the workspace matching the environment before running 'terraform plan'
-        type: boolean
-        required: false
-        default: false
-
       TF_CLI_ARGS_apply:
         description: Additional options to pass to 'terraform apply'
         type: string
@@ -74,7 +62,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
-      TF_WOKSPACE: ${{ vars.ENVIRONMENT }}
+      TF_WORKSPACE: ${{ vars.ENVIRONMENT }}
       TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
       TF_CLI_ARGS_apply: ${{ inputs.TF_CLI_ARGS_apply }}
     steps:

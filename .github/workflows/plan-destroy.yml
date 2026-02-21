@@ -31,12 +31,6 @@ on:
         required: false
         default: ""
 
-      workspace:
-        description: Switch to the workspace matching the environment before running 'terraform plan'
-        type: boolean
-        required: false
-        default: false
-
       TF_CLI_ARGS_plan:
         description: Additional options to pass to 'terraform plan'
         type: string
@@ -49,7 +43,7 @@ on:
         description: The name of the step
         type: string
         required: false
-        default: plan
+        default: plan -destroy
 
       working-directory:
         description: The working directory for Terraform commands
@@ -67,12 +61,6 @@ on:
         type: string
         required: false
         default: ""
-
-      workspace:
-        description: Switch to the workspace matching the environment before running 'terraform plan'
-        type: boolean
-        required: false
-        default: false
 
       TF_CLI_ARGS_plan:
         description: Additional options to pass to 'terraform plan'

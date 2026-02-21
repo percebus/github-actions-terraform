@@ -31,12 +31,6 @@ on:
         required: false
         default: ""
 
-      workspace:
-        description: Switch to the workspace matching the environment before running 'terraform plan'
-        type: boolean
-        required: false
-        default: false
-
       TF_CLI_ARGS_apply:
         description: Additional options to pass to 'terraform apply'
         type: string
@@ -67,12 +61,6 @@ on:
         type: string
         required: false
         default: ""
-
-      workspace:
-        description: Switch to the workspace matching the environment before running 'terraform plan'
-        type: boolean
-        required: false
-        default: false
 
       TF_CLI_ARGS_apply:
         description: Additional options to pass to 'terraform apply'
