@@ -74,7 +74,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
-      TF_WOKSPACE: ${{ inputs.environment }}
+      TF_WOKSPACE: ${{ vars.ENVIRONMENT }}
       TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
       TF_CLI_ARGS_apply: ${{ inputs.TF_CLI_ARGS_apply }}
     steps:
@@ -84,11 +84,6 @@ jobs:
       - uses: percebus/github-actions-terraform/.github/actions/setup@main
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-      - name: terraform workspace select ${{ inputs.environment }}
-        if: ${{ inputs.workspace }}
-        working-directory: ${{ inputs.working-directory }}
-        run: terraform workspace select ${{ inputs.environment }} || terraform workspace new ${{ inputs.environment }}
 
       - uses: percebus/github-actions-terraform/.github/actions/init@main
         with:
