@@ -81,6 +81,7 @@ jobs:
       - setup
     uses: ./.github/workflows/plan-destroy.yml
     with:
+      name: plan (post destroy)
       environment: ${{ needs.setup.outputs.environment }}_plan
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}

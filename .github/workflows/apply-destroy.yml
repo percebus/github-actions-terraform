@@ -70,7 +70,7 @@ on:
 
 jobs:
   apply:
-    name: apply
+    name: apply -destroy
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
