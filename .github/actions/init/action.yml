@@ -50,7 +50,7 @@ runs:
       if: ${{ inputs.backend_override == 'true' }}
       shell: bash
       working-directory: ${{ inputs.working-directory }}
-      run: echo "terraform { backend "local" {} }" > backend_override.tf"
+      run: echo 'terraform { backend "local" {} }' > backend_override.tf
 
     - name: terraform init
       shell: bash
