@@ -10,6 +10,15 @@ GitHub re-usable actions and/or workflows for terraform
 
 ## Github
 
+| action                                     | workflow                                     | workflow destroy                                     |
+| ------------------------------------------ | -------------------------------------------- | ---------------------------------------------------- |
+| [setup](./.github/actions/setup)           |                                              |                                                      |
+| [`init`](./.github/actions/init)           |                                              |                                                      |
+| [`fmt-check`](./.github/actions/fmt-check) |                                              |                                                      |
+| [`validate`](./.github/actions/validate)   | [`validate`](.github/workflows/validate.yml) |                                                      |
+| [`plan`](./.github/actions/plan)           | [`plan`](.github/workflows/plan.yml)         | [`plan-destroy`](.github/workflows/plan-destroy.yml) |
+| [`apply`](./.github/actions/apply)         | [`apply`](.github/workflows/apply.yml)       | [`apply-destroy`](.github/workflows/destroy.yml)     |
+
 ### Actions
 
 | Name                                       | Test                                                                                                                                                                                                                                          |
