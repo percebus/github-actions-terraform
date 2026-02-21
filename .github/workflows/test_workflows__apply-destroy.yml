@@ -8,8 +8,9 @@ on:
   #     - main
 
 concurrency:
-  group: ${{ github.ref }}
-  cancel-in-progress: true
+  # NOTE: Cancelling an apply might corrupt the state.
+  group: ${{ github.ref }}-default
+  cancel-in-progress: false
 
 permissions:
   contents: read

@@ -1,15 +1,25 @@
-name: "Test worfklows/plan-destroy"
+name: Un-Deployment
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
-  pull_request:
-  # push:
-  #   branches:
-  #     - main
+    inputs:
+      environment:
+        description: Target environment
+        required: true
+        type: choice
+        options:
+          # ci
+          - ci-main
+          - ci-branch
+          #
+          # requires approval
+          - dev
+          - prod
 
 concurrency:
-  group: ${{ github.ref }}-${{ github.workflow }}
-  cancel-in-progress: true
+  # NOTE: Cancelling an apply might corrupt the state.
+  group: ${{ github.ref }}-default
+  cancel-in-progress: false
 
 permissions:
   contents: read
@@ -19,14 +29,16 @@ jobs:
     name: setup
     runs-on: ubuntu-latest
     steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+
+      # TODO move to github-actions-common or -git
       - name: GITHUB_OUTPUT
         id: set_variables
         run: |
+          echo "STACK_ID=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_OUTPUT
           if [[ "${{ github.ref_name }}" == "main" ]]; then
-            echo "STACK_ID=main" >> $GITHUB_OUTPUT
-            echo "environment=ci-main" >> $GITHUB_OUTPUT
+            echo "environment=${{ inputs.environment || 'ci-main' }}" >> $GITHUB_OUTPUT
           else
-            echo "STACK_ID=pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
             echo "environment=ci-branch" >> $GITHUB_OUTPUT
           fi
     outputs:
@@ -36,28 +48,33 @@ jobs:
   terraform_plan:
     name: terraform
     needs: setup
-    uses: ./.github/workflows/plan.yml
+    uses: ./.github/workflows/plan-destroy.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}_plan
-      TF_CLI_ARGS_init: -reconfigure
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
   terraform_apply_plan:
     name: terraform
     needs:
       - terraform_plan
       - setup
-    uses: ./.github/workflows/apply.yml
+    uses: ./.github/workflows/apply-destroy.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
-  # NEED TO UPLOAD TFSTATE
-
-  terraform_plan-destroy:
+  terraform_plan2:
     name: terraform
     needs:
       - terraform_apply_plan
       - setup
     uses: ./.github/workflows/plan-destroy.yml
     with:
+      name: plan (post apply)
       environment: ${{ needs.setup.outputs.environment }}_plan
+      TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
