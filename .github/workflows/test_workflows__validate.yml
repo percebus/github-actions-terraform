@@ -53,5 +53,4 @@ jobs:
     uses: ./.github/workflows/validate.yml
     with:
       working-directory: ./assets/terra/${{ matrix.project }}
-      backend_override: true
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
