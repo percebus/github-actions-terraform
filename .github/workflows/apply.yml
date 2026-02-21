@@ -74,6 +74,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
+      TF_WORKSPACE: ${{ vars.ENVIRONMENT }}
       TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
       TF_CLI_ARGS_apply: ${{ inputs.TF_CLI_ARGS_apply }}
     steps:

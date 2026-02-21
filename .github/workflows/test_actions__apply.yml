@@ -76,8 +76,8 @@ jobs:
 
       - uses: ./.github/actions/plan
         with:
-          TF_CLI_ARGS_plan: "-destroy -out=dist/destroy.tfplan"
+          TF_CLI_ARGS_plan: -destroy -out=dist/destroy.tfplan
 
       - uses: ./.github/actions/apply
         with:
-          TF_CLI_ARGS_apply: "-destroy dist/destroy.tfplan"
+          TF_CLI_ARGS_apply: -destroy dist/destroy.tfplan

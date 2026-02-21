@@ -43,7 +43,7 @@ on:
         description: The name of the step
         type: string
         required: false
-        default: plan
+        default: plan -destroy
 
       working-directory:
         description: The working directory for Terraform commands
@@ -74,6 +74,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
+      TF_WORKSPACE: ${{ vars.ENVIRONMENT }}
       TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
       TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars ${{ inputs.TF_CLI_ARGS_plan }}"
     steps:
