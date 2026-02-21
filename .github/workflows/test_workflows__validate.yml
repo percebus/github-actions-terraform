@@ -16,7 +16,7 @@ permissions:
   contents: read
 
 env:
-  TF_CLI_ARGS_init: -reconfigure -backend=false -backend=false
+  TF_CLI_ARGS_init: -reconfigure
 
 jobs:
   setup:
@@ -26,7 +26,7 @@ jobs:
       - name: GITHUB_OUTPUT
         id: set_variables
         run: |
-          echo "TF_CLI_ARGS_init=-reconfigure -backend=false" >> $GITHUB_OUTPUT
+          echo "TF_CLI_ARGS_init=-reconfigure" >> $GITHUB_OUTPUT
     outputs:
       TF_CLI_ARGS_init: ${{ steps.set_variables.outputs.TF_CLI_ARGS_init }}
 

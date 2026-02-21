@@ -23,7 +23,7 @@ jobs:
       - name: GITHUB_OUTPUT
         id: set_variables
         run: |
-          echo "TF_CLI_ARGS_init=-reconfigure -backend=false" >> $GITHUB_OUTPUT
+          echo "TF_CLI_ARGS_init=-reconfigure" >> $GITHUB_OUTPUT
           if [[ "${{ github.ref_name }}" == "main" ]]; then
             echo "STACK_ID=main" >> $GITHUB_OUTPUT
             echo "environment=ci-main" >> $GITHUB_OUTPUT
