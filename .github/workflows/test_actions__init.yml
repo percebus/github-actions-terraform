@@ -16,7 +16,7 @@ permissions:
   contents: read
 
 env:
-  TF_CLI_ARGS_init: -reconfigure -backend=false
+  TF_CLI_ARGS_init: -reconfigure -backend=false -backend=false
 
 jobs:
   default:
@@ -41,7 +41,7 @@ jobs:
 
     name: terraform init ${{ matrix.TF_CLI_ARGS_init }}
     env:
-      TF_CLI_ARGS_init: -reconfigure -backend=false
+      TF_CLI_ARGS_init: -reconfigure -backend=false -backend=false
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
