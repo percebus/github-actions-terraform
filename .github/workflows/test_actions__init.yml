@@ -88,4 +88,3 @@ jobs:
       - uses: ./.github/actions/init
         with:
           working-directory: ./assets/terra/${{ matrix.project }}
-          backend_override: true

@@ -9,6 +9,12 @@ on:
         required: false
         default: ./terra
 
+      backend_override:
+        description: Rename backend_override.tf.example to backend_override.tf before running 'terraform init'
+        type: boolean
+        required: false
+        default: false
+
       TF_CLI_ARGS_init:
         description: Additional options to pass to 'terraform init'
         type: string
@@ -22,6 +28,12 @@ on:
         type: string
         required: false
         default: ./terra
+
+      backend_override:
+        description: Rename backend_override.tf.example to backend_override.tf before running 'terraform init'
+        type: boolean
+        required: false
+        default: false
 
       TF_CLI_ARGS_init:
         description: Additional options to pass to 'terraform init'
@@ -44,6 +56,7 @@ jobs:
       - uses: percebus/github-actions-terraform/.github/actions/init@main
         with:
           working-directory: ${{ inputs.working-directory }}
+          backend_override: ${{ inputs.backend_override }}
 
       - uses: percebus/github-actions-terraform/.github/actions/validate@main
         with:

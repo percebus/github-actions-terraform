@@ -9,16 +9,16 @@ on:
         required: false
         default: plan
 
+      environment:
+        description: The environment to plan (e.g., dev, staging, prod)
+        type: string
+        required: true
+
       working-directory:
         description: The working directory for Terraform commands
         type: string
         required: false
         default: ./terra
-
-      environment:
-        description: The environment to plan (e.g., dev, staging, prod)
-        type: string
-        required: true
 
       backend_override:
         description: Rename backend_override.tf.example to backend_override.tf before running 'terraform init'
@@ -46,16 +46,16 @@ on:
         required: false
         default: plan
 
+      environment:
+        description: The environment to plan (e.g., dev, staging, prod)
+        type: string
+        required: true
+
       working-directory:
         description: The working directory for Terraform commands
         type: string
         required: false
         default: ./terra
-
-      environment:
-        description: The environment to plan (e.g., dev, staging, prod)
-        type: string
-        required: true
 
       backend_override:
         description: Rename backend_override.tf.example to backend_override.tf before running 'terraform init'
