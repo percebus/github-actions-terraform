@@ -99,5 +99,3 @@ jobs:
       - uses: percebus/github-actions-terraform/.github/actions/apply@main
         with:
           working-directory: ${{ inputs.working-directory }}
-
-      # TODO add post-apply plan to detect drift and/or issues with the apply

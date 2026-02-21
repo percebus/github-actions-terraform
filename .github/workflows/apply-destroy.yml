@@ -19,6 +19,12 @@ on:
         type: string
         required: true
 
+      backend_override:
+        description: Rename backend_override.tf.example to backend_override.tf before running 'terraform init'
+        type: boolean
+        required: false
+        default: false
+
       TF_CLI_ARGS_init:
         description: Additional options to pass to 'terraform init'
         type: string
@@ -44,6 +50,12 @@ on:
         type: string
         required: true
 
+      backend_override:
+        description: Rename backend_override.tf.example to backend_override.tf before running 'terraform init'
+        type: boolean
+        required: false
+        default: false
+
       TF_CLI_ARGS_init:
         description: Additional options to pass to 'terraform init'
         type: string
@@ -58,7 +70,7 @@ on:
 
 jobs:
   apply:
-    name: apply
+    name: apply -destroy
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
@@ -76,6 +88,7 @@ jobs:
       - uses: percebus/github-actions-terraform/.github/actions/init@main
         with:
           working-directory: ${{ inputs.working-directory }}
+          backend_override: ${{ inputs.backend_override }}
 
       # TODO move to common
       - uses: actions/download-artifact@v5
@@ -87,5 +100,3 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           TF_CLI_ARGS_apply: -input=false dist/destroy.tfplan
-
-      # TODO add post-apply plan to detect drift and/or issues with the apply
