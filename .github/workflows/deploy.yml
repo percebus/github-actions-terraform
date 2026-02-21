@@ -56,8 +56,9 @@ jobs:
     uses: ./.github/workflows/plan.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}_plan
-      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
   terraform_apply_plan:
     name: terraform
@@ -67,4 +68,5 @@ jobs:
     uses: ./.github/workflows/apply.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}
+    secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
