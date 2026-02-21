@@ -41,7 +41,6 @@ jobs:
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
-
   terraform_apply_plan:
     name: terraform
     needs:
