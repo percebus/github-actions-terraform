@@ -86,6 +86,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
+      TF_WORKSPACE: ${{ inputs.environment }}
       TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
       TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars ${{ inputs.TF_CLI_ARGS_plan }}"
     steps:
@@ -103,7 +104,7 @@ jobs:
       - name: terraform workspace select ${{ inputs.environment }}
         if: ${{ inputs.workspace }}
         working-directory: ${{ inputs.working-directory }}
-        run: terraform workspace select ${{ inputs.environment }}
+        run: terraform workspace select ${{ inputs.environment }} || terraform workspace new ${{ inputs.environment }}
 
       # TODO? add a flag to skip validate in case of destroy? or just run it as is?
       - uses: percebus/github-actions-terraform/.github/actions/validate@main
