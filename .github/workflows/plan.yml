@@ -109,15 +109,15 @@ jobs:
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-      - uses: percebus/github-actions-terraform/.github/actions/init@main
-        with:
-          working-directory: ${{ inputs.working-directory }}
-          backend_override: ${{ inputs.backend_override }}
-
       - name: terraform workspace select ${{ inputs.environment }}
         if: ${{ inputs.workspace }}
         working-directory: ${{ inputs.working-directory }}
         run: terraform workspace select ${{ inputs.environment }} || terraform workspace new ${{ inputs.environment }}
+
+      - uses: percebus/github-actions-terraform/.github/actions/init@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          backend_override: ${{ inputs.backend_override }}
 
       # TODO? add a flag to skip validate in case of destroy? or just run it as is?
       - uses: percebus/github-actions-terraform/.github/actions/validate@main

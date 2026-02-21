@@ -85,14 +85,14 @@ jobs:
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-      - uses: percebus/github-actions-terraform/.github/actions/init@main
-        with:
-          working-directory: ${{ inputs.working-directory }}
-
       - name: terraform workspace select ${{ inputs.environment }}
         if: ${{ inputs.workspace }}
         working-directory: ${{ inputs.working-directory }}
         run: terraform workspace select ${{ inputs.environment }} || terraform workspace new ${{ inputs.environment }}
+
+      - uses: percebus/github-actions-terraform/.github/actions/init@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
 
       # TODO move to common
       - uses: actions/download-artifact@v5
