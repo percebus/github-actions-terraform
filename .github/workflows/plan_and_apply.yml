@@ -82,7 +82,7 @@ on:
 
 jobs:
   terraform_plan:
-    name: terraform
+    name: update
     uses: percebus/github-actions-terraform/.github/workflows/plan.yml@main
     with:
       environment: ${{ inputs.environment }}_plan
@@ -94,7 +94,7 @@ jobs:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
   terraform_apply_plan:
-    name: terraform
+    name: update
     needs: terraform_plan
     uses: percebus/github-actions-terraform/.github/workflows/apply.yml@main
     with:
@@ -107,7 +107,7 @@ jobs:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
   terraform_plan2:
-    name: terraform
+    name: update
     needs: terraform_apply_plan
     uses: percebus/github-actions-terraform/.github/workflows/plan.yml@main
     with:

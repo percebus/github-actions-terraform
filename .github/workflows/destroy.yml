@@ -47,7 +47,7 @@ jobs:
       environment: ${{ steps.set_variables.outputs.environment }}
 
   terraform_plan-destroy_and_apply:
-    name: destroy
+    name: terraform
     needs: setup
     uses: ./.github/workflows/plan-destroy_and_apply.yml
     with:

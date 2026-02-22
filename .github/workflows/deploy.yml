@@ -51,7 +51,7 @@ jobs:
       environment: ${{ steps.set_variables.outputs.environment }}
 
   terraform_plan_and_apply:
-    name: update
+    name: terraform
     needs: setup
     uses: ./.github/workflows/plan_and_apply.yml
     with:
