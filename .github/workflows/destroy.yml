@@ -51,7 +51,7 @@ jobs:
     needs: setup
     uses: ./.github/workflows/plan-destroy_and_apply.yml
     with:
-      environment: ${{ needs.setup.outputs.environment }}_plan
+      environment: ${{ needs.setup.outputs.environment }}
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
