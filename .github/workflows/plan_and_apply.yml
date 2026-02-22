@@ -83,7 +83,6 @@ on:
 jobs:
   terraform_plan:
     name: terraform
-    needs: setup
     uses: https://github.com/percebus/github-actions-terraform/.github/workflows/plan.yml@main
     with:
       environment: ${{ inputs.environment }}_plan
