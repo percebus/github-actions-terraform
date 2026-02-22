@@ -45,8 +45,8 @@ GitHub re-usable actions and/or workflows for terraform
 
 ### Environments
 
-| plan                                                                                                           | actual                                                                                               | description                                             |
-| -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| plan                                                                                              | actual                                                                                  | description                                             |
+| ------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------- |
 | [ci-branch_plan](https://github.com/percebus/github-actions-terraform/deployments/ci-branch_plan) | [ci-branch](https://github.com/percebus/github-actions-terraform/deployments/ci-branch) | [C]ontinuous [I]ntegration for branches other than main |
 | [ci-main_plan](https://github.com/percebus/github-actions-terraform/deployments/ci-main_plan)     | [ci-main](https://github.com/percebus/github-actions-terraform/deployments/ci-main)     | [C]ontinuous [I]ntegration for the `main` branch        |
 | [dev_plan](https://github.com/percebus/github-actions-terraform/deployments/dev_plan)             | [dev](https://github.com/percebus/github-actions-terraform/deployments/dev)             | [Dev]elopment environment                               |
