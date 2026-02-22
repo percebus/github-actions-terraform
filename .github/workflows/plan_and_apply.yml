@@ -1,0 +1,122 @@
+name: terraform plan + apply
+
+on:
+  workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
+    secrets:
+      TF_API_TOKEN:
+        description: Terraform Cloud API token
+        required: false
+
+    inputs:
+      environment:
+        description: Target environment
+        required: true
+        type: string
+
+      working-directory:
+        description: The working directory for Terraform commands
+        type: string
+        required: false
+        default: ./terra
+
+      backend_override:
+        description: Rename backend_override.tf.example to backend_override.tf before running 'terraform init'
+        type: boolean
+        required: false
+        default: false
+
+      TF_CLI_ARGS_init:
+        description: Additional options to pass to 'terraform init'
+        type: string
+        required: false
+        default: ""
+
+      TF_CLI_ARGS_plan:
+        description: Additional options to pass to 'terraform plan'
+        type: string
+        required: false
+        default: ""
+
+      TF_CLI_ARGS_apply:
+        description: Additional options to pass to 'terraform plan'
+        type: string
+        required: false
+        default: ""
+
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+    inputs:
+      environment:
+        description: Target environment
+        required: true
+        type: string
+
+      working-directory:
+        description: The working directory for Terraform commands
+        type: string
+        required: false
+        default: ./terra
+
+      backend_override:
+        description: Rename backend_override.tf.example to backend_override.tf before running 'terraform init'
+        type: boolean
+        required: false
+        default: false
+
+      TF_CLI_ARGS_init:
+        description: Additional options to pass to 'terraform init'
+        type: string
+        required: false
+        default: ""
+
+      TF_CLI_ARGS_plan:
+        description: Additional options to pass to 'terraform plan'
+        type: string
+        required: false
+        default: ""
+
+      TF_CLI_ARGS_apply:
+        description: Additional options to pass to 'terraform plan'
+        type: string
+        required: false
+        default: ""
+
+jobs:
+  terraform_plan:
+    name: terraform
+    needs: setup
+    uses: https://github.com/percebus/github-actions-terraform/.github/workflows/plan.yml@main
+    with:
+      environment: ${{ inputs.environment }}_plan
+      working-directory: ${{ inputs.working-directory }}
+      backend_override: ${{ inputs.backend_override }}
+      TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
+      TF_CLI_ARGS_plan: ${{ inputs.TF_CLI_ARGS_plan}}
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+
+  terraform_apply_plan:
+    name: terraform
+    needs: terraform_plan
+    uses: https://github.com/percebus/github-actions-terraform/.github/workflows/apply.yml@main
+    with:
+      environment: ${{ inputs.environment }}
+      working-directory: ${{ inputs.working-directory }}
+      backend_override: ${{ inputs.backend_override }}
+      TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
+      TF_CLI_ARGS_apply: ${{ inputs.TF_CLI_ARGS_apply }}
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+
+  terraform_plan2:
+    name: terraform
+    needs: terraform_apply_plan
+    uses: https://github.com/percebus/github-actions-terraform/.github/workflows/plan.yml@main
+    with:
+      name: plan (post apply)
+      environment: ${{ inputs.environment }}_plan
+      working-directory: ${{ inputs.working-directory }}
+      backend_override: ${{ inputs.backend_override }}
+      TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
+      TF_CLI_ARGS_plan: ${{ inputs.TF_CLI_ARGS_plan }}
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}

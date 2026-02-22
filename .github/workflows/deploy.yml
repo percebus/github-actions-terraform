@@ -50,35 +50,11 @@ jobs:
       STACK_ID: ${{ steps.set_variables.outputs.STACK_ID }}
       environment: ${{ steps.set_variables.outputs.environment }}
 
-  terraform_plan:
-    name: terraform
+  terraform_plan_and_apply:
+    name: update
     needs: setup
-    uses: ./.github/workflows/plan.yml
+    uses: ./.github/workflows/plan_and_apply.yml
     with:
-      environment: ${{ needs.setup.outputs.environment }}_plan
-      TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
-    secrets:
-      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-
-  terraform_apply_plan:
-    name: terraform
-    needs:
-      - terraform_plan
-      - setup
-    uses: ./.github/workflows/apply.yml
-    with:
-      environment: ${{ needs.setup.outputs.environment }}
-    secrets:
-      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-
-  terraform_plan2:
-    name: terraform
-    needs:
-      - terraform_apply_plan
-      - setup
-    uses: ./.github/workflows/plan.yml
-    with:
-      name: plan (post apply)
       environment: ${{ needs.setup.outputs.environment }}_plan
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
     secrets:
