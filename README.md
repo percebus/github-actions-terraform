@@ -10,14 +10,15 @@ GitHub re-usable actions and/or workflows for terraform
 
 ## Github
 
-| action                                     | workflow                                     | workflow destroy                                     |
-| ------------------------------------------ | -------------------------------------------- | ---------------------------------------------------- |
-| [setup](./.github/actions/setup)           |                                              |                                                      |
-| [`init`](./.github/actions/init)           |                                              |                                                      |
-| [`fmt-check`](./.github/actions/fmt-check) |                                              |                                                      |
-| [`validate`](./.github/actions/validate)   | [`validate`](.github/workflows/validate.yml) |                                                      |
-| [`plan`](./.github/actions/plan)           | [`plan`](.github/workflows/plan.yml)         | [`plan-destroy`](.github/workflows/plan-destroy.yml) |
-| [`apply`](./.github/actions/apply)         | [`apply`](.github/workflows/apply.yml)       | [`apply-destroy`](.github/workflows/destroy.yml)     |
+| action                                     | workflow                                                 | workflow destroy                                                         |
+| ------------------------------------------ | -------------------------------------------------------- | ------------------------------------------------------------------------ |
+| [setup](./.github/actions/setup)           |                                                          |                                                                          |
+| [`init`](./.github/actions/init)           |                                                          |                                                                          |
+| [`fmt-check`](./.github/actions/fmt-check) |                                                          |                                                                          |
+| [`validate`](./.github/actions/validate)   | [`validate`](.github/workflows/validate.yml)             |                                                                          |
+| [`plan`](./.github/actions/plan)           | [`plan`](.github/workflows/plan.yml)                     | [`plan-destroy`](.github/workflows/plan-destroy.yml)                     |
+| [`apply`](./.github/actions/apply)         | [`apply`](.github/workflows/apply.yml)                   | [`apply-destroy`](.github/workflows/destroy.yml)                         |
+|                                            | [`plan_and_apply`](.github/workflows/plan_and_apply.yml) | [`plan-destroy_and_apply`](.github/workflows/plan-destroy_and_apply.yml) |
 
 ### Actions
 
@@ -32,10 +33,12 @@ GitHub re-usable actions and/or workflows for terraform
 
 ### Workflows
 
-| Name                                                 | Test                                                                                                                                                                                                                                                                               |
-| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`validate`](.github/workflows/validate.yml)         | [![Test worfklows/validate](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__validate.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__validate.yml)                                   |
-| [`plan`](.github/workflows/plan.yml)                 | [![Test worfklows/plan](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__plan.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__plan.yml)                                               |
-| [`apply`](.github/workflows/apply.yml)               | [![Test worfklows/apply](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__apply.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__apply.yml)                                            |
-| [`plan-destroy`](.github/workflows/plan-destroy.yml) | [![Test worfklows/plan-destroy](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__plan-destroy.yml/badge.svg?event=pull_request)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__plan-destroy.yml)    |
-| [`apply-destroy`](.github/workflows/destroy.yml)     | [![Test worfklows/apply-destroy](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__apply-destroy.yml/badge.svg?event=pull_request)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__apply-destroy.yml) |
+| Name                                                                     | Test                                                                                                                                                                                                                                                                               |
+| ------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`validate`](.github/workflows/validate.yml)                             | [![Test worfklows/validate](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__validate.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__validate.yml)                                   |
+| [`plan`](.github/workflows/plan.yml)                                     | [![Test worfklows/plan](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__plan.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__plan.yml)                                               |
+| [`apply`](.github/workflows/apply.yml)                                   | [![Test worfklows/apply](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__apply.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__apply.yml)                                            |
+| [`plan_and_apply`](.github/workflows/plan_and_apply.yml)                 | [![Test worfklows/plan_and_apply](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__plan_and_apply.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__plan_and_apply.yml)                 |
+| [`plan-destroy`](.github/workflows/plan-destroy.yml)                     | [![Deployment](https://github.com/percebus/github-actions-terraform/actions/workflows/deploy.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/deploy.yml)                                                                                    |
+| [`apply-destroy`](.github/workflows/destroy.yml)                         | [![Test worfklows/apply-destroy](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__apply-destroy.yml/badge.svg?event=pull_request)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__apply-destroy.yml) |
+| [`plan-destroy_and_apply`](.github/workflows/plan-destroy_and_apply.yml) | [![Un-Deployment](https://github.com/percebus/github-actions-terraform/actions/workflows/destroy.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/destroy.yml)                                                                               |
