@@ -83,7 +83,7 @@ on:
 jobs:
   terraform_plan:
     name: terraform
-    uses: https://github.com/percebus/github-actions-terraform/.github/workflows/plan.yml@main
+    uses: percebus/github-actions-terraform/.github/workflows/plan.yml@main
     with:
       environment: ${{ inputs.environment }}_plan
       working-directory: ${{ inputs.working-directory }}
@@ -96,7 +96,7 @@ jobs:
   terraform_apply_plan:
     name: terraform
     needs: terraform_plan
-    uses: https://github.com/percebus/github-actions-terraform/.github/workflows/apply.yml@main
+    uses: percebus/github-actions-terraform/.github/workflows/apply.yml@main
     with:
       environment: ${{ inputs.environment }}
       working-directory: ${{ inputs.working-directory }}
@@ -109,7 +109,7 @@ jobs:
   terraform_plan2:
     name: terraform
     needs: terraform_apply_plan
-    uses: https://github.com/percebus/github-actions-terraform/.github/workflows/plan.yml@main
+    uses: percebus/github-actions-terraform/.github/workflows/plan.yml@main
     with:
       name: plan (post apply)
       environment: ${{ inputs.environment }}_plan
