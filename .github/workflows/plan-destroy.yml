@@ -92,7 +92,7 @@ jobs:
           working-directory: ${{ inputs.working-directory }}
           header: 🗑️ `terraform plan -destroy`
           tfplan_path: dist/destroy.tfplan
-          TF_CLI_ARGS_plan: "-destroy"
+          TF_CLI_ARGS_plan: -destroy
 
       # TODO move to common
       - uses: actions/upload-artifact@v4
