@@ -54,11 +54,11 @@ jobs:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         # with: TODO
 
+      - uses: percebus/github-actions-terraform/.github/actions/setup@main
+
       - uses: percebus/github-actions-terraform/.github/actions/fmt-check@main
         with:
           working-directory: ${{ inputs.working-directory }}
-
-      - uses: percebus/github-actions-terraform/.github/actions/setup@main
 
       - uses: percebus/github-actions-terraform/.github/actions/init@main
         with:
