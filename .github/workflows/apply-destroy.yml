@@ -35,6 +35,12 @@ on:
         required: false
         default: ""
 
+      TF_CLI_ARGS_plan:
+        description: Additional options to pass to 'terraform plan'
+        type: string
+        required: false
+        default: ""
+
       TF_CLI_ARGS_apply:
         description: Additional options to pass to 'terraform apply'
         type: string

@@ -41,6 +41,12 @@ on:
         required: false
         default: ""
 
+      validate:
+        description: Whether to run 'terraform validate' before planning
+        type: boolean
+        required: false
+        default: true
+
       TF_CLI_ARGS_plan:
         description: Additional options to pass to 'terraform plan'
         type: string
@@ -75,8 +81,8 @@ jobs:
           working-directory: ${{ inputs.working-directory }}
           backend_override: ${{ inputs.backend_override }}
 
-      # TODO? add a flag to skip validate in case of destroy? or just run it as is?
       - uses: percebus/github-actions-terraform/.github/actions/validate@main
+        if: ${{ inputs.validate }}
         with:
           working-directory: ${{ inputs.working-directory }}
 
@@ -85,13 +91,8 @@ jobs:
           github_token: ${{ github.token }}
           working-directory: ${{ inputs.working-directory }}
           header: 🗑️ `terraform plan -destroy`
-
-          # TODO
-          # tfplan_path: dist/destroy.tfplan
-          # TF_CLI_ARGS_plan: "-destroy"
-
-          # XXX
-          TF_CLI_ARGS_plan: "-destroy -out=dist/destroy.tfplan"
+          tfplan_path: dist/destroy.tfplan
+          TF_CLI_ARGS_plan: "-destroy"
 
       # TODO move to common
       - uses: actions/upload-artifact@v4

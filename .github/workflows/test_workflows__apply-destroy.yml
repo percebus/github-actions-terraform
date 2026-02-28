@@ -75,15 +75,3 @@ jobs:
       environment: ${{ needs.setup.outputs.environment }}
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-
-  terraform_plan-destroy2:
-    name: terraform
-    needs:
-      - terraform_apply-destroy
-      - setup
-    uses: ./.github/workflows/plan-destroy.yml
-    with:
-      name: plan (post destroy)
-      environment: ${{ needs.setup.outputs.environment }}_plan
-    secrets:
-      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
