@@ -43,42 +43,11 @@ on:
         required: false
         default: ""
 
-  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
-    inputs:
-      environment:
-        description: Target environment
-        required: true
-        type: string
-
-      working-directory:
-        description: The working directory for Terraform commands
-        type: string
-        required: false
-        default: ./terra
-
-      backend_override:
-        description: Rename backend_override.tf.example to backend_override.tf before running 'terraform init'
-        type: boolean
-        required: false
-        default: false
-
-      TF_CLI_ARGS_init:
-        description: Additional options to pass to 'terraform init'
-        type: string
-        required: false
-        default: ""
-
-      TF_CLI_ARGS_plan:
-        description: Additional options to pass to 'terraform plan'
-        type: string
-        required: false
-        default: ""
-
-      TF_CLI_ARGS_apply:
-        description: Additional options to pass to 'terraform plan'
-        type: string
-        required: false
-        default: ""
+# NOTE: Targetting job sets these
+# permissions:
+#   contents: read
+#   actions: read
+#   pull-requests: write
 
 jobs:
   terraform_plan:
@@ -103,19 +72,5 @@ jobs:
       backend_override: ${{ inputs.backend_override }}
       TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
       TF_CLI_ARGS_apply: ${{ inputs.TF_CLI_ARGS_apply }}
-    secrets:
-      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-
-  terraform_plan2:
-    name: destroy
-    needs: terraform_apply_plan
-    uses: percebus/github-actions-terraform/.github/workflows/plan-destroy.yml@main
-    with:
-      name: plan -destroy (post apply)
-      environment: ${{ inputs.environment }}_plan
-      working-directory: ${{ inputs.working-directory }}
-      backend_override: ${{ inputs.backend_override }}
-      TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
-      TF_CLI_ARGS_plan: ${{ inputs.TF_CLI_ARGS_plan }}
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}

@@ -2,16 +2,30 @@ name: terraform plan
 description: Terraform plan
 
 inputs:
+  github_token:
+    description: GitHub token for API access (e.g., commenting on PRs)
+    required: TRUE
+
   working-directory:
     description: The working directory for Terraform commands
     required: false
     default: ./terra
 
+  tfplan_path:
+    description: The path where the Terraform plan will be saved
+    required: false
+    default: dist/update.tfplan
+
   # NOTE: dist is relative to `chdir`
   TF_CLI_ARGS_plan:
     description: Additional options to pass to 'terraform plan'
     required: false
-    default: "-out=dist/update.tfplan"
+    default: ""
+
+  header:
+    description: Header for the PR comment
+    required: false
+    default: 📝 `terraform plan`
 
 runs:
   using: composite
@@ -31,4 +45,36 @@ runs:
 
     - name: terraform plan
       shell: bash
-      run: terraform -chdir=${{ inputs.working-directory }} plan ${{ inputs.TF_CLI_ARGS_plan }}
+      run: terraform -chdir=${{ inputs.working-directory }} plan ${{ inputs.TF_CLI_ARGS_plan }} -out=${{ inputs.tfplan_path }}
+
+    # SRC: https://github.com/marketplace/actions/terraform-plan-comment
+    - uses: borchero/terraform-plan-comment@v2
+      if: ${{ inputs.header != '' }}
+      with:
+        # GitHub token for API access (Required)
+        token: ${{ inputs.github_token }}
+
+        # Command to execute the Terraform binary
+        terraform-cmd: terraform
+
+        # Directory where Terraform should be called
+        working-directory: ${{ inputs.working-directory }}
+
+        # Path to the Terraform plan file (Required)
+        planfile: ${{ inputs.tfplan_path }}
+
+        # Header for the PR comment
+        header: ${{ inputs.header }}
+
+        # Skip comments for empty plans
+        skip-empty: false
+
+        # Skip PR comment creation entirely. When enabled, the plan will still be available in the step summary
+        skip-comment: false
+
+        # Pull request number to post the comment to (Optional)
+        # Useful for workflow_dispatch triggers where PR context is not automatically available
+        pr-number: ""
+
+        # Expand the PR comment details
+        expand-comment: false

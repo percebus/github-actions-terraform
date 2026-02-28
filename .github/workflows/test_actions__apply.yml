@@ -14,6 +14,8 @@ concurrency:
 
 permissions:
   contents: read
+  actions: read
+  pull-requests: write
 
 env:
   TF_CLI_ARGS_init: -reconfigure
@@ -51,8 +53,14 @@ jobs:
           backend_override: true
 
       - uses: ./.github/actions/plan
+        with:
+          github_token: ${{ github.token }}
+
       - uses: ./.github/actions/apply
       - uses: ./.github/actions/plan
+        with:
+          github_token: ${{ github.token }}
+          header: ""
 
   terraform_apply-destroy:
     name: terraform apply -destroy
@@ -71,13 +79,29 @@ jobs:
           backend_override: true
 
       - uses: ./.github/actions/plan
+        with:
+          github_token: ${{ github.token }}
+
       - uses: ./.github/actions/apply
       - uses: ./.github/actions/plan
+        with:
+          github_token: ${{ github.token }}
+          header: ""
 
       - uses: ./.github/actions/plan
         with:
-          TF_CLI_ARGS_plan: -destroy -out=dist/destroy.tfplan
+          github_token: ${{ github.token }}
+          TF_CLI_ARGS_plan: -destroy
+          tfplan_path: dist/destroy.tfplan
+          header: 🗑️ `terraform plan -destroy`
 
       - uses: ./.github/actions/apply
         with:
           TF_CLI_ARGS_apply: -destroy dist/destroy.tfplan
+
+      - uses: ./.github/actions/plan
+        with:
+          github_token: ${{ github.token }}
+          TF_CLI_ARGS_plan: -destroy
+          tfplan_path: dist/destroy.tfplan
+          header: ""

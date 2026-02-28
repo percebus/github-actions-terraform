@@ -6,11 +6,13 @@ on:
 
 concurrency:
   # NOTE: Cancelling an apply might corrupt the state.
-  group: ${{ github.ref }}-default
-  cancel-in-progress: true
+  group: ${{ github.ref }}-default-${{ inputs.environment }}
+  cancel-in-progress: false
 
 permissions:
   contents: read
+  actions: read
+  pull-requests: write
 
 jobs:
   setup:
