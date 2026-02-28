@@ -74,17 +74,3 @@ jobs:
       TF_CLI_ARGS_apply: ${{ inputs.TF_CLI_ARGS_apply }}
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-
-  terraform_plan2:
-    name: update
-    needs: terraform_apply_plan
-    uses: percebus/github-actions-terraform/.github/workflows/plan.yml@main
-    with:
-      name: plan (post apply)
-      environment: ${{ inputs.environment }}_plan
-      working-directory: ${{ inputs.working-directory }}
-      backend_override: ${{ inputs.backend_override }}
-      TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
-      TF_CLI_ARGS_plan: ${{ inputs.TF_CLI_ARGS_plan }}
-    secrets:
-      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}

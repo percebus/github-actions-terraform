@@ -60,6 +60,7 @@ jobs:
       - uses: ./.github/actions/plan
         with:
           github_token: ${{ github.token }}
+          header: ""
 
   terraform_apply-destroy:
     name: terraform apply -destroy
@@ -85,6 +86,7 @@ jobs:
       - uses: ./.github/actions/plan
         with:
           github_token: ${{ github.token }}
+          header: ""
 
       - uses: ./.github/actions/plan
         with:
@@ -96,3 +98,10 @@ jobs:
       - uses: ./.github/actions/apply
         with:
           TF_CLI_ARGS_apply: -destroy dist/destroy.tfplan
+
+      - uses: ./.github/actions/plan
+        with:
+          github_token: ${{ github.token }}
+          TF_CLI_ARGS_plan: -destroy
+          tfplan_path: dist/destroy.tfplan
+          header: ""

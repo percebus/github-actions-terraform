@@ -49,6 +49,7 @@ runs:
 
     # SRC: https://github.com/marketplace/actions/terraform-plan-comment
     - uses: borchero/terraform-plan-comment@v2
+      if: ${{ inputs.header != '' }}
       with:
         # GitHub token for API access (Required)
         token: ${{ inputs.github_token }}
