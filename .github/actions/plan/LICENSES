@@ -97,13 +97,13 @@ TITLE.
 
 -----------------------------------------------------------------------------
 
-terraform-pr-commenter
+terraform-plan-comment
 
-https://github.com/robburger/terraform-pr-commenter/blob/master/LICENSE
+https://github.com/borchero/terraform-plan-comment/blob/main/LICENSE
 
 MIT License
 
-Copyright (c) 2020 Rob Burger
+Copyright (c) 2024 Oliver Borchert
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
