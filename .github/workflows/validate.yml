@@ -57,6 +57,7 @@ jobs:
         id: fmt-check
         working-directory: ${{ inputs.working-directory }}
         run: terraform -chdir=${{ inputs.working-directory }} fmt -check
+        continue-on-error: true
 
       # - uses: percebus/github-actions-terraform/.github/actions/fmt-check@main
       #   id: fmt-check

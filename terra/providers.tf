@@ -1,4 +1,6 @@
 terraform {
+  required_version = "~> 1.14.3"
+
   required_providers {
     random = {
       source  = "hashicorp/random"
@@ -15,6 +17,4 @@ terraform {
       prefix = "github-actions-terraform_default_"
     }
   }
-
-  required_version = "~> 1.14.3"
 }
