@@ -24,6 +24,5 @@ runs:
         echo "inputs: '${{ inputs.TF_CLI_ARGS_validate }}'"
 
     - name: terraform validate
-      id: validate
       shell: bash
       run: terraform -chdir=${{ inputs.working-directory }} validate ${{ inputs.TF_CLI_ARGS_validate }}

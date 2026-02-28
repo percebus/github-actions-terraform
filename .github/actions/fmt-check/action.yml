@@ -25,6 +25,5 @@ runs:
 
     - name: terraform fmt -check
       shell: bash
-      id: fmt-check
       working-directory: ${{ inputs.working-directory }}
       run: terraform fmt -check ${{ inputs.TF_CLI_ARGS_fmt }}
