@@ -14,8 +14,11 @@ concurrency:
 
 permissions:
   contents: read
+  actions: read
+  pull-requests: write
 
 env:
+  GITHUB_TOKEN: ${{ github.token }}
   TF_CLI_ARGS_init: -reconfigure
 
 jobs:

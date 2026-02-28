@@ -41,12 +41,14 @@ on:
         required: false
         default: ""
 
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+
 jobs:
   validate:
     name: validate
     runs-on: ubuntu-latest
     env:
-      GITHUB_TOKEN: ${{ github.token }}
       TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
