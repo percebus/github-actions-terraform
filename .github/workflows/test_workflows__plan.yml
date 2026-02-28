@@ -8,8 +8,8 @@ on:
       - main
 
 concurrency:
-  group: ${{ github.ref }}-${{ github.workflow }}
   # NOTE: Cancelling a plan might corrupt the state.
+  group: ${{ github.ref }}-default-${{ inputs.environment }}
   cancel-in-progress: false
 
 permissions:

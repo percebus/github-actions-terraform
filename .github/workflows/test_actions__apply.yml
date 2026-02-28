@@ -87,8 +87,8 @@ jobs:
       - uses: ./.github/actions/plan
         with:
           github_token: ${{ github.token }}
-          planfile: dist/destroy.tfplan
           TF_CLI_ARGS_plan: -destroy
+          tfplan_path: dist/destroy.tfplan
 
       - uses: ./.github/actions/apply
         with:

@@ -23,7 +23,7 @@ on:
 
 concurrency:
   # NOTE: Cancelling an apply might corrupt the state.
-  group: ${{ github.ref }}-default
+  group: ${{ github.ref }}-default-${{ inputs.environment }}
   cancel-in-progress: false
 
 permissions:

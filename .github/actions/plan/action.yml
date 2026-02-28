@@ -20,7 +20,7 @@ inputs:
   TF_CLI_ARGS_plan:
     description: Additional options to pass to 'terraform plan'
     required: false
-    default: "-out=${{ inputs.tfplan_path }}"
+    default: ""
 
 runs:
   using: composite
@@ -40,7 +40,7 @@ runs:
 
     - name: terraform plan
       shell: bash
-      run: terraform -chdir=${{ inputs.working-directory }} plan ${{ inputs.TF_CLI_ARGS_plan }}
+      run: terraform -chdir=${{ inputs.working-directory }} plan ${{ inputs.TF_CLI_ARGS_plan }} -out=${{ inputs.tfplan_path }}
 
     # SRC: https://github.com/marketplace/actions/terraform-plan-comment
     - uses: borchero/terraform-plan-comment@v2
