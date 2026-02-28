@@ -35,6 +35,12 @@ on:
         required: false
         default: ""
 
+      TF_CLI_ARGS_plan:
+        description: Additional options to pass to 'terraform plan'
+        type: string
+        required: false
+        default: ""
+
       TF_CLI_ARGS_apply:
         description: Additional options to pass to 'terraform apply'
         type: string
@@ -85,5 +91,5 @@ jobs:
         with:
           github_token: ${{ github.token }}
           working-directory: ${{ inputs.working-directory }}
-          TF_CLI_ARGS_plan: "-destroy"
+          TF_CLI_ARGS_plan: -destroy
           header: ""
