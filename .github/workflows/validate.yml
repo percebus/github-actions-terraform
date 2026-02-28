@@ -66,6 +66,5 @@ jobs:
           backend_override: ${{ inputs.backend_override }}
 
       - uses: percebus/github-actions-terraform/.github/actions/validate@main
-        continue-on-error: true
         with:
           working-directory: ${{ inputs.working-directory }}
