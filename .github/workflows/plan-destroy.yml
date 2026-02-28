@@ -3,10 +3,6 @@ name: terraform plan -destroy
 on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
     secrets:
-      #   GITHUB_TOKEN:
-      #     description: GitHub token for API access (e.g., commenting on PRs)
-      #     required: false
-
       TF_API_TOKEN:
         description: Terraform Cloud API token
         required: false
@@ -42,7 +38,7 @@ on:
         default: ""
 
       validate:
-        description: Whether to run 'terraform validate' before planning
+        description: Whether to run 'terraform validate' before 'terraform plan'
         type: boolean
         required: false
         default: true
@@ -52,6 +48,52 @@ on:
         type: string
         required: false
         default: ""
+
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+    inputs:
+      name:
+        description: The name of the step
+        type: string
+        required: false
+        default: plan -destroy
+
+      environment:
+        description: The environment to plan (e.g., dev, staging, prod)
+        type: string
+        required: true
+
+      working-directory:
+        description: The working directory for Terraform commands
+        type: string
+        required: false
+        default: ./terra
+
+      backend_override:
+        description: Rename backend_override.tf.example to backend_override.tf before running 'terraform init'
+        type: boolean
+        required: false
+        default: false
+
+      TF_CLI_ARGS_init:
+        description: Additional options to pass to 'terraform init'
+        type: string
+        required: false
+        default: ""
+
+      validate:
+        description: Whether to run 'terraform validate' before 'terraform plan'
+        type: boolean
+        required: false
+        default: true
+
+      TF_CLI_ARGS_plan:
+        description: Additional options to pass to 'terraform plan'
+        type: string
+        required: false
+        default: ""
+
+env:
+  TF_IN_AUTOMATION: true
 
 # NOTE: Targetting job sets these
 # permissions:

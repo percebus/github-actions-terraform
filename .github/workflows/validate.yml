@@ -41,6 +41,9 @@ on:
         required: false
         default: ""
 
+env:
+  TF_IN_AUTOMATION: true
+
 jobs:
   validate:
     name: validate
@@ -52,6 +55,10 @@ jobs:
         # with: TODO
 
       - uses: percebus/github-actions-terraform/.github/actions/setup@main
+
+      - uses: percebus/github-actions-terraform/.github/actions/fmt-check@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
 
       - uses: percebus/github-actions-terraform/.github/actions/init@main
         with:
