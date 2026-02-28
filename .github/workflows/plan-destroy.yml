@@ -3,6 +3,10 @@ name: terraform plan -destroy
 on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
     secrets:
+    #   GITHUB_TOKEN:
+    #     description: GitHub token for API access (e.g., commenting on PRs)
+    #     required: false
+
       TF_API_TOKEN:
         description: Terraform Cloud API token
         required: false
@@ -109,7 +113,14 @@ jobs:
 
       - uses: percebus/github-actions-terraform/.github/actions/plan@main
         with:
+          github_token: ${{ github.token }}
           working-directory: ${{ inputs.working-directory }}
+
+          # TODO
+          # tfplan_path: dist/destroy.tfplan
+          # TF_CLI_ARGS_plan: "-destroy"
+
+          # XXX
           TF_CLI_ARGS_plan: "-destroy -out=dist/destroy.tfplan"
 
       # TODO move to common

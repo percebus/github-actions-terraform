@@ -35,3 +35,5 @@ jobs:
           backend_override: true
 
       - uses: ./.github/actions/plan
+        with:
+          github_token: ${{ github.token }}
