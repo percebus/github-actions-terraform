@@ -16,7 +16,6 @@ permissions:
   contents: read
 
 env:
-  GITHUB_TOKEN: ${{ github.token }}
   TF_CLI_ARGS_init: -reconfigure
 
 jobs:
