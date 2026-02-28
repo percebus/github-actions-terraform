@@ -22,6 +22,11 @@ inputs:
     required: false
     default: ""
 
+  header:
+    description: Header for the PR comment
+    required: false
+    default: 📝 `terraform plan`
+
 runs:
   using: composite
   steps:
@@ -58,7 +63,7 @@ runs:
         planfile: ${{ inputs.tfplan_path }}
 
         # Header for the PR comment
-        header: 📝 `terraform plan`
+        header: ${{ inputs.header }}
 
         # Skip comments for empty plans
         skip-empty: false

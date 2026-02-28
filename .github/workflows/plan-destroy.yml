@@ -84,6 +84,7 @@ jobs:
         with:
           github_token: ${{ github.token }}
           working-directory: ${{ inputs.working-directory }}
+          header: 🗑️ `terraform plan -destroy`
 
           # TODO
           # tfplan_path: dist/destroy.tfplan
