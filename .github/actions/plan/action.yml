@@ -58,7 +58,7 @@ runs:
         planfile: ${{ inputs.tfplan_path }}
 
         # Header for the PR comment
-        header: 📝 Terraform Plan
+        header: 📝 `terraform plan`
 
         # Skip comments for empty plans
         skip-empty: false
