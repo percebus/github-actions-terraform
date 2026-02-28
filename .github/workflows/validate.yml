@@ -1,4 +1,4 @@
-name: terraform validate
+name: "`terraform validate`"
 
 on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
@@ -46,10 +46,15 @@ jobs:
     name: validate
     runs-on: ubuntu-latest
     env:
+      GITHUB_TOKEN: ${{ github.token }}
       TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         # with: TODO
+
+      - uses: percebus/github-actions-terraform/.github/actions/fmt-check@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
 
       - uses: percebus/github-actions-terraform/.github/actions/setup@main
 

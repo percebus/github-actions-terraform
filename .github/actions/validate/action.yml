@@ -24,5 +24,15 @@ runs:
         echo "inputs: '${{ inputs.TF_CLI_ARGS_validate }}'"
 
     - name: terraform validate
+      id: validate
       shell: bash
       run: terraform -chdir=${{ inputs.working-directory }} validate ${{ inputs.TF_CLI_ARGS_validate }}
+
+    - name: terraform-pr-commenter
+      uses: robburger/terraform-pr-commenter@v1
+      # env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        commenter_type: validate
+        commenter_input: ${{ format('{0}{1}', steps.validate.outputs.stdout, steps.validate.outputs.stderr) }}
+        commenter_exitcode: ${{ steps.validate.outputs.exitcode }}
