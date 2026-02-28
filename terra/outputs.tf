@@ -1,7 +1,7 @@
 
 output "stack" {
   value = {
-    id   = random_id.stack.id
+    id  = random_id.stack.id
     hex = random_id.stack.hex
   }
 }
