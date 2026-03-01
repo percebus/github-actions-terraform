@@ -1,0 +1,80 @@
+name: terraform validate
+
+on:
+  workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
+    inputs:
+      working-directory:
+        description: The working directory for Terraform commands
+        type: string
+        required: false
+        default: ./terra
+
+      backend_override:
+        description: Rename backend_override.tf.example to backend_override.tf before running 'terraform init'
+        type: boolean
+        required: false
+        default: false
+
+      TF_CLI_ARGS_init:
+        description: Additional options to pass to 'terraform init'
+        type: string
+        required: false
+        default: ""
+
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+    inputs:
+      working-directory:
+        description: The working directory for Terraform commands
+        type: string
+        required: false
+        default: ./terra
+
+      backend_override:
+        description: Rename backend_override.tf.example to backend_override.tf before running 'terraform init'
+        type: boolean
+        required: false
+        default: false
+
+      TF_CLI_ARGS_init:
+        description: Additional options to pass to 'terraform init'
+        type: string
+        required: false
+        default: ""
+
+env:
+  TF_IN_AUTOMATION: true
+
+jobs:
+  validate:
+    name: validate
+    runs-on: ubuntu-latest
+    env:
+      TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+        # with: TODO
+
+      - uses: percebus/github-actions-terraform/.github/actions/setup@main
+
+      - uses: percebus/github-actions-terraform/.github/actions/fmt-check@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+
+      - uses: percebus/github-actions-terraform/.github/actions/init@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          backend_override: ${{ inputs.backend_override }}
+
+      - uses: percebus/github-actions-terraform/.github/actions/validate@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+
+      # TODO
+      # - uses: percebus/github-actions-terraform/.github/actions/test@main
+      #   with:
+      #     working-directory: ${{ inputs.working-directory }}
+
+      # XXX
+      - name: terraform test
+        working-directory: ${{ inputs.working-directory }}
+        run: terraform test -var-file=env/test.tfvars
