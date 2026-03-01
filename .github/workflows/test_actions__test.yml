@@ -27,7 +27,7 @@ jobs:
     outputs:
       TF_CLI_ARGS_init: ${{ steps.set_variables.outputs.TF_CLI_ARGS_init }}
 
-  terraform_test:
+  default:
     name: terraform test
     runs-on: ubuntu-latest
     needs: setup
