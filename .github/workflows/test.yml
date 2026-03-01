@@ -79,8 +79,8 @@ jobs:
           # test-reporter inputs
           reporter: jest-junit
           tests_name: terraform test
-          list-suites: true
-          list-tests: true
+          list-suites: all
+          list-tests: all
           # test-summary inputs
           summary_title: terraform test Summary
           # publish-test-deltas inputs
