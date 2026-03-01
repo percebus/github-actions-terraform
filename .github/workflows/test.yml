@@ -82,7 +82,7 @@ jobs:
           list-suites: all
           list-tests: failed
           # test-summary inputs
-          summary_title: "`terraform test` Summary"
+          summary_title: terraform test Summary
           # publish-test-deltas inputs
           publish-test-deltas: true
           comment_title: "`terraform test` Deltas"
