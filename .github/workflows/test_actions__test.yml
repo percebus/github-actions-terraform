@@ -40,3 +40,25 @@ jobs:
           TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
 
       - uses: ./.github/actions/test
+
+  TF_CLI_ARGS_test__matrix:
+    needs: default
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        TF_CLI_ARGS_test:
+          - "-test-directory=./terra/tests -var ENVIRONMENT=bananas"
+          - "-test-directory=./assets/terra/tests"
+
+    name: terraform test ${{ matrix.TF_CLI_ARGS_test }}
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/init
+        with:
+          backend_override: true
+          TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
+
+      - uses: ./.github/actions/test
+        with:
+          TF_CLI_ARGS_test: ${{ matrix.TF_CLI_ARGS_test }}
