@@ -1,4 +1,4 @@
-name: terraform validate
+name: terraform test
 
 on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
@@ -46,7 +46,7 @@ env:
 
 jobs:
   validate:
-    name: validate
+    name: test
     runs-on: ubuntu-latest
     env:
       TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}

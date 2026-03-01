@@ -49,6 +49,7 @@ jobs:
         TF_CLI_ARGS_test:
           - "-test-directory=./terra/tests -var ENVIRONMENT=bananas"
           - "-test-directory=./assets/terra/tests"
+          - "-test-directory=./terra/tests -junit-xml=junit.xml"
 
     name: terraform test ${{ matrix.TF_CLI_ARGS_test }}
     steps:
