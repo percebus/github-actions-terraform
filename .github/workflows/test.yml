@@ -72,3 +72,18 @@ jobs:
       - uses: percebus/github-actions-terraform/.github/actions/test@main
         with:
           working-directory: ${{ inputs.working-directory }}
+
+      - uses: percebus/github-actions-testing/.github/actions/junit@main
+        with:
+          files_pattern: ${{ inputs.working-directory }}/**/*.xml
+          # test-reporter inputs
+          reporter: jest-junit
+          tests_name: terraform test
+          list-suites: all
+          list-tests: failed
+          # test-summary inputs
+          summary_title: terraform test Summary
+          # publish-test-deltas inputs
+          publish-test-deltas: true
+          comment_title: "`terraform test` Deltas"
+          check_name: "`terraform test` Deltas"
