@@ -15,34 +15,15 @@ concurrency:
 permissions:
   contents: read
 
-env:
-  TF_CLI_ARGS_init: -reconfigure
-
 jobs:
-  setup:
-    name: setup
-    runs-on: ubuntu-latest
-    steps:
-      - name: GITHUB_OUTPUT
-        id: set_variables
-        run: |
-          echo "TF_CLI_ARGS_init=-reconfigure" >> $GITHUB_OUTPUT
-    outputs:
-      TF_CLI_ARGS_init: ${{ steps.set_variables.outputs.TF_CLI_ARGS_init }}
-
   default:
     name: terraform
-    needs: setup
     uses: ./.github/workflows/validate.yml
     with:
       backend_override: true
-      TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
 
   working-directory__matrix:
-    needs:
-      - default
-      - setup
-
+    needs: default
     strategy:
       matrix:
         path:
@@ -53,4 +34,3 @@ jobs:
     uses: ./.github/workflows/fmt-check.yml
     with:
       working-directory: ${{ matrix.path }}
-      TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
