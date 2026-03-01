@@ -69,12 +69,6 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
 
-      # TODO
-      # - uses: percebus/github-actions-terraform/.github/actions/test@main
-      #   with:
-      #     working-directory: ${{ inputs.working-directory }}
-
-      # XXX
-      - name: terraform test
-        working-directory: ${{ inputs.working-directory }}
-        run: terraform test -var-file=env/test.tfvars
+      - uses: percebus/github-actions-terraform/.github/actions/test@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
