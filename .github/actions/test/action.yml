@@ -10,7 +10,7 @@ inputs:
   TF_CLI_ARGS_test:
     description: Additional options to pass to 'terraform test'
     required: false
-    default: "-var-file=env/test.tfvars"
+    default: "-var-file=env/test.tfvars -junit-xml=test-results.xml"
 
 runs:
   using: composite

@@ -9,36 +9,36 @@ on:
 
     inputs:
       environment:
-        description: Target environment
+        description: environment
         required: true
         type: string
 
       working-directory:
-        description: The working directory for Terraform commands
+        description: -chdir
         type: string
         required: false
         default: ./terra
 
       backend_override:
-        description: Rename backend_override.tf.example to backend_override.tf before running 'terraform init'
+        description: backend_override.tf
         type: boolean
         required: false
         default: false
 
       TF_CLI_ARGS_init:
-        description: Additional options to pass to 'terraform init'
+        description: TF_CLI_ARGS_init
         type: string
         required: false
         default: ""
 
       TF_CLI_ARGS_plan:
-        description: Additional options to pass to 'terraform plan'
+        description: TF_CLI_ARGS_plan
         type: string
         required: false
         default: ""
 
       TF_CLI_ARGS_apply:
-        description: Additional options to pass to 'terraform plan'
+        description: TF_CLI_ARGS_apply
         type: string
         required: false
         default: ""
@@ -46,36 +46,36 @@ on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
       environment:
-        description: Target environment
+        description: environment
         required: true
         type: string
 
       working-directory:
-        description: The working directory for Terraform commands
+        description: -chdir
         type: string
         required: false
         default: ./terra
 
       backend_override:
-        description: Rename backend_override.tf.example to backend_override.tf before running 'terraform init'
+        description: backend_override.tf
         type: boolean
         required: false
         default: false
 
       TF_CLI_ARGS_init:
-        description: Additional options to pass to 'terraform init'
+        description: TF_CLI_ARGS_init
         type: string
         required: false
         default: ""
 
       TF_CLI_ARGS_plan:
-        description: Additional options to pass to 'terraform plan'
+        description: TF_CLI_ARGS_plan
         type: string
         required: false
         default: ""
 
       TF_CLI_ARGS_apply:
-        description: Additional options to pass to 'terraform plan'
+        description: TF_CLI_ARGS_apply
         type: string
         required: false
         default: ""

@@ -1,0 +1,36 @@
+name: "Test worfklows/fmt-check"
+
+on:
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  # NOTE: Apparently terraform init does NOT create a lock.
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  default:
+    name: terraform
+    uses: ./.github/workflows/validate.yml
+    with:
+      backend_override: true
+
+  working-directory__matrix:
+    needs: default
+    strategy:
+      matrix:
+        path:
+          # - ./terra # already tested by default
+          - ./assets/terra
+
+    name: terraform -chdir=.../${{ matrix.path }}
+    uses: ./.github/workflows/fmt-check.yml
+    with:
+      working-directory: ${{ matrix.path }}

@@ -1,22 +1,22 @@
-name: terraform validate
+name: terraform test
 
 on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
     inputs:
       working-directory:
-        description: The working directory for Terraform commands
+        description: -chdir
         type: string
         required: false
         default: ./terra
 
       backend_override:
-        description: Rename backend_override.tf.example to backend_override.tf before running 'terraform init'
+        description: backend_override.tf
         type: boolean
         required: false
         default: false
 
       TF_CLI_ARGS_init:
-        description: Additional options to pass to 'terraform init'
+        description: TF_CLI_ARGS_init
         type: string
         required: false
         default: ""
@@ -24,19 +24,19 @@ on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
       working-directory:
-        description: The working directory for Terraform commands
+        description: -chdir
         type: string
         required: false
         default: ./terra
 
       backend_override:
-        description: Rename backend_override.tf.example to backend_override.tf before running 'terraform init'
+        description: backend_override.tf
         type: boolean
         required: false
         default: false
 
       TF_CLI_ARGS_init:
-        description: Additional options to pass to 'terraform init'
+        description: TF_CLI_ARGS_init
         type: string
         required: false
         default: ""
@@ -46,7 +46,7 @@ env:
 
 jobs:
   validate:
-    name: validate
+    name: test
     runs-on: ubuntu-latest
     env:
       TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
@@ -69,12 +69,6 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
 
-      # TODO
-      # - uses: percebus/github-actions-terraform/.github/actions/test@main
-      #   with:
-      #     working-directory: ${{ inputs.working-directory }}
-
-      # XXX
-      - name: terraform test
-        working-directory: ${{ inputs.working-directory }}
-        run: terraform test -var-file=env/test.tfvars
+      - uses: percebus/github-actions-terraform/.github/actions/test@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
