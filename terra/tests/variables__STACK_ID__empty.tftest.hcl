@@ -7,9 +7,9 @@ variables {
 mock_provider "random" {
   mock_resource "random_id" {
     defaults = {
-      hex     = "aabbccdd"
-      dec     = "2864434397"
-      id      = "mocked-id"
+      hex = "aabbccdd"
+      dec = "2864434397"
+      id  = "mocked-id"
     }
   }
 }
