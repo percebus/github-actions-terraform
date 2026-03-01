@@ -1,0 +1,37 @@
+name: terraform validate
+
+on:
+  workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
+    inputs:
+      working-directory:
+        description: The working directory for Terraform commands
+        type: string
+        required: false
+        default: ./terra
+
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+    inputs:
+      working-directory:
+        description: The working directory for Terraform commands
+        type: string
+        required: false
+        default: ./terra
+
+env:
+  TF_IN_AUTOMATION: true
+
+jobs:
+  validate:
+    name: validate
+    runs-on: ubuntu-latest
+    env:
+      TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+        # with: TODO
+
+      - uses: percebus/github-actions-terraform/.github/actions/setup@main
+
+      - uses: percebus/github-actions-terraform/.github/actions/fmt-check@main
+        with:
+          working-directory: ${{ inputs.working-directory }}

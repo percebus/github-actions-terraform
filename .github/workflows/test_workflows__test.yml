@@ -1,4 +1,4 @@
-name: "Test worfklows/validate"
+name: "Test worfklows/test"
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
@@ -33,24 +33,7 @@ jobs:
   default:
     name: terraform
     needs: setup
-    uses: ./.github/workflows/validate.yml
+    uses: ./.github/workflows/test.yml
     with:
       backend_override: true
-      TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
-
-  working-directory__matrix:
-    needs:
-      - default
-      - setup
-
-    strategy:
-      matrix:
-        project:
-          - azurerm/some-rg
-          - azurerm/advanced-rg
-
-    name: terraform -chdir=.../${{ matrix.project }}
-    uses: ./.github/workflows/validate.yml
-    with:
-      working-directory: ./assets/terra/${{ matrix.project }}
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
