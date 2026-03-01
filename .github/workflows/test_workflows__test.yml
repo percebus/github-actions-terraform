@@ -32,7 +32,7 @@ jobs:
 
   default:
     name: terraform
-    needs: test
+    needs: setup
     uses: ./.github/workflows/test.yml
     with:
       backend_override: true
