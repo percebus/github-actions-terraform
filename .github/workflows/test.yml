@@ -19,7 +19,7 @@ on:
         description: TF_CLI_ARGS_init
         type: string
         required: false
-        default: ""
+        default: "-input=false"
 
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
@@ -39,17 +39,16 @@ on:
         description: TF_CLI_ARGS_init
         type: string
         required: false
-        default: ""
+        default: "-input=false"
 
 env:
   TF_IN_AUTOMATION: true
 
 jobs:
-  validate:
+  test:
     name: test
     runs-on: ubuntu-latest
-    env:
-      TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
+    # TODO? add environment?
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         # with: TODO
@@ -64,6 +63,7 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           backend_override: ${{ inputs.backend_override }}
+          TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
 
       - uses: percebus/github-actions-terraform/.github/actions/validate@main
         with:
