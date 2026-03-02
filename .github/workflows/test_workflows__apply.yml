@@ -69,6 +69,7 @@ jobs:
     uses: ./.github/workflows/plan.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}_plan
+      validate: false
       destroy: true
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
