@@ -44,7 +44,6 @@ jobs:
     uses: ./.github/workflows/plan.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}_plan
-      backend_override: true
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
 
@@ -56,7 +55,6 @@ jobs:
     uses: ./.github/workflows/apply.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}
-      backend_override: true
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
 
   terraform_plan-destroy:
@@ -67,7 +65,6 @@ jobs:
     uses: ./.github/workflows/plan.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}_plan
-      backend_override: true
       destroy: true
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
@@ -80,7 +77,6 @@ jobs:
     uses: ./.github/workflows/apply.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}
-      backend_override: true
       destroy: true
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
