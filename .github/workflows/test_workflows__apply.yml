@@ -9,7 +9,7 @@ on:
 
 concurrency:
   # NOTE: Cancelling an apply might corrupt the state.
-  group: ${{ github.ref }}-${{ github.workflow }}
+  group: ${{ github.ref }}-default-${{ inputs.environment }}
   cancel-in-progress: false
 
 permissions:
@@ -44,9 +44,10 @@ jobs:
     uses: ./.github/workflows/plan.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}_plan
-      backend_override: true
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
   terraform_apply_plan:
     name: terraform
@@ -56,5 +57,31 @@ jobs:
     uses: ./.github/workflows/apply.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}
-      backend_override: true
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+
+  terraform_plan-destroy:
+    name: terraform
+    needs:
+      - terraform_apply_plan
+      - setup
+    uses: ./.github/workflows/plan.yml
+    with:
+      environment: ${{ needs.setup.outputs.environment }}_plan
+      validate: false
+      destroy: true
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+
+  terraform_apply-destroy:
+    name: terraform
+    needs:
+      - terraform_plan-destroy
+      - setup
+    uses: ./.github/workflows/apply.yml
+    with:
+      environment: ${{ needs.setup.outputs.environment }}
+      destroy: true
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}

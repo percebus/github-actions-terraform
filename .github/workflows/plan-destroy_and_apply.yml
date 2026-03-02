@@ -10,8 +10,8 @@ on:
     inputs:
       environment:
         description: environment
-        required: true
         type: string
+        required: true
 
       working-directory:
         description: -chdir
@@ -29,7 +29,7 @@ on:
         description: TF_CLI_ARGS_init
         type: string
         required: false
-        default: ""
+        default: "-input=false"
 
       TF_CLI_ARGS_plan:
         description: TF_CLI_ARGS_plan
@@ -41,14 +41,14 @@ on:
         description: TF_CLI_ARGS_apply
         type: string
         required: false
-        default: ""
+        default: "-input=false"
 
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
       environment:
         description: environment
-        required: true
         type: string
+        required: true
 
       working-directory:
         description: -chdir
@@ -66,7 +66,7 @@ on:
         description: TF_CLI_ARGS_init
         type: string
         required: false
-        default: ""
+        default: "-input=false"
 
       TF_CLI_ARGS_plan:
         description: TF_CLI_ARGS_plan
@@ -78,7 +78,7 @@ on:
         description: TF_CLI_ARGS_apply
         type: string
         required: false
-        default: ""
+        default: "-input=false"
 
 # NOTE: Targetting job sets these
 # permissions:
@@ -95,6 +95,7 @@ jobs:
       working-directory: ${{ inputs.working-directory }}
       backend_override: ${{ inputs.backend_override }}
       TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
+      # destroy: true # TODO
       TF_CLI_ARGS_plan: ${{ inputs.TF_CLI_ARGS_plan}}
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
@@ -109,5 +110,7 @@ jobs:
       backend_override: ${{ inputs.backend_override }}
       TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
       TF_CLI_ARGS_apply: ${{ inputs.TF_CLI_ARGS_apply }}
+      # destroy: true # TODO
+      TF_CLI_ARGS_plan: ${{ inputs.TF_CLI_ARGS_plan}}
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}

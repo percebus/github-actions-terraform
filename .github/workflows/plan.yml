@@ -8,12 +8,6 @@ on:
         required: false
 
     inputs:
-      name:
-        description: Step name
-        type: string
-        required: false
-        default: plan
-
       environment:
         description: environment
         type: string
@@ -35,13 +29,19 @@ on:
         description: TF_CLI_ARGS_init
         type: string
         required: false
-        default: ""
+        default: "-input=false"
 
       validate:
         description: validate
         type: boolean
         required: false
         default: true
+
+      destroy:
+        description: destroy
+        type: boolean
+        required: false
+        default: false
 
       TF_CLI_ARGS_plan:
         description: TF_CLI_ARGS_plan
@@ -51,12 +51,6 @@ on:
 
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
-      name:
-        description: Step name
-        type: string
-        required: false
-        default: plan
-
       environment:
         description: environment
         type: string
@@ -78,13 +72,19 @@ on:
         description: TF_CLI_ARGS_init
         type: string
         required: false
-        default: ""
+        default: "-input=false"
 
       validate:
         description: validate
         type: boolean
         required: false
         default: true
+
+      destroy:
+        description: destroy
+        type: boolean
+        required: false
+        default: false
 
       TF_CLI_ARGS_plan:
         description: TF_CLI_ARGS_plan
@@ -93,7 +93,9 @@ on:
         default: ""
 
 env:
+  terraform_action: ${{ inputs.destroy && 'destroy' || 'update' }}
   TF_IN_AUTOMATION: true
+  TF_CLI_ARGS_plan: ${{ inputs.destroy && '-destroy' || '' }}
 
 # NOTE: Targetting job sets these
 # permissions:
@@ -103,13 +105,11 @@ env:
 
 jobs:
   plan:
-    name: ${{ inputs.name }}
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
       TF_WORKSPACE: ${{ vars.ENVIRONMENT }}
-      TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
-      TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars ${{ inputs.TF_CLI_ARGS_plan }}"
+    name: plan ${{ inputs.destroy && '-destroy' || '' }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         # with: TODO
@@ -122,6 +122,7 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           backend_override: ${{ inputs.backend_override }}
+          TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
 
       - uses: percebus/github-actions-terraform/.github/actions/validate@main
         if: ${{ inputs.validate }}
@@ -132,11 +133,14 @@ jobs:
         with:
           github_token: ${{ github.token }}
           working-directory: ${{ inputs.working-directory }}
+          header: 🗑️ `terraform plan ${{ env.TF_CLI_ARGS_plan }}`
+          tfplan_path: dist/${{ env.terraform_action }}.tfplan
+          TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars ${{ inputs.TF_CLI_ARGS_plan }}"
 
       # TODO move to common
       - uses: actions/upload-artifact@v4
         with:
           path: ${{ inputs.working-directory }}/dist
-          name: tfplan_update
+          name: tfplan_${{ env.terraform_action }}
           if-no-files-found: error
           overwrite: true
