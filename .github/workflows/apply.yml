@@ -31,6 +31,12 @@ on:
         required: false
         default: "-input=false"
 
+      destroy:
+        description: destroy
+        type: boolean
+        required: false
+        default: false
+
       TF_CLI_ARGS_plan:
         description: TF_CLI_ARGS_plan
         type: string
@@ -67,6 +73,12 @@ on:
         type: string
         required: false
         default: "-input=false"
+
+      destroy:
+        description: destroy
+        type: boolean
+        required: false
+        default: false
 
       TF_CLI_ARGS_plan:
         description: TF_CLI_ARGS_plan
