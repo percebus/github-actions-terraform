@@ -105,11 +105,11 @@ env:
 
 jobs:
   plan:
-    name: plan ${{ env.TF_CLI_ARGS_plan }}
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
       TF_WORKSPACE: ${{ vars.ENVIRONMENT }}
+    name: plan ${{ vars.TF_CLI_ARGS_plan }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         # with: TODO
