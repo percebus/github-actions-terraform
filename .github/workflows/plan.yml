@@ -105,7 +105,7 @@ env:
 
 jobs:
   plan:
-    name: plan
+    name: plan ${{ env.TF_CLI_ARGS_plan }}
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
