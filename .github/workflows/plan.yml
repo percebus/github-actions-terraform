@@ -136,6 +136,7 @@ jobs:
           header: 🗑️ `terraform plan ${{ env.TF_CLI_ARGS_plan }}`
           tfplan_path: dist/${{ env.terraform_action }}.tfplan
           TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars ${{ inputs.TF_CLI_ARGS_plan }}"
+          expand-comment: ${{ inputs.destroy && 'true' || 'false' }}
 
       # TODO move to common
       - uses: actions/upload-artifact@v4

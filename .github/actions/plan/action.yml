@@ -27,6 +27,11 @@ inputs:
     required: false
     default: 📝 `terraform plan`
 
+  expand-comment:
+    description: Expand the PR comment details
+    required: false
+    default: "false"
+
 runs:
   using: composite
   steps:
@@ -77,4 +82,4 @@ runs:
         pr-number: ""
 
         # Expand the PR comment details
-        expand-comment: false
+        expand-comment: ${{ inputs.expand-comment == 'true' }}
