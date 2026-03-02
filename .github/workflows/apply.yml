@@ -109,7 +109,7 @@ jobs:
     environment: ${{ inputs.environment }}
     env:
       TF_WORKSPACE: ${{ vars.ENVIRONMENT }}
-    name: apply ${{ vars.TF_CLI_ARGS_plan }}
+    name: apply ${{ env.TF_CLI_ARGS_plan }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         # with: TODO
