@@ -14,6 +14,9 @@ concurrency:
 permissions:
   contents: read
 
+env:
+  working-directory: ./assets/terraform-compliance
+
 jobs:
   default:
     name: terraform-compliance
@@ -21,18 +24,5 @@ jobs:
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/compliance
-
-  working-directory__matrix:
-    needs: default
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        project:
-          - random_id
-
-    name: terraform-compliance -chdir=.../${{ matrix.project }}
-    steps:
-      - uses: percebus/github-actions-common/.github/actions/checkout@main
-      - uses: ./.github/actions/compliance
         with:
-          working-directory: ./assets/terraform-compliance/${{ matrix.project }}
+          working-directory: ${{ env.working-directory }}
