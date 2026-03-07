@@ -15,7 +15,7 @@ permissions:
   contents: read
 
 env:
-  working-directory: ./assets/terraform-compliance
+  working-directory: ./assets/terraform-compliance/random_id
 
 jobs:
   default:
