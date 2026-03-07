@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   default:
-    name: terraform init
+    name: terraform-compliance
     runs-on: ubuntu-latest
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
@@ -30,7 +30,7 @@ jobs:
         project:
           - random_id
 
-    name: terraform -chdir=.../${{ matrix.project }} init
+    name: terraform-compliance -chdir=.../${{ matrix.project }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/compliance

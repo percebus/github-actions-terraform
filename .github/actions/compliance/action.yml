@@ -20,7 +20,8 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: terraform-compliance/github-action@main
+    - name: terraform-compliance
+      uses: terraform-compliance/github_action@main
       with:
         plan: ${{ inputs.working-directory }}/${{ inputs.tfplan_json_path }}
         features: ${{ inputs.working-directory }}/features
