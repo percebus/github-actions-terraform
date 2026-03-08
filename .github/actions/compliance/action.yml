@@ -10,7 +10,7 @@ inputs:
   tfplan_path:
     description: The path to the Terraform plan JSON file
     required: false
-    default: "dist/update.tfplan.json"
+    default: "dist/update.tfplan"
 
   features_directory:
     description: BDD Gherkins folder
