@@ -9,7 +9,7 @@ on:
 
 concurrency:
   # NOTE: Cancelling a plan might corrupt the state.
-  group: ${{ github.ref }}-default
+  group: ${{ github.ref }}-default-ci
   cancel-in-progress: false
 
 permissions:
