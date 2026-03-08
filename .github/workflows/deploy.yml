@@ -2,9 +2,11 @@ name: Deployment
 
 on:
   pull_request:
-  push:
-    branches:
-      - main
+
+  # XXX in favor of cd.yml
+  # push:
+  #   branches:
+  #     - main
 
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:

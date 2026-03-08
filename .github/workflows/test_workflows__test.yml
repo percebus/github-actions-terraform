@@ -8,7 +8,7 @@ on:
       - main
 
 concurrency:
-  # NOTE: Apparently terraform init does NOT create a lock.
+  # NOTE: Apparently terraform init or test does NOT create a lock.
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
 
