@@ -1,0 +1,27 @@
+name: terraform-compliance
+description: BDD tests for Terraform
+
+inputs:
+  working-directory:
+    description: The working directory for Terraform commands
+    required: false
+    default: ./terra
+
+  tfplan_json_path:
+    description: The path to the Terraform plan JSON file
+    required: false
+    default: "dist/update.tfplan.json"
+
+  feature_directory:
+    description: BDD Gherkins folder
+    required: false
+    default: features
+
+runs:
+  using: composite
+  steps:
+    - name: terraform-compliance
+      uses: terraform-compliance/github_action@main
+      with:
+        plan: ${{ inputs.working-directory }}/${{ inputs.tfplan_json_path }}
+        features: ${{ inputs.working-directory }}/features

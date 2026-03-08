@@ -1,0 +1,28 @@
+name: "Test actions/compliance"
+
+on:
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  working-directory: ./assets/terraform-compliance/random_id
+
+jobs:
+  default:
+    name: terraform-compliance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: ./.github/actions/compliance
+        with:
+          working-directory: ${{ env.working-directory }}
