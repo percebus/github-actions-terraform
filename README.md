@@ -49,9 +49,9 @@ GitHub re-usable actions and/or workflows for terraform
 
 ### Environments
 
-| actual                                                                                  | gate                                                                                         | description                                               |
-| --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
-| [ci-branch](https://github.com/percebus/github-actions-terraform/deployments/ci-branch) | [ci-branch_gate](https://github.com/percebus/github-actions-terraform/deployments/ci-branch) | [C]ontinuous [I]ntegration for branches other than `main` |
-| [ci-main](https://github.com/percebus/github-actions-terraform/deployments/ci-main)     | [ci-main_gate](https://github.com/percebus/github-actions-terraform/deployments/ci-main)     | [C]ontinuous [I]ntegration for the `main` branch          |
-| [dev](https://github.com/percebus/github-actions-terraform/deployments/dev)             | [dev_gate](https://github.com/percebus/github-actions-terraform/deployments/dev)             | [Dev]elopment environment                                 |
-| [prod](https://github.com/percebus/github-actions-terraform/deployments/prod)           | [prod_gate](https://github.com/percebus/github-actions-terraform/deployments/prod)           | [Prod]uction environment                                  |
+| actual                                                                                  | gate                                                                                              | description                                               |
+| --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| [ci-branch](https://github.com/percebus/github-actions-terraform/deployments/ci-branch) | [ci-branch_gate](https://github.com/percebus/github-actions-terraform/deployments/ci-branch_gate) | [C]ontinuous [I]ntegration for branches other than `main` |
+| [ci-main](https://github.com/percebus/github-actions-terraform/deployments/ci-main)     | [ci-main_gate](https://github.com/percebus/github-actions-terraform/deployments/ci-main_gate)     | [C]ontinuous [I]ntegration for the `main` branch          |
+| [dev](https://github.com/percebus/github-actions-terraform/deployments/dev)             | [dev_gate](https://github.com/percebus/github-actions-terraform/deployments/dev_gate)             | [Dev]elopment environment                                 |
+| [prod](https://github.com/percebus/github-actions-terraform/deployments/prod)           | [prod_gate](https://github.com/percebus/github-actions-terraform/deployments/prod_gate)           | [Prod]uction environment                                  |
