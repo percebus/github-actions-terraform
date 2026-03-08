@@ -7,7 +7,7 @@ inputs:
     required: false
     default: ./terra
 
-  tfplan_json_path:
+  tfplan_path:
     description: The path to the Terraform plan JSON file
     required: false
     default: "dist/update.tfplan.json"
@@ -20,8 +20,14 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: terraform show -json
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      if: ${{ inputs.include-json == 'true' }}
+      run: terraform show -json ${{ inputs.tfplan_path }} > ${{ inputs.tfplan_path }}.json
+
     - name: terraform-compliance
       uses: terraform-compliance/github_action@main
       with:
-        plan: ${{ inputs.working-directory }}/${{ inputs.tfplan_json_path }}
+        plan: ${{ inputs.working-directory }}/${{ inputs.tfplan_path }}.json
         features: ${{ inputs.working-directory }}/${{ inputs.features_directory }}
