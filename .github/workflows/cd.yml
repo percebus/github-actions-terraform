@@ -1,0 +1,88 @@
+name: "[C]ontinuous [D]elivery"
+
+on:
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+  push:
+    branches:
+      - main
+
+concurrency:
+  # NOTE: Apparently terraform init or test does NOT create a lock.
+  group: default
+  cancel-in-progress: false
+
+# SRC: https://github.com/EnricoMi/publish-unit-test-result-action?tab=readme-ov-file#permissions
+# SRC: https://github.com/dorny/test-reporter?tab=readme-ov-file#recommended-setup-for-public-repositories
+permissions:
+  contents: read
+  actions: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  setup:
+    name: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: GITHUB_OUTPUT
+        id: set_variables
+        run: |
+          echo "TF_CLI_ARGS_init=-reconfigure" >> $GITHUB_OUTPUT
+    outputs:
+      TF_CLI_ARGS_init: ${{ steps.set_variables.outputs.TF_CLI_ARGS_init }}
+
+  test:
+    name: terraform
+    needs: setup
+    uses: ./.github/workflows/test.yml
+    with:
+      backend_override: true
+      TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
+
+  ci_apply:
+    name: "terraform @ ci-main"
+    needs: test
+    uses: ./.github/workflows/apply.yml
+    with:
+      environment: ci-main
+      TF_CLI_ARGS_apply: "-input=false -auto-approve"
+
+  ci_destroy:
+    name: "terraform @ ci-main"
+    needs: ci_apply
+    uses: ./.github/workflows/apply.yml
+    with:
+      environment: ci-main
+      TF_CLI_ARGS_apply: "-input=false -auto-approve -destroy"
+
+  dev_apply:
+    name: "terraform @ dev"
+    needs: ci_apply
+    uses: ./.github/workflows/apply.yml
+    with:
+      environment: dev
+      TF_CLI_ARGS_apply: "-input=false -auto-approve"
+
+  dev_validate:
+    name: "validate @ dev"
+    needs: dev_apply
+    runs-on: ubuntu-latet
+    steps:
+      - name: pass
+        run: exit 0
+
+  prod_apply:
+    name: "terraform @ prod"
+    needs: dev_validate
+    uses: ./.github/workflows/apply.yml
+    with:
+      environment: prod
+      TF_CLI_ARGS_apply: "-input=false -auto-approve"
+
+  prod_validate:
+    name: "validate @ dev"
+    needs: prod_apply
+    runs-on: ubuntu-latet
+    steps:
+      - name: pass
+        run: exit 0
