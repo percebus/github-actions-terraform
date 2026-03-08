@@ -49,6 +49,12 @@ on:
         required: false
         default: ""
 
+      features_directory:
+        description: terraform-compliance
+        type: string
+        required: false
+        default: ""
+
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
       environment:
@@ -88,6 +94,12 @@ on:
 
       TF_CLI_ARGS_plan:
         description: TF_CLI_ARGS_plan
+        type: string
+        required: false
+        default: ""
+
+      features_directory:
+        description: terraform-compliance
         type: string
         required: false
         default: ""
@@ -135,10 +147,16 @@ jobs:
           working-directory: ${{ inputs.working-directory }}
           header: 🗑️ `terraform plan ${{ env.TF_CLI_ARGS_plan }}`
           tfplan_path: dist/${{ env.terraform_action }}.tfplan
+          include-json: ${{ inputs.features_directory == '' && 'false' || 'true' }}
           TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars ${{ inputs.TF_CLI_ARGS_plan }}"
           expand-comment: ${{ inputs.destroy && 'true' || 'false' }}
 
-      # TODO add compliance
+      - uses: percebus/github-actions-terraform/.github/actions/compliance@main
+        if: ${{ inputs.features_directory != '' }}
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          tfplan_json_path: ${{ tfplan_path }}.json
+          feautres_directory: ${{ inputs.features_directory }}
 
       # TODO move to common
       - uses: actions/upload-artifact@v4
