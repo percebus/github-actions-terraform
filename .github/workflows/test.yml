@@ -86,4 +86,4 @@ jobs:
           # publish-test-deltas inputs
           publish-test-deltas: true
           comment_title: "`terraform test` Deltas"
-          check_name: "`terraform test` Deltas"
+          check_name: "terraform test Deltas"
