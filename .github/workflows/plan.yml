@@ -121,7 +121,7 @@ jobs:
     environment: ${{ inputs.environment }}
     env:
       TF_WORKSPACE: ${{ vars.ENVIRONMENT }}
-      tfplan_path: dist/${{ env.terraform_action }}.tfplan
+      tfplan_path: dist/${{ vars.terraform_action }}.tfplan
     name: plan ${{ inputs.destroy && '-destroy' || '' }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
