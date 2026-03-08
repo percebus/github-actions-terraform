@@ -33,7 +33,7 @@ jobs:
 
   ci_plan:
     name: "terraform @ ci-main"
-    needs: test
+    needs: setup
     uses: ./.github/workflows/plan.yml
     with:
       environment: ci-main
@@ -43,7 +43,7 @@ jobs:
 
   ci_apply:
     name: "terraform @ ci-main"
-    needs: test
+    needs: ci_plan
     uses: ./.github/workflows/apply-plan.yml
     with:
       environment: ci-main
