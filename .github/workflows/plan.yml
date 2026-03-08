@@ -121,7 +121,6 @@ jobs:
     environment: ${{ inputs.environment }}
     env:
       TF_WORKSPACE: ${{ vars.ENVIRONMENT }}
-      tfplan_path: dist/${{ vars.terraform_action }}.tfplan
     name: plan ${{ inputs.destroy && '-destroy' || '' }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
@@ -147,7 +146,7 @@ jobs:
           github_token: ${{ github.token }}
           working-directory: ${{ inputs.working-directory }}
           header: 🗑️ `terraform plan ${{ env.TF_CLI_ARGS_plan }}`
-          tfplan_path: ${{ env.tfplan_path }}
+          tfplan_path: dist/${{ vars.terraform_action }}.tfplan
           include-json: ${{ inputs.features_directory == '' && 'false' || 'true' }}
           TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars ${{ inputs.TF_CLI_ARGS_plan }}"
           expand-comment: ${{ inputs.destroy && 'true' || 'false' }}
@@ -156,7 +155,7 @@ jobs:
         if: ${{ inputs.features_directory != '' }}
         with:
           working-directory: ${{ inputs.working-directory }}
-          tfplan_json_path: ${{ env.tfplan_path }}.json
+          tfplan_json_path: dist/${{ vars.terraform_action }}.tfplan.json
           features_directory: ${{ inputs.features_directory }}
 
       # TODO move to common
