@@ -40,7 +40,7 @@ jobs:
     needs: setup
     uses: ./.github/workflows/plan.yml
     with:
-      environment: ${{ needs.setup.outputs.environment }}_plan
+      environment: ${{ needs.setup.outputs.environment }}
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
     secrets:
@@ -53,7 +53,7 @@ jobs:
       - setup
     uses: ./.github/workflows/apply.yml
     with:
-      environment: ${{ needs.setup.outputs.environment }}
+      environment: ${{ needs.setup.outputs.environment }}_gate
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
@@ -65,7 +65,7 @@ jobs:
       - setup
     uses: ./.github/workflows/plan.yml
     with:
-      environment: ${{ needs.setup.outputs.environment }}_plan
+      environment: ${{ needs.setup.outputs.environment }}
       validate: false
       destroy: true
     secrets:
@@ -78,7 +78,7 @@ jobs:
       - setup
     uses: ./.github/workflows/apply.yml
     with:
-      environment: ${{ needs.setup.outputs.environment }}
+      environment: ${{ needs.setup.outputs.environment }}_gate
       destroy: true
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}

@@ -91,7 +91,7 @@ jobs:
     name: destroy
     uses: percebus/github-actions-terraform/.github/workflows/plan.yml@main
     with:
-      environment: ${{ inputs.environment }}_plan
+      environment: ${{ inputs.environment }}
       working-directory: ${{ inputs.working-directory }}
       backend_override: ${{ inputs.backend_override }}
       TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
@@ -105,7 +105,7 @@ jobs:
     needs: terraform_plan
     uses: percebus/github-actions-terraform/.github/workflows/apply.yml@main
     with:
-      environment: ${{ inputs.environment }}
+      environment: ${{ inputs.environment }}_gate
       working-directory: ${{ inputs.working-directory }}
       backend_override: ${{ inputs.backend_override }}
       TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
