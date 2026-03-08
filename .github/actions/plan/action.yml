@@ -61,7 +61,7 @@ runs:
       shell: bash
       working-directory: ${{ inputs.working-directory }}
       if: ${{ inputs.include-json == 'true' }}
-      run: terraform -chdir=${{ inputs.working-directory }} show -json ${TF_CLI_ARGS_plan} ${inputs.tfplan_path} > ${inputs.tfplan_path}.json
+      run: terraform -chdir=${{ inputs.working-directory }} show -json ${{ inputs.tfplan_path }} > ${{ inputs.tfplan_path }}.json
 
     # SRC: https://github.com/marketplace/actions/terraform-plan-comment
     - uses: borchero/terraform-plan-comment@v2

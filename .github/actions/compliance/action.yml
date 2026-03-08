@@ -12,7 +12,7 @@ inputs:
     required: false
     default: "dist/update.tfplan.json"
 
-  feature_directory:
+  features_directory:
     description: BDD Gherkins folder
     required: false
     default: features
@@ -24,4 +24,4 @@ runs:
       uses: terraform-compliance/github_action@main
       with:
         plan: ${{ inputs.working-directory }}/${{ inputs.tfplan_json_path }}
-        features: ${{ inputs.working-directory }}/features
+        features: ${{ inputs.working-directory }}/${{ inputs.features_directory }}
