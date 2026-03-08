@@ -145,7 +145,7 @@ jobs:
         with:
           github_token: ${{ github.token }}
           working-directory: ${{ inputs.working-directory }}
-          header: 🗑️ `terraform plan ${{ env.TF_CLI_ARGS_plan }}`
+          header: ⚠️ `terraform plan ${{ env.TF_CLI_ARGS_plan }}`
           tfplan_path: dist/${{ env.terraform_action }}.tfplan
           include-json: ${{ inputs.features_directory == '' && 'false' || 'true' }}
           TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars ${{ inputs.TF_CLI_ARGS_plan }}"
