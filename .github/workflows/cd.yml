@@ -46,6 +46,8 @@ jobs:
     with:
       environment: ci-main
       TF_CLI_ARGS_apply: "-input=false -auto-approve"
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
   ci_destroy:
     name: "terraform @ ci-main"
@@ -53,7 +55,10 @@ jobs:
     uses: ./.github/workflows/apply.yml
     with:
       environment: ci-main
-      TF_CLI_ARGS_apply: "-input=false -auto-approve -destroy"
+      destroy: true
+      TF_CLI_ARGS_apply: "-input=false -auto-approve"
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
   dev_apply:
     name: "terraform @ dev"
@@ -62,6 +67,8 @@ jobs:
     with:
       environment: dev
       TF_CLI_ARGS_apply: "-input=false -auto-approve"
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
   dev_validate:
     name: "validate @ dev"
@@ -78,9 +85,11 @@ jobs:
     with:
       environment: prod
       TF_CLI_ARGS_apply: "-input=false -auto-approve"
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
   prod_validate:
-    name: "validate @ dev"
+    name: "validate @ prod"
     needs: prod_apply
     runs-on: ubuntu-latet
     steps:
