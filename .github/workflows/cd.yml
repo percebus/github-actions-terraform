@@ -8,7 +8,7 @@ on:
 
 concurrency:
   # NOTE: Apparently terraform init or test does NOT create a lock.
-  group: ${{ github.ref }}-default
+  group: default
   cancel-in-progress: false
 
 # SRC: https://github.com/EnricoMi/publish-unit-test-result-action?tab=readme-ov-file#permissions
