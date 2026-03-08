@@ -9,7 +9,7 @@ on:
 
 concurrency:
   # NOTE: Cancelling a plan might corrupt the state.
-  group: ${{ github.ref }}-default-${{ inputs.environment }}
+  group: ${{ github.ref }}-default-ci
   cancel-in-progress: false
 
 permissions:
@@ -50,4 +50,4 @@ jobs:
       backend_override: true
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
-      features_directory: "features"
+      # features_directory: "features"
