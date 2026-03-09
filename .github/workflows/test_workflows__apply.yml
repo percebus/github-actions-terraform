@@ -1,4 +1,4 @@
-name: "Test worfklows/apply_plan"
+name: "Test worfklows/apply"
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
@@ -35,18 +35,7 @@ jobs:
       environment: ${{ steps.set_variables.outputs.environment }}
       TF_CLI_ARGS_init: ${{ steps.set_variables.outputs.TF_CLI_ARGS_init }}
 
-  terraform_plan:
-    name: terraform
-    needs: setup
-    uses: ./.github/workflows/plan.yml
-    with:
-      environment: ${{ needs.setup.outputs.environment }}
-      TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
-      TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
-    secrets:
-      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-
-  terraform_apply_plan:
+  terraform_apply:
     name: terraform
     needs:
       - setup
@@ -55,19 +44,7 @@ jobs:
     with:
       environment: ${{ needs.setup.outputs.environment }}_gate
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
-    secrets:
-      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-
-  terraform_plan-destroy:
-    name: terraform
-    needs:
-      - setup
-      - terraform_apply_plan
-    uses: ./.github/workflows/plan.yml
-    with:
-      environment: ${{ needs.setup.outputs.environment }}
-      validate: false
-      destroy: true
+      TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
@@ -75,8 +52,8 @@ jobs:
     name: terraform
     needs:
       - setup
-      - terraform_plan-destroy
-    uses: ./.github/workflows/apply_plan.yml
+      - terraform_apply
+    uses: ./.github/workflows/apply.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}_gate
       destroy: true
