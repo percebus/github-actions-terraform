@@ -27,9 +27,9 @@ jobs:
       - name: GITHUB_OUTPUT
         id: set_variables
         run: |
-          echo "TF_CLI_ARGS_init=-reconfigure" >> $GITHUB_OUTPUT
+          echo "STACK_ID=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_OUTPUT
     outputs:
-      TF_CLI_ARGS_init: ${{ steps.set_variables.outputs.TF_CLI_ARGS_init }}
+      STACK_ID: ${{ steps.set_variables.outputs.STACK_ID }}
 
   ci_plan:
     name: "terraform @ ci-main"
@@ -38,10 +38,11 @@ jobs:
     with:
       environment: ci-main
       features_directory: features
+      TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
-  ci_apply:
+  ci_apply_plan:
     name: "terraform @ ci-main"
     needs: ci_plan
     uses: ./.github/workflows/apply_plan.yml
@@ -52,18 +53,17 @@ jobs:
 
   ci_destroy:
     name: "terraform @ ci-main"
-    needs: ci_apply
+    needs: ci_apply_plan
     uses: ./.github/workflows/apply.yml
     with:
       environment: ci-main
       destroy: true
-      TF_CLI_ARGS_apply: "-input=false -auto-approve"
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
   test:
     name: terraform
-    needs: ci_apply
+    needs: ci_apply_plan
     uses: ./.github/workflows/test.yml
     with:
       backend_override: true
@@ -75,7 +75,7 @@ jobs:
     uses: ./.github/workflows/apply.yml
     with:
       environment: dev
-      TF_CLI_ARGS_apply: "-input=false -auto-approve"
+      TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
