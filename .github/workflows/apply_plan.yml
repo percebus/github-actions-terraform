@@ -8,16 +8,16 @@ on:
         required: false
 
     inputs:
+      environment:
+        description: environment
+        type: string
+        required: true
+
       working-directory:
         description: -chdir
         type: string
         required: false
         default: ./terra
-
-      environment:
-        description: environment
-        type: string
-        required: true
 
       backend_override:
         description: backend_override.tf
@@ -37,30 +37,30 @@ on:
         required: false
         default: false
 
-      TF_CLI_ARGS_plan:
-        description: TF_CLI_ARGS_plan
-        type: string
-        required: false
-        default: ""
-
       TF_CLI_ARGS_apply:
         description: TF_CLI_ARGS_apply
         type: string
         required: false
         default: "-input=false"
+
+      TF_CLI_ARGS_plan:
+        description: TF_CLI_ARGS_plan
+        type: string
+        required: false
+        default: ""
 
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
+      environment:
+        description: environment
+        type: string
+        required: true
+
       working-directory:
         description: -chdir
         type: string
         required: false
         default: ./terra
-
-      environment:
-        description: environment
-        type: string
-        required: true
 
       backend_override:
         description: backend_override.tf
@@ -80,17 +80,17 @@ on:
         required: false
         default: false
 
-      TF_CLI_ARGS_plan:
-        description: TF_CLI_ARGS_plan
-        type: string
-        required: false
-        default: ""
-
       TF_CLI_ARGS_apply:
         description: TF_CLI_ARGS_apply
         type: string
         required: false
         default: "-input=false"
+
+      TF_CLI_ARGS_plan:
+        description: TF_CLI_ARGS_plan
+        type: string
+        required: false
+        default: ""
 
 env:
   terraform_action: ${{ inputs.destroy && 'destroy' || 'update' }}

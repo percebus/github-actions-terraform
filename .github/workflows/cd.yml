@@ -27,9 +27,9 @@ jobs:
       - name: GITHUB_OUTPUT
         id: set_variables
         run: |
-          echo "TF_CLI_ARGS_init=-reconfigure" >> $GITHUB_OUTPUT
+          echo "STACK_ID=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_OUTPUT
     outputs:
-      TF_CLI_ARGS_init: ${{ steps.set_variables.outputs.TF_CLI_ARGS_init }}
+      STACK_ID: ${{ steps.set_variables.outputs.STACK_ID }}
 
   ci_plan:
     name: "terraform @ ci-main"
@@ -37,70 +37,70 @@ jobs:
     uses: ./.github/workflows/plan.yml
     with:
       environment: ci-main
-      features: features
+      features_directory: features
+      TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
-  ci_apply:
+  ci_apply_plan:
     name: "terraform @ ci-main"
     needs: ci_plan
-    uses: ./.github/workflows/apply-plan.yml
+    uses: ./.github/workflows/apply_plan.yml
     with:
       environment: ci-main
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
-  # ci_destroy:
-  #   name: "terraform @ ci-main"
-  #   needs: ci_apply
-  #   uses: ./.github/workflows/apply.yml
-  #   with:
-  #     environment: ci-main
-  #     destroy: true
-  #     TF_CLI_ARGS_apply: "-input=false -auto-approve"
-  #   secrets:
-  #     TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  ci_destroy:
+    name: "terraform @ ci-main"
+    needs: ci_apply_plan
+    uses: ./.github/workflows/apply.yml
+    with:
+      environment: ci-main
+      destroy: true
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
   test:
     name: terraform
-    needs: ci_apply
+    needs: ci_apply_plan
     uses: ./.github/workflows/test.yml
     with:
       backend_override: true
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
 
-  # dev_apply:
-  #   name: "terraform @ dev"
-  #   needs: test
-  #   uses: ./.github/workflows/apply.yml
-  #   with:
-  #     environment: dev
-  #     TF_CLI_ARGS_apply: "-input=false -auto-approve"
-  #   secrets:
-  #     TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  dev_apply:
+    name: "terraform @ dev"
+    needs: test
+    uses: ./.github/workflows/apply.yml
+    with:
+      environment: dev
+      TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
-  # dev_validate:
-  #   name: "validate @ dev"
-  #   needs: dev_apply
-  #   runs-on: ubuntu-latet
-  #   steps:
-  #     - name: pass
-  #       run: exit 0
+  dev_validate:
+    name: "validate @ dev"
+    needs: dev_apply
+    runs-on: ubuntu-latest
+    steps:
+      - name: pass
+        run: exit 0
 
-  # prod_apply:
-  #   name: "terraform @ prod"
-  #   needs: dev_validate
-  #   uses: ./.github/workflows/apply.yml
-  #   with:
-  #     environment: prod
-  #     TF_CLI_ARGS_apply: "-input=false -auto-approve"
-  #   secrets:
-  #     TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  prod_apply:
+    name: "terraform @ prod"
+    needs: dev_validate
+    uses: ./.github/workflows/apply.yml
+    with:
+      environment: prod
+      TF_CLI_ARGS_apply: "-input=false -auto-approve"
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
-  # prod_validate:
-  #   name: "validate @ prod"
-  #   needs: prod_apply
-  #   runs-on: ubuntu-latet
-  #   steps:
-  #     - name: pass
-  #       run: exit 0
+  prod_validate:
+    name: "validate @ prod"
+    needs: prod_apply
+    runs-on: ubuntu-latest
+    steps:
+      - name: pass
+        run: exit 0

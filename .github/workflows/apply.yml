@@ -8,16 +8,16 @@ on:
         required: false
 
     inputs:
+      environment:
+        description: environment
+        type: string
+        required: true
+
       working-directory:
         description: -chdir
         type: string
         required: false
         default: ./terra
-
-      environment:
-        description: environment
-        type: string
-        required: true
 
       backend_override:
         description: backend_override.tf
@@ -37,30 +37,30 @@ on:
         required: false
         default: false
 
+      TF_CLI_ARGS_apply:
+        description: TF_CLI_ARGS_apply
+        type: string
+        required: false
+        default: "-input=false -auto-approve"
+
       TF_CLI_ARGS_plan:
         description: TF_CLI_ARGS_plan
         type: string
         required: false
         default: ""
-
-      TF_CLI_ARGS_apply:
-        description: TF_CLI_ARGS_apply
-        type: string
-        required: false
-        default: "-input=false"
 
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
+      environment:
+        description: environment
+        type: string
+        required: true
+
       working-directory:
         description: -chdir
         type: string
         required: false
         default: ./terra
-
-      environment:
-        description: environment
-        type: string
-        required: true
 
       backend_override:
         description: backend_override.tf
@@ -80,21 +80,21 @@ on:
         required: false
         default: false
 
+      TF_CLI_ARGS_apply:
+        description: TF_CLI_ARGS_apply
+        type: string
+        required: false
+        default: "-input=false -auto-approve"
+
       TF_CLI_ARGS_plan:
         description: TF_CLI_ARGS_plan
         type: string
         required: false
         default: ""
 
-      TF_CLI_ARGS_apply:
-        description: TF_CLI_ARGS_apply
-        type: string
-        required: false
-        default: "-input=false"
-
 env:
-  terraform_action: ${{ inputs.destroy && 'destroy' || 'update' }}
   TF_IN_AUTOMATION: true
+  TF_CLI_ARGS_apply: ${{ inputs.destroy && '-destroy' || '' }}
   TF_CLI_ARGS_plan: ${{ inputs.destroy && '-destroy' || '' }}
 
 # NOTE: Targetting job sets these
@@ -124,16 +124,12 @@ jobs:
           backend_override: ${{ inputs.backend_override }}
           TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
 
-      # TODO move to common
-      - uses: actions/download-artifact@v5
-        with:
-          name: tfplan_${{ env.terraform_action }}
-          path: ${{ inputs.working-directory }}/dist
+      # NOTE: We skipped plan.- BY DESIGN
 
       - uses: percebus/github-actions-terraform/.github/actions/apply@main
         with:
           working-directory: ${{ inputs.working-directory }}
-          TF_CLI_ARGS_apply: "${{ inputs.TF_CLI_ARGS_apply }} dist/${{ env.terraform_action }}.tfplan"
+          TF_CLI_ARGS_apply: "${{ inputs.TF_CLI_ARGS_apply }} -var-file=./env/${{ vars.ENVIRONMENT }}.tfvars"
 
       # Drift detection
       - uses: percebus/github-actions-terraform/.github/actions/plan@main
