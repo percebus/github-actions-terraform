@@ -37,9 +37,7 @@ jobs:
 
   terraform_apply:
     name: terraform
-    needs:
-      - setup
-      - terraform_plan
+    needs: setup
     uses: ./.github/workflows/apply.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}_gate
