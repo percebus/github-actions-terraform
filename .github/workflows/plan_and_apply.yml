@@ -102,7 +102,7 @@ jobs:
   terraform_apply_plan:
     name: update
     needs: terraform_plan
-    uses: percebus/github-actions-terraform/.github/workflows/apply.yml@main
+    uses: percebus/github-actions-terraform/.github/workflows/apply_plan.yml@main
     with:
       environment: ${{ inputs.environment }}_gate
       working-directory: ${{ inputs.working-directory }}

@@ -1,4 +1,4 @@
-name: terraform plan
+name: terraform apply plan
 
 on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
@@ -8,16 +8,16 @@ on:
         required: false
 
     inputs:
-      environment:
-        description: environment
-        type: string
-        required: true
-
       working-directory:
         description: -chdir
         type: string
         required: false
         default: ./terra
+
+      environment:
+        description: environment
+        type: string
+        required: true
 
       backend_override:
         description: backend_override.tf
@@ -31,12 +31,6 @@ on:
         required: false
         default: "-input=false"
 
-      validate:
-        description: validate
-        type: boolean
-        required: false
-        default: true
-
       destroy:
         description: destroy
         type: boolean
@@ -49,24 +43,24 @@ on:
         required: false
         default: ""
 
-      features_directory:
-        description: terraform-compliance
+      TF_CLI_ARGS_apply:
+        description: TF_CLI_ARGS_apply
         type: string
         required: false
-        default: ""
+        default: "-input=false"
 
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
-      environment:
-        description: environment
-        type: string
-        required: true
-
       working-directory:
         description: -chdir
         type: string
         required: false
         default: ./terra
+
+      environment:
+        description: environment
+        type: string
+        required: true
 
       backend_override:
         description: backend_override.tf
@@ -80,12 +74,6 @@ on:
         required: false
         default: "-input=false"
 
-      validate:
-        description: validate
-        type: boolean
-        required: false
-        default: true
-
       destroy:
         description: destroy
         type: boolean
@@ -98,11 +86,11 @@ on:
         required: false
         default: ""
 
-      features_directory:
-        description: terraform-compliance
+      TF_CLI_ARGS_apply:
+        description: TF_CLI_ARGS_apply
         type: string
         required: false
-        default: ""
+        default: "-input=false"
 
 env:
   terraform_action: ${{ inputs.destroy && 'destroy' || 'update' }}
@@ -116,12 +104,12 @@ env:
 #   pull-requests: write
 
 jobs:
-  plan:
+  apply:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
       TF_WORKSPACE: ${{ vars.ENVIRONMENT }}
-    name: plan ${{ inputs.destroy && '-destroy' || '' }}
+    name: apply ${{ inputs.destroy && '-destroy' || '' }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         # with: TODO
@@ -136,32 +124,21 @@ jobs:
           backend_override: ${{ inputs.backend_override }}
           TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
 
-      - uses: percebus/github-actions-terraform/.github/actions/validate@main
-        if: ${{ inputs.validate }}
+      # TODO move to common
+      - uses: actions/download-artifact@v5
+        with:
+          name: tfplan_${{ env.terraform_action }}
+          path: ${{ inputs.working-directory }}/dist
+
+      - uses: percebus/github-actions-terraform/.github/actions/apply@main
         with:
           working-directory: ${{ inputs.working-directory }}
+          TF_CLI_ARGS_apply: "${{ inputs.TF_CLI_ARGS_apply }} dist/${{ env.terraform_action }}.tfplan"
 
+      # Drift detection
       - uses: percebus/github-actions-terraform/.github/actions/plan@main
         with:
           github_token: ${{ github.token }}
           working-directory: ${{ inputs.working-directory }}
-          header: ⚠️ `terraform plan ${{ env.TF_CLI_ARGS_plan }}`
-          tfplan_path: dist/${{ env.terraform_action }}.tfplan
-          include-json: ${{ inputs.features_directory == '' && 'false' || 'true' }}
-          TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars ${{ inputs.TF_CLI_ARGS_plan }}"
-          expand-comment: ${{ inputs.destroy && 'true' || 'false' }}
-
-      - uses: percebus/github-actions-terraform/.github/actions/compliance@main
-        if: ${{ inputs.features_directory != '' }}
-        with:
-          working-directory: ${{ inputs.working-directory }}
-          tfplan_json_path: dist/${{ env.terraform_action }}.tfplan.json
-          features_directory: ${{ inputs.features_directory }}
-
-      # TODO move to common
-      - uses: actions/upload-artifact@v4
-        with:
-          path: ${{ inputs.working-directory }}/dist
-          name: tfplan_${{ env.terraform_action }}
-          if-no-files-found: error
-          overwrite: true
+          TF_CLI_ARGS_plan: "${{ inputs.TF_CLI_ARGS_plan }} -var-file=./env/${{ vars.ENVIRONMENT }}.tfvars"
+          header: ""

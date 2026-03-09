@@ -1,4 +1,4 @@
-name: "Test worfklows/apply"
+name: "Test worfklows/apply_plan"
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
@@ -76,7 +76,7 @@ jobs:
     needs:
       - terraform_plan-destroy
       - setup
-    uses: ./.github/workflows/apply.yml
+    uses: ./.github/workflows/apply_plan.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}_gate
       destroy: true
