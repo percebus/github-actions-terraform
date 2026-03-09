@@ -82,7 +82,7 @@ jobs:
   dev_validate:
     name: "validate @ dev"
     needs: dev_apply
-    runs-on: ubuntu-latet
+    runs-on: ubuntu-latest
     steps:
       - name: pass
         run: exit 0
@@ -100,7 +100,7 @@ jobs:
   prod_validate:
     name: "validate @ prod"
     needs: prod_apply
-    runs-on: ubuntu-latet
+    runs-on: ubuntu-latest
     steps:
       - name: pass
         run: exit 0
