@@ -44,22 +44,22 @@ jobs:
   ci_apply:
     name: "terraform @ ci-main"
     needs: ci_plan
-    uses: ./.github/workflows/apply-plan.yml
+    uses: ./.github/workflows/apply_plan.yml
     with:
       environment: ci-main
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
-  # ci_destroy:
-  #   name: "terraform @ ci-main"
-  #   needs: ci_apply
-  #   uses: ./.github/workflows/apply.yml
-  #   with:
-  #     environment: ci-main
-  #     destroy: true
-  #     TF_CLI_ARGS_apply: "-input=false -auto-approve"
-  #   secrets:
-  #     TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  ci_destroy:
+    name: "terraform @ ci-main"
+    needs: ci_apply
+    uses: ./.github/workflows/apply.yml
+    with:
+      environment: ci-main
+      destroy: true
+      TF_CLI_ARGS_apply: "-input=false -auto-approve"
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
   test:
     name: terraform
@@ -69,38 +69,38 @@ jobs:
       backend_override: true
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
 
-  # dev_apply:
-  #   name: "terraform @ dev"
-  #   needs: test
-  #   uses: ./.github/workflows/apply.yml
-  #   with:
-  #     environment: dev
-  #     TF_CLI_ARGS_apply: "-input=false -auto-approve"
-  #   secrets:
-  #     TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  dev_apply:
+    name: "terraform @ dev"
+    needs: test
+    uses: ./.github/workflows/apply.yml
+    with:
+      environment: dev
+      TF_CLI_ARGS_apply: "-input=false -auto-approve"
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
-  # dev_validate:
-  #   name: "validate @ dev"
-  #   needs: dev_apply
-  #   runs-on: ubuntu-latet
-  #   steps:
-  #     - name: pass
-  #       run: exit 0
+  dev_validate:
+    name: "validate @ dev"
+    needs: dev_apply
+    runs-on: ubuntu-latet
+    steps:
+      - name: pass
+        run: exit 0
 
-  # prod_apply:
-  #   name: "terraform @ prod"
-  #   needs: dev_validate
-  #   uses: ./.github/workflows/apply.yml
-  #   with:
-  #     environment: prod
-  #     TF_CLI_ARGS_apply: "-input=false -auto-approve"
-  #   secrets:
-  #     TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  prod_apply:
+    name: "terraform @ prod"
+    needs: dev_validate
+    uses: ./.github/workflows/apply.yml
+    with:
+      environment: prod
+      TF_CLI_ARGS_apply: "-input=false -auto-approve"
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
-  # prod_validate:
-  #   name: "validate @ prod"
-  #   needs: prod_apply
-  #   runs-on: ubuntu-latet
-  #   steps:
-  #     - name: pass
-  #       run: exit 0
+  prod_validate:
+    name: "validate @ prod"
+    needs: prod_apply
+    runs-on: ubuntu-latet
+    steps:
+      - name: pass
+        run: exit 0
