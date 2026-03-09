@@ -93,9 +93,8 @@ on:
         default: ""
 
 env:
-  terraform_action: ${{ inputs.destroy && 'destroy' || 'update' }}
   TF_IN_AUTOMATION: true
-  TF_CLI_ARGS_plan: ${{ inputs.destroy && '-destroy' || '' }}
+  TF_CLI_ARGS_apply: ${{ inputs.destroy && '-destroy' || '' }}
 
 # NOTE: Targetting job sets these
 # permissions:
