@@ -37,7 +37,7 @@ jobs:
     uses: ./.github/workflows/plan.yml
     with:
       environment: ci-main
-      features: features
+      features_directory: features
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
