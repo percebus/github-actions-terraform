@@ -31,12 +31,23 @@ jobs:
     outputs:
       STACK_ID: ${{ steps.set_variables.outputs.STACK_ID }}
 
+  validate:
+    name: terraform
+    needs: setup
+    uses: ./.github/workflows/validate.yml
+    with:
+      backend_override: true
+      tflint-version: latest
+
   ci_plan:
     name: "terraform @ ci-main"
-    needs: setup
+    needs:
+      - setup
+      - validate
     uses: ./.github/workflows/plan.yml
     with:
       environment: ci-main
+      validate: false
       features_directory: features
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
     secrets:
@@ -74,7 +85,7 @@ jobs:
 
   dev_apply:
     name: "terraform @ dev"
-    needs: test
+    needs: ci_apply_plan
     uses: ./.github/workflows/apply.yml
     with:
       environment: dev
