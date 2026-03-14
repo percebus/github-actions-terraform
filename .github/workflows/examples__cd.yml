@@ -52,7 +52,9 @@ jobs:
 
   ci_apply_plan:
     name: "terraform @ ci-main"
-    needs: test
+    needs:
+      - ci_plan
+      - test
     uses: ./.github/workflows/apply_plan.yml
     with:
       environment: ci-main
