@@ -1,8 +1,10 @@
 
+!*.example
 
 # NOTE: We want to carefully track it
 !*.tfvars*
 local.tfvars*
+!local.tfvars.example
 
 junit.xml
 test-results.xml
