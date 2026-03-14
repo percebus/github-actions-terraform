@@ -348,9 +348,9 @@ celerybeat.pid
 # Environments
 .env
 .venv
-env/
+# env/ # terraform env
 venv/
-ENV/
+# ENV/ # terraform env
 env.bak/
 venv.bak/
 
