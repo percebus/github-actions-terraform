@@ -5,7 +5,7 @@
 [![[C]ontinuous [D]elivery](https://github.com/percebus/github-actions-terraform/actions/workflows/examples__cd.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/examples__cd.yml)
 
 - [![Deployment](https://github.com/percebus/github-actions-terraform/actions/workflows/examples__deployment.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/examples__deployment.yml)
-- [![Un-Deployment](https://github.com/percebus/github-actions-terraform/actions/workflows/examples__destroy.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/destroy.yml)
+- [![Un-Deployment](https://github.com/percebus/github-actions-terraform/actions/workflows/examples__destroy.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/examples__destroy.yml)
 
 GitHub re-usable actions and/or workflows for terraform
 
