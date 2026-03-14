@@ -1,3 +1,0 @@
-STACK_ID = "1" # OR {USER_NAME}
-ENVIRONMENT = "local"
-ARM_LOCATION = "eastus"

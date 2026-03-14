@@ -46,7 +46,7 @@ jobs:
           - latest
           - v0.61.0
 
-    name: tflint
+    name: terraform + tflint
     uses: ./.github/workflows/validate.yml
     with:
       backend_override: true
@@ -62,8 +62,8 @@ jobs:
     strategy:
       matrix:
         project:
-          - azurerm/some-rg
-          - azurerm/advanced-rg
+          - azurerm/v3/some-rg
+          - azurerm/v4/advanced-rg
 
     name: terraform -chdir=.../${{ matrix.project }}
     uses: ./.github/workflows/validate.yml

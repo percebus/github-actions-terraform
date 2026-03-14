@@ -77,8 +77,8 @@ jobs:
     strategy:
       matrix:
         project:
-          - azurerm/some-rg
-          - azurerm/advanced-rg
+          - azurerm/v3/some-rg
+          - azurerm/v4/advanced-rg
 
     name: terraform -chdir=.../${{ matrix.project }} init
     steps:
