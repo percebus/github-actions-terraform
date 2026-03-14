@@ -35,6 +35,21 @@ jobs:
       backend_override: true
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
 
+  tflint__matrix:
+    needs: default
+
+    strategy:
+      matrix:
+        tflint-version:
+          - latest
+
+    name: tflint
+    uses: ./.github/workflows/validate.yml
+    with:
+      backend_override: true
+      TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
+      tflint-version: ${{ matrix.tflint-version }}
+
   working-directory__matrix:
     needs:
       - default
@@ -51,3 +66,4 @@ jobs:
     with:
       working-directory: ./assets/terra/${{ matrix.project }}
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
+      tflint-version: latest

@@ -16,6 +16,7 @@ permissions:
 
 jobs:
   lint:
+    name: npm
     uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
     with:
       script: lint
@@ -34,6 +35,6 @@ jobs:
           - actions
 
     uses: percebus/github-actions-compliance/.github/workflows/codeql_analyze.yml@main
-    name: CodeQL analyze
+    # name: CodeQL analyze
     with:
       language: ${{ matrix.language }}

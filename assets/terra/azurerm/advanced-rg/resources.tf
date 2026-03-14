@@ -6,4 +6,5 @@ resource "random_id" "stack" {
 resource "azurerm_resource_group" "rg" {
   name     = "${local.name_prefix_long}-rg"
   location = local.location
+  tags     = local.tags
 }
