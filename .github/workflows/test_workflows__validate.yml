@@ -27,6 +27,7 @@ jobs:
     outputs:
       TF_CLI_ARGS_init: ${{ steps.set_variables.outputs.TF_CLI_ARGS_init }}
 
+  #
   default:
     name: terraform
     needs: setup
@@ -35,6 +36,24 @@ jobs:
       backend_override: true
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
 
+  #
+  tflint__matrix:
+    needs: default
+
+    strategy:
+      matrix:
+        tflint-version:
+          - latest
+          - v0.61.0
+
+    name: terraform + tflint
+    uses: ./.github/workflows/validate.yml
+    with:
+      backend_override: true
+      TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
+      tflint-version: ${{ matrix.tflint-version }}
+
+  #
   working-directory__matrix:
     needs:
       - default
@@ -43,11 +62,12 @@ jobs:
     strategy:
       matrix:
         project:
-          - azurerm/some-rg
-          - azurerm/advanced-rg
+          - azurerm/v3/some-rg
+          - azurerm/v4/advanced-rg
 
     name: terraform -chdir=.../${{ matrix.project }}
     uses: ./.github/workflows/validate.yml
     with:
       working-directory: ./assets/terra/${{ matrix.project }}
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
+      tflint-version: latest

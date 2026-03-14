@@ -60,6 +60,7 @@ jobs:
 
   terraform_plan-destroy:
     name: terraform
+    if: always()
     needs:
       - setup
       - terraform_apply_plan

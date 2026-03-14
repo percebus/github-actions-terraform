@@ -1,8 +1,10 @@
 
+!*.example
 
 # NOTE: We want to carefully track it
 !*.tfvars*
 local.tfvars*
+!local.tfvars.example
 
 junit.xml
 test-results.xml
@@ -348,9 +350,9 @@ celerybeat.pid
 # Environments
 .env
 .venv
-env/
+# env/ # terraform env
 venv/
-ENV/
+# ENV/ # terraform env
 env.bak/
 venv.bak/
 

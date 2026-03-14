@@ -21,6 +21,12 @@ on:
         required: false
         default: ""
 
+      tflint-version:
+        description: tflint version
+        type: string
+        required: false
+        default: ""
+
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
       working-directory:
@@ -37,6 +43,12 @@ on:
 
       TF_CLI_ARGS_init:
         description: TF_CLI_ARGS_init
+        type: string
+        required: false
+        default: ""
+
+      tflint-version:
+        description: tflint version
         type: string
         required: false
         default: ""
@@ -66,5 +78,15 @@ jobs:
           backend_override: ${{ inputs.backend_override }}
 
       - uses: percebus/github-actions-terraform/.github/actions/validate@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+
+      - uses: percebus/github-actions-tflint/.github/actions/setup@main
+        if: ${{ inputs.tflint-version != '' }}
+        with:
+          tflint-version: ${{ inputs.tflint-version }}
+
+      - uses: percebus/github-actions-tflint/.github/actions/init_and_run@main
+        if: ${{ inputs.tflint-version != '' }}
         with:
           working-directory: ${{ inputs.working-directory }}
