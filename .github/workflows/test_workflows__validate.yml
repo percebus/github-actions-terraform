@@ -27,6 +27,7 @@ jobs:
     outputs:
       TF_CLI_ARGS_init: ${{ steps.set_variables.outputs.TF_CLI_ARGS_init }}
 
+  #
   default:
     name: terraform
     needs: setup
@@ -35,6 +36,7 @@ jobs:
       backend_override: true
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
 
+  #
   tflint__matrix:
     needs: default
 
@@ -42,6 +44,7 @@ jobs:
       matrix:
         tflint-version:
           - latest
+          - v0.61.0
 
     name: tflint
     uses: ./.github/workflows/validate.yml
@@ -50,6 +53,7 @@ jobs:
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
       tflint-version: ${{ matrix.tflint-version }}
 
+  #
   working-directory__matrix:
     needs:
       - default

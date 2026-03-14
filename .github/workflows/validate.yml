@@ -84,7 +84,7 @@ jobs:
       - uses: percebus/github-actions-tflint/.github/actions/setup@main
         if: ${{ inputs.tflint-version != '' }}
         with:
-          version: ${{ inputs.tflint-version }}
+          tflint-version: ${{ inputs.tflint-version }}
 
       - uses: percebus/github-actions-tflint/.github/actions/init_and_run@main
         if: ${{ inputs.tflint-version != '' }}
