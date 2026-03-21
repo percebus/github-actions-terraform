@@ -158,8 +158,7 @@ jobs:
           tfplan_json_path: dist/${{ env.terraform_action }}.tfplan.json
           features_directory: ${{ inputs.features_directory }}
 
-      # TODO move to common
-      - uses: actions/upload-artifact@v4
+      - uses: percebus/github-actions-common/.github/actions/artifact-upload@main
         with:
           path: ${{ inputs.working-directory }}/dist
           name: tfplan_${{ env.terraform_action }}
