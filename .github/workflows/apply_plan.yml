@@ -124,8 +124,7 @@ jobs:
           backend_override: ${{ inputs.backend_override }}
           TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
 
-      # TODO move to common
-      - uses: actions/download-artifact@v5
+      - uses: percebus/github-actions-common/.github/actions/artifact-download@main
         with:
           name: tfplan_${{ env.terraform_action }}
           path: ${{ inputs.working-directory }}/dist
