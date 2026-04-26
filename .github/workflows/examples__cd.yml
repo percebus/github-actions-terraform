@@ -3,7 +3,11 @@ name: "[C]ontinuous [D]elivery"
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
 
-  push:
+  workflow_run:
+    workflows:
+      - "Test workflows/apply"
+    types:
+      - completed
     branches:
       - main
 

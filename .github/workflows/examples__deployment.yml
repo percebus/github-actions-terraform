@@ -6,7 +6,7 @@ on:
       - "Test workflows/apply"
     types:
       - completed
-    branch-ignore: # In favor of cd
+    branches-ignore:  # In favor of cd
       - main
 
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
