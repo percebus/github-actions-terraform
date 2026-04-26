@@ -2,10 +2,12 @@ name: "Test worfklows/plan"
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
-  pull_request:
-  push:
-    branches:
-      - main
+
+  workflow_run:
+    workflows:
+      - "Test workflows/test"
+    types:
+      - completed
 
 concurrency:
   # NOTE: Cancelling a plan might corrupt the state.
@@ -47,6 +49,7 @@ jobs:
       # - ci-branch      has ci-branch ENVIRONMENT
       # - ci-branch_plan has ci-branch ENVIRONMENT as well
       environment: ${{ needs.setup.outputs.environment }}
+      ref: ${{ github.event.workflow_run.head_branch }}
       backend_override: true
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
