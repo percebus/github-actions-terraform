@@ -2,12 +2,10 @@ name: "Test workflows/plan"
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
-
-  workflow_run:
-    workflows:
-      - "Test workflows/test"
-    types:
-      - completed
+  pull_request:
+  push:
+    branches:
+      - main
 
 concurrency:
   # NOTE: Cancelling a plan might corrupt the state.
