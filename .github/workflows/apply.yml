@@ -13,6 +13,12 @@ on:
         type: string
         required: true
 
+      ref:
+        description: The branch, tag or SHA to checkout.
+        type: string
+        required: false
+        default: ""
+
       working-directory:
         description: -chdir
         type: string
@@ -55,6 +61,12 @@ on:
         description: environment
         type: string
         required: true
+
+      ref:
+        description: The branch, tag or SHA to checkout.
+        type: string
+        required: false
+        default: ""
 
       working-directory:
         description: -chdir
@@ -112,7 +124,8 @@ jobs:
     name: apply ${{ inputs.destroy && '-destroy' || '' }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
-        # with: TODO
+        with:
+          ref: ${{ inputs.ref || github.ref }}
 
       - uses: percebus/github-actions-terraform/.github/actions/setup@main
         with:

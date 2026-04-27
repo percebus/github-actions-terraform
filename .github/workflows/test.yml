@@ -3,6 +3,12 @@ name: terraform test
 on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
     inputs:
+      ref:
+        description: The branch, tag or SHA to checkout.
+        type: string
+        required: false
+        default: ""
+
       working-directory:
         description: -chdir
         type: string
@@ -23,6 +29,12 @@ on:
 
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
+      ref:
+        description: The branch, tag or SHA to checkout.
+        type: string
+        required: false
+        default: ""
+
       working-directory:
         description: -chdir
         type: string
@@ -51,7 +63,8 @@ jobs:
     # TODO? add environment?
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
-        # with: TODO
+        with:
+          ref: ${{ inputs.ref || github.ref }}
 
       - uses: percebus/github-actions-terraform/.github/actions/setup@main
 

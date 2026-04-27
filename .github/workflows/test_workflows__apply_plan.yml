@@ -2,7 +2,12 @@ name: "Test worfklows/apply_plan"
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
-  pull_request:
+
+  workflow_run:
+    workflows:
+      - "Test workflows/plan"
+    types:
+      - completed
 
 concurrency:
   # NOTE: Cancelling an apply might corrupt the state.
