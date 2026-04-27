@@ -13,6 +13,12 @@ on:
         type: string
         required: true
 
+      ref:
+        description: The branch, tag or SHA to checkout.
+        type: string
+        required: false
+        default: ""
+
       working-directory:
         description: -chdir
         type: string
@@ -49,6 +55,12 @@ on:
         description: environment
         type: string
         required: true
+
+      ref:
+        description: The branch, tag or SHA to checkout.
+        type: string
+        required: false
+        default: ""
 
       working-directory:
         description: -chdir
@@ -92,6 +104,7 @@ jobs:
     uses: percebus/github-actions-terraform/.github/workflows/plan.yml@main
     with:
       environment: ${{ inputs.environment }}
+      ref: ${{ inputs.ref }}
       working-directory: ${{ inputs.working-directory }}
       backend_override: ${{ inputs.backend_override }}
       TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
@@ -105,6 +118,7 @@ jobs:
     uses: percebus/github-actions-terraform/.github/workflows/apply_plan.yml@main
     with:
       environment: ${{ inputs.environment }}_gate
+      ref: ${{ inputs.ref }}
       working-directory: ${{ inputs.working-directory }}
       backend_override: ${{ inputs.backend_override }}
       TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}

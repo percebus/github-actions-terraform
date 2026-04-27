@@ -17,7 +17,7 @@ on:
         description: The branch, tag or SHA to checkout.
         type: string
         required: false
-        default: ${{ github.ref }}
+        default: ""
 
       working-directory:
         description: -chdir
@@ -72,7 +72,7 @@ on:
         description: The branch, tag or SHA to checkout.
         type: string
         required: false
-        default: ${{ github.ref }}
+        default: ""
 
       working-directory:
         description: -chdir
@@ -137,7 +137,7 @@ jobs:
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         with:
-          ref: ${{ inputs.ref }}
+          ref: ${{ inputs.ref || github.ref }}
 
       - uses: percebus/github-actions-terraform/.github/actions/setup@main
         with:
