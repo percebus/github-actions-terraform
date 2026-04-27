@@ -78,6 +78,9 @@ jobs:
       TF_CLI_ARGS_plan: "-var-file=./env/${{ needs.setup.outputs.environment }}.tfvars"
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
         with:
