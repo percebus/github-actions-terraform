@@ -2,12 +2,10 @@ name: "Test actions/plan"
 
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
-
-  workflow_run:
-    workflows:
-      - "Test actions/test"
-    types:
-      - completed
+  pull_request:
+  push:
+    branches:
+      - main
 
 concurrency:
   # NOTE: Cancelling an apply might corrupt the state.
@@ -33,9 +31,6 @@ jobs:
       TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars"
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
-        with:
-          ref: ${{ github.event.workflow_run.head_branch }}
-
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
         with:

@@ -1,15 +1,8 @@
 name: "[C]ontinuous [D]elivery"
 
 on:
+  push:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
-
-  workflow_run:
-    workflows:
-      - "Test workflows/apply"
-    types:
-      - completed
-    branches:
-      - main
 
 concurrency:
   # NOTE: Apparently terraform init or test does NOT create a lock.

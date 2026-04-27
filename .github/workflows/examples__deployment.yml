@@ -1,13 +1,7 @@
 name: Deployment
 
 on:
-  workflow_run:
-    workflows:
-      - "Test workflows/apply"
-    types:
-      - completed
-    branches-ignore: # In favor of cd
-      - main
+  pull_request:
 
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
@@ -40,8 +34,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
 
       # TODO move to github-actions-common or -git
       - name: GITHUB_OUTPUT
