@@ -36,8 +36,7 @@ jobs:
     needs: setup
     uses: ./.github/workflows/validate.yml
     with:
-      # override: true  # TODO
-      backend_override: true # XXX
+      override: true
       tflint-version: latest
 
   ci_plan:
@@ -59,8 +58,7 @@ jobs:
     needs: ci_plan
     uses: ./.github/workflows/test.yml
     with:
-      # override: true  # TODO
-      backend_override: true # XXXX
+      override: true
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
 
   ci_apply_plan:

@@ -48,8 +48,7 @@ jobs:
       # - ci-branch_plan has ci-branch ENVIRONMENT as well
       environment: ${{ needs.setup.outputs.environment }}
       ref: ${{ github.event.workflow_run.head_branch }}
-      # override: true  # TODO
-      backend_override: true # XXX
+      override: true
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
       features_directory: "features"

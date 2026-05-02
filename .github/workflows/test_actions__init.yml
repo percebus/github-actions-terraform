@@ -27,8 +27,7 @@ jobs:
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
         with:
-          # override: true  # TODO
-          backend_override: true # XXX
+          override: true
 
   TF_CLI_ARGS_init__inputs_matrix:
     needs: default
@@ -48,8 +47,7 @@ jobs:
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
         with:
-          # override: true  # TODO
-          backend_override: true # XXX
+          override: true
           TF_CLI_ARGS_init: ${{ matrix.TF_CLI_ARGS_init }}
 
   TF_CLI_ARGS_init__env_matrix:
@@ -71,8 +69,7 @@ jobs:
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
         with:
-          # override: true  # TODO
-          backend_override: true # XXX
+          override: true
 
   working-directory__matrix:
     needs: default

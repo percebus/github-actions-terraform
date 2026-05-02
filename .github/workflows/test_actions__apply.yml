@@ -50,8 +50,7 @@ jobs:
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
         with:
-          # override: true  # TODO
-          backend_override: true # XXX
+          override: true
 
       - uses: ./.github/actions/plan
         with:
@@ -77,8 +76,7 @@ jobs:
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
         with:
-          # override: true  # TODO
-          backend_override: true # XXX
+          override: true
 
       - uses: ./.github/actions/plan
         with:
