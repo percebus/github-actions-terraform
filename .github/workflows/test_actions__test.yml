@@ -36,7 +36,8 @@ jobs:
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
         with:
-          backend_override: true
+          # override: true  # TODO
+          backend_override: true # XXX
           TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
 
       - uses: ./.github/actions/test
@@ -57,7 +58,8 @@ jobs:
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/init
         with:
-          backend_override: true
+          # override: true  # TODO
+          backend_override: true # XXX
           TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
 
       - uses: ./.github/actions/test

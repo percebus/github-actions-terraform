@@ -17,7 +17,12 @@ inputs:
     required: false
     default: "-input=false"
 
-  # TODO RENAME to simply override
+  override:
+    description: Override TF_CLI_ARGS for 'terraform init'
+    required: false
+    default: "false"
+
+  # XXX in favor of override
   backend_override:
     description: Override TF_CLI_ARGS for 'terraform init'
     required: false
@@ -46,6 +51,14 @@ runs:
         echo "TF_CLI_ARGS_init"
         echo "env: '${{ env.TF_CLI_ARGS_init }}'"
         echo "inputs: '${{ inputs.TF_CLI_ARGS_init }}'"
+
+    - name: override.tf
+      if: ${{ inputs.override == 'true' }}
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        cp override.tf.example override.tf
+        cat override.tf
 
     - name: backend_override.tf
       if: ${{ inputs.backend_override == 'true' }}

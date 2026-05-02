@@ -25,6 +25,13 @@ on:
         required: false
         default: ./terra
 
+      override:
+        description: override.tf
+        type: boolean
+        required: false
+        default: false
+
+      # XXX
       backend_override:
         description: backend_override.tf
         type: boolean
@@ -74,6 +81,13 @@ on:
         required: false
         default: ./terra
 
+      override:
+        description: override.tf
+        type: boolean
+        required: false
+        default: false
+
+      # XXX
       backend_override:
         description: backend_override.tf
         type: boolean
@@ -134,6 +148,7 @@ jobs:
       - uses: percebus/github-actions-terraform/.github/actions/init@main
         with:
           working-directory: ${{ inputs.working-directory }}
+          override: ${{ inputs.override }}
           backend_override: ${{ inputs.backend_override }}
           TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
 
