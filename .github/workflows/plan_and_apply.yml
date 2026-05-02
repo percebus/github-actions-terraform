@@ -31,13 +31,6 @@ on:
         required: false
         default: false
 
-      # XXX
-      backend_override:
-        description: backend_override.tf
-        type: boolean
-        required: false
-        default: false
-
       TF_CLI_ARGS_init:
         description: TF_CLI_ARGS_init
         type: string
@@ -81,13 +74,6 @@ on:
         required: false
         default: false
 
-      # XXX
-      backend_override:
-        description: backend_override.tf
-        type: boolean
-        required: false
-        default: false
-
       TF_CLI_ARGS_init:
         description: TF_CLI_ARGS_init
         type: string
@@ -106,11 +92,10 @@ on:
         required: false
         default: "-input=false"
 
-# NOTE: Targetting job sets these
-# permissions:
-#   contents: read
-#   actions: read
-#   pull-requests: write
+permissions:
+  contents: read
+  actions: read
+  pull-requests: write
 
 jobs:
   terraform_plan:
@@ -121,7 +106,6 @@ jobs:
       ref: ${{ inputs.ref }}
       working-directory: ${{ inputs.working-directory }}
       override: ${{ inputs.override }}
-      backend_override: ${{ inputs.backend_override }} # XXX
       TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
       TF_CLI_ARGS_plan: ${{ inputs.TF_CLI_ARGS_plan}}
     secrets:
@@ -136,7 +120,6 @@ jobs:
       ref: ${{ inputs.ref }}
       working-directory: ${{ inputs.working-directory }}
       override: ${{ inputs.override }}
-      backend_override: ${{ inputs.backend_override }} # XXX
       TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
       TF_CLI_ARGS_apply: ${{ inputs.TF_CLI_ARGS_apply }}
       TF_CLI_ARGS_plan: ${{ inputs.TF_CLI_ARGS_plan}}
