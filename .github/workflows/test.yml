@@ -21,13 +21,6 @@ on:
         required: false
         default: false
 
-      # XXX
-      backend_override:
-        description: backend_override.tf
-        type: boolean
-        required: false
-        default: false
-
       TF_CLI_ARGS_init:
         description: TF_CLI_ARGS_init
         type: string
@@ -54,13 +47,6 @@ on:
         required: false
         default: false
 
-      # XXX
-      backend_override:
-        description: backend_override.tf
-        type: boolean
-        required: false
-        default: false
-
       TF_CLI_ARGS_init:
         description: TF_CLI_ARGS_init
         type: string
@@ -69,6 +55,14 @@ on:
 
 env:
   TF_IN_AUTOMATION: true
+
+# SRC: https://github.com/EnricoMi/publish-unit-test-result-action?tab=readme-ov-file#permissions
+# SRC: https://github.com/dorny/test-reporter?tab=readme-ov-file#recommended-setup-for-public-repositories
+permissions:
+  contents: read
+  actions: read
+  checks: write
+  pull-requests: write
 
 jobs:
   test:
@@ -90,7 +84,6 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           override: ${{ inputs.override }}
-          backend_override: ${{ inputs.backend_override }}
           TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
 
       - uses: percebus/github-actions-terraform/.github/actions/validate@main

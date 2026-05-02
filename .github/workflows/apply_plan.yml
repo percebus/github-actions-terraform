@@ -31,13 +31,6 @@ on:
         required: false
         default: false
 
-      # XXX
-      backend_override:
-        description: backend_override.tf
-        type: boolean
-        required: false
-        default: false
-
       TF_CLI_ARGS_init:
         description: TF_CLI_ARGS_init
         type: string
@@ -87,13 +80,6 @@ on:
         required: false
         default: false
 
-      # XXX
-      backend_override:
-        description: backend_override.tf
-        type: boolean
-        required: false
-        default: false
-
       TF_CLI_ARGS_init:
         description: TF_CLI_ARGS_init
         type: string
@@ -123,11 +109,10 @@ env:
   TF_IN_AUTOMATION: true
   TF_CLI_ARGS_plan: ${{ inputs.destroy && '-destroy' || '' }}
 
-# NOTE: Targetting job sets these
-# permissions:
-#   contents: read
-#   actions: read
-#   pull-requests: write
+permissions:
+  contents: read
+  actions: read
+  pull-requests: write
 
 jobs:
   apply:
@@ -149,7 +134,6 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           override: ${{ inputs.override }}
-          backend_override: ${{ inputs.backend_override }} # XXX
           TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
 
       - uses: percebus/github-actions-common/.github/actions/artifact-download@main

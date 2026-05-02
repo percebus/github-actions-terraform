@@ -22,12 +22,6 @@ inputs:
     required: false
     default: "false"
 
-  # XXX in favor of override
-  backend_override:
-    description: Override TF_CLI_ARGS for 'terraform init'
-    required: false
-    default: "false"
-
 runs:
   using: composite
   steps:
@@ -59,14 +53,6 @@ runs:
       run: |
         cp override.tf.example override.tf
         cat override.tf
-
-    - name: backend_override.tf
-      if: ${{ inputs.backend_override == 'true' }}
-      shell: bash
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        cp backend_override.tf.example backend_override.tf
-        cat backend_override.tf
 
     - name: terraform init
       shell: bash
