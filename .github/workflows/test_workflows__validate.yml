@@ -33,7 +33,8 @@ jobs:
     needs: setup
     uses: ./.github/workflows/validate.yml
     with:
-      backend_override: true
+      # override: true  # TODO
+      backend_override: true # XXX
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
 
   #
@@ -49,7 +50,8 @@ jobs:
     name: terraform + tflint
     uses: ./.github/workflows/validate.yml
     with:
-      backend_override: true
+      # override: true  # TODO
+      backend_override: true # XXX
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
       tflint-version: ${{ matrix.tflint-version }}
 
