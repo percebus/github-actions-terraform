@@ -38,6 +38,5 @@ jobs:
     uses: ./.github/workflows/test.yml
     with:
       ref: ${{ github.event.workflow_run.head_branch }}
-      # override: true  # TODO
-      backend_override: true # XXX
+      override: true
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}

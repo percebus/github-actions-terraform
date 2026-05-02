@@ -19,8 +19,7 @@ jobs:
     name: terraform
     uses: ./.github/workflows/validate.yml
     with:
-      # override: true  # TODO
-      backend_override: true # XXX
+      override: true
 
   working-directory__matrix:
     needs: default
