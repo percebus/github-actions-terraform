@@ -25,7 +25,7 @@ on:
         description: TF_CLI_ARGS_init
         type: string
         required: false
-        default: "-input=false"
+        default: "-input=false -reconfigure"
 
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
@@ -51,7 +51,7 @@ on:
         description: TF_CLI_ARGS_init
         type: string
         required: false
-        default: "-input=false"
+        default: "-input=false -reconfigure"
 
 env:
   TF_IN_AUTOMATION: true
