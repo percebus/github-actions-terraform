@@ -1,0 +1,125 @@
+name: "Test actions"
+
+on:
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  # NOTE: Cancelling an apply might corrupt the state.
+  group: ${{ github.ref }}-default-ci
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+  pull-requests: write
+
+env:
+  TF_CLI_ARGS_init: -reconfigure
+  TF_VAR_STACK_ID: ${{ github.event.pull_request.number }}
+  TF_VAR_REPOSITORY_NAME: ${{ github.event.repository.name }}
+
+jobs:
+  setup:
+    name: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: GITHUB_OUTPUT
+        id: set_variables
+        run: |
+          if [[ "${{ github.ref_name }}" == "main" ]]; then
+            echo "environment=ci-main" >> $GITHUB_OUTPUT
+          else
+            echo "environment=ci-branch" >> $GITHUB_OUTPUT
+          fi
+    outputs:
+      environment: ${{ steps.set_variables.outputs.environment }}
+
+  terraform_plan:
+    name: terraform plan
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name == 'main' && 'ci-main' || 'ci-branch' }}
+    env:
+      TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars"
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/init
+        with:
+          override: true
+
+      - uses: ./.github/actions/plan
+        with:
+          github_token: ${{ github.token }}
+
+
+  terraform_apply:
+    name: terraform apply
+    runs-on: ubuntu-latest
+    needs: setup
+    environment: ${{ needs.setup.outputs.environment }}
+    env:
+      TF_CLI_ARGS_plan: "-var-file=./env/${{ needs.setup.outputs.environment }}.tfvars"
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/init
+        with:
+          override: true
+
+      - uses: ./.github/actions/plan
+        with:
+          github_token: ${{ github.token }}
+
+      - uses: ./.github/actions/apply
+      - uses: ./.github/actions/plan
+        with:
+          github_token: ${{ github.token }}
+          header: ""
+
+  terraform_apply-destroy:
+    name: terraform apply -destroy
+    runs-on: ubuntu-latest
+    needs:
+      - terraform_apply
+      - setup
+    environment: ${{ needs.setup.outputs.environment }}
+    env:
+      TF_CLI_ARGS_plan: "-var-file=./env/${{ needs.setup.outputs.environment }}.tfvars"
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/init
+        with:
+          override: true
+
+      - uses: ./.github/actions/plan
+        with:
+          github_token: ${{ github.token }}
+
+      - uses: ./.github/actions/apply
+      - uses: ./.github/actions/plan
+        with:
+          github_token: ${{ github.token }}
+          header: ""
+
+      - uses: ./.github/actions/plan
+        with:
+          github_token: ${{ github.token }}
+          TF_CLI_ARGS_plan: -destroy
+          tfplan_path: dist/destroy.tfplan
+          header: 🗑️ `terraform plan -destroy`
+
+      - uses: ./.github/actions/apply
+        with:
+          TF_CLI_ARGS_apply: -destroy dist/destroy.tfplan
+
+      - uses: ./.github/actions/plan
+        with:
+          github_token: ${{ github.token }}
+          TF_CLI_ARGS_plan: -destroy
+          tfplan_path: dist/destroy.tfplan
+          header: ""
