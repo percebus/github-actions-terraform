@@ -15,6 +15,12 @@ on:
         required: false
         default: ./terra
 
+      fmt-check:
+        description: fmt -check
+        type: boolean
+        required: false
+        default: true
+
       override:
         description: override.tf
         type: boolean
@@ -26,6 +32,12 @@ on:
         type: string
         required: false
         default: "-input=false -reconfigure"
+
+      validate:
+        description: validate
+        type: boolean
+        required: false
+        default: true
 
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
@@ -41,6 +53,12 @@ on:
         required: false
         default: ./terra
 
+      fmt-check:
+        description: fmt -check
+        type: boolean
+        required: false
+        default: true
+
       override:
         description: override.tf
         type: boolean
@@ -52,6 +70,12 @@ on:
         type: string
         required: false
         default: "-input=false -reconfigure"
+
+      validate:
+        description: validate
+        type: boolean
+        required: false
+        default: true
 
 env:
   TF_IN_AUTOMATION: true
@@ -77,6 +101,7 @@ jobs:
       - uses: percebus/github-actions-terraform/.github/actions/setup@main
 
       - uses: percebus/github-actions-terraform/.github/actions/fmt-check@main
+        if: ${{ inputs.fmt-check }}
         with:
           working-directory: ${{ inputs.working-directory }}
 
@@ -87,6 +112,7 @@ jobs:
           TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
 
       - uses: percebus/github-actions-terraform/.github/actions/validate@main
+        if: ${{ inputs.validate }}
         with:
           working-directory: ${{ inputs.working-directory }}
 
