@@ -5,7 +5,7 @@ on:
   pull_request:
 
 concurrency:
-  # NOTE: Cancelling a plan might corrupt the state.
+  # NOTE: Cancelling a plan and/or apply might corrupt the state.
   group: ${{ github.ref }}-default-ci
   cancel-in-progress: false
 
@@ -22,7 +22,7 @@ jobs:
       - name: GITHUB_OUTPUT
         id: set_variables
         run: |
-          echo "TF_CLI_ARGS_init=-reconfigure"  >> $GITHUB_OUTPUT
+          echo "TF_CLI_ARGS_init=-reconfigure" >> $GITHUB_OUTPUT
           if [[ "${{ github.ref_name }}" == "main" ]]; then
             echo "STACK_ID=main" >> $GITHUB_OUTPUT
             echo "environment=ci-main" >> $GITHUB_OUTPUT
@@ -96,7 +96,7 @@ jobs:
     needs:
       - setup
       - terraform_plan
-    uses: ./.github/workflows/apply.yml
+    uses: ./.github/workflows/apply_plan.yml
     with:
       # NOTE:
       # - ci-branch      has ci-branch ENVIRONMENT
