@@ -9,7 +9,7 @@ on:
 
 concurrency:
   # NOTE: Cancelling an apply might corrupt the state.
-  group: ${{ github.ref }}-default-ci
+  group: ${{ github.ref }}
   cancel-in-progress: false
 
 permissions:
