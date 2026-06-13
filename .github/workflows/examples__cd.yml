@@ -31,6 +31,7 @@ jobs:
     outputs:
       STACK_ID: ${{ steps.set_variables.outputs.STACK_ID }}
 
+  # XXX? Remove when test has tflint?
   validate:
     name: terraform
     needs: setup
@@ -39,11 +40,20 @@ jobs:
       override: true
       tflint-version: latest
 
+  # TODO add tflint into test?
+  test:
+    name: terraform
+    needs: validate
+    uses: ./.github/workflows/test.yml
+    with:
+      override: true
+      TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
+
   ci_plan:
     name: "terraform @ ci-main"
     needs:
       - setup
-      - validate
+      - test
     uses: ./.github/workflows/plan.yml
     with:
       environment: ci-main
@@ -52,14 +62,6 @@ jobs:
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-
-  test:
-    name: terraform
-    needs: ci_plan
-    uses: ./.github/workflows/test.yml
-    with:
-      override: true
-      TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
 
   ci_apply_plan:
     name: "terraform @ ci-main"
