@@ -21,22 +21,35 @@ permissions:
   pull-requests: write
 
 jobs:
-  setup:
-    name: setup
-    runs-on: ubuntu-latest
-    steps:
-      - name: GITHUB_OUTPUT
-        id: set_variables
-        run: |
-          echo "TF_CLI_ARGS_init=-reconfigure" >> $GITHUB_OUTPUT
-    outputs:
-      TF_CLI_ARGS_init: ${{ steps.set_variables.outputs.TF_CLI_ARGS_init }}
-
   default:
     name: terraform
-    needs: setup
     uses: ./.github/workflows/test.yml
     with:
       ref: ${{ github.event.workflow_run.head_branch }}
       override: true
-      TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
+
+  #
+  toggles__matrix:
+    name: terraform test
+    needs: default
+    strategy:
+      fail-fast: false
+      matrix:
+        fmt-check:
+          - true
+          - false
+
+        validate:
+          - true
+          - false
+
+        exclude:
+          - fmt-check: true
+            validate: true
+
+    uses: ./.github/workflows/test.yml
+    with:
+      ref: ${{ github.event.workflow_run.head_branch }}
+      override: true
+      fmt-check: ${{ matrix.fmt-check }}
+      validate: ${{ matrix.validate }}
