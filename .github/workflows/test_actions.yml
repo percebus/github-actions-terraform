@@ -3,13 +3,15 @@ name: Test actions
 on:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
   pull_request:
-  push:
-    branches:
-      - main
+
+  # TODO? or XXX?
+  # push:
+  #   branches:
+  #     - main
 
 concurrency:
   # NOTE: Cancelling an apply might corrupt the state.
-  group: ${{ github.ref }}
+  group: ${{ github.ref }}-default-ci
   cancel-in-progress: false
 
 permissions:
