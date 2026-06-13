@@ -120,7 +120,7 @@ jobs:
     environment: ${{ inputs.environment }}
     env:
       TF_WORKSPACE: ${{ vars.ENVIRONMENT }}
-    name: apply ${{ inputs.destroy && '-destroy' || '' }}
+    name: apply plan ${{ inputs.destroy && '-destroy' || '' }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         with:

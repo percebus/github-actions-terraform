@@ -9,9 +9,6 @@ concurrency:
   group: ${{ github.ref }}-default-ci
   cancel-in-progress: false
 
-env:
-  TF_CLI_ARGS_init: -reconfigure
-
 permissions:
   contents: read
   actions: read
