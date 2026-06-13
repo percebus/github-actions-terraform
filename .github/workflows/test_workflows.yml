@@ -65,6 +65,7 @@ jobs:
   #
   terraform_apply-destroy:
     name: terraform
+    if: always()
     needs:
       - setup
       - terraform_apply
