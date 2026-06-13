@@ -41,7 +41,7 @@ jobs:
       environment: ${{ steps.set_variables.outputs.environment }}
 
   #
-  terraform_plan_with_override:
+  terraform_override_plan:
     name: terraform plan
     needs: setup
     runs-on: ubuntu-latest
@@ -60,12 +60,12 @@ jobs:
           github_token: ${{ github.token }}
 
   #
-  terraform_plan_and_apply_then_destroy:
+  terraform_override_plan_and_apply_then_destroy:
     name: terraform plan, apply & then -destroy
     runs-on: ubuntu-latest
     needs:
       - setup
-      - terraform_plan
+      - terraform_override_plan
     environment: ${{ needs.setup.outputs.environment }}
     env:
       TF_CLI_ARGS_plan: "-var-file=./env/${{ needs.setup.outputs.environment }}.tfvars"
@@ -76,6 +76,7 @@ jobs:
         with:
           override: true
 
+      # new plan
       - uses: ./.github/actions/plan
         with:
           github_token: ${{ github.token }}
