@@ -41,44 +41,7 @@ jobs:
       environment: ${{ steps.set_variables.outputs.environment }}
 
   #
-  terraform_test_with_override:
-    name: terraform test (override.tf)
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: percebus/github-actions-common/.github/actions/checkout@main
-      - uses: ./.github/actions/setup
-      - uses: ./.github/actions/init
-        with:
-          override: true
-
-      - uses: ./.github/actions/test
-
-  #
-  terraform_test_with_override__TF_CLI_ARGS_test__matrix:
-    needs: terraform_test_with_override
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        TF_CLI_ARGS_test:
-          - "-test-directory=./terra/tests -var ENVIRONMENT=bananas"
-          - "-test-directory=./assets/terra/tests"
-          - "-test-directory=./terra/tests -junit-xml=junit.xml"
-
-    name: terraform test ${{ matrix.TF_CLI_ARGS_test }} (override.tf)
-    steps:
-      - uses: percebus/github-actions-common/.github/actions/checkout@main
-      - uses: ./.github/actions/setup
-      - uses: ./.github/actions/init
-        with:
-          override: true
-
-      - uses: ./.github/actions/test
-        with:
-          TF_CLI_ARGS_test: ${{ matrix.TF_CLI_ARGS_test }}
-
-  #
-  terraform_plan:
+  terraform_plan_with_override:
     name: terraform plan
     needs: setup
     runs-on: ubuntu-latest
@@ -97,15 +60,12 @@ jobs:
           github_token: ${{ github.token }}
 
   #
-  # TODO add plan_and_apply_with_dry_run
-
-  #
   terraform_plan_and_apply_then_destroy:
     name: terraform plan, apply & then -destroy
     runs-on: ubuntu-latest
     needs:
-      - terraform_plan
       - setup
+      - terraform_plan
     environment: ${{ needs.setup.outputs.environment }}
     env:
       TF_CLI_ARGS_plan: "-var-file=./env/${{ needs.setup.outputs.environment }}.tfvars"
