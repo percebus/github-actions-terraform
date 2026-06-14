@@ -31,19 +31,10 @@ jobs:
     outputs:
       STACK_ID: ${{ steps.set_variables.outputs.STACK_ID }}
 
-  # XXX? Remove when test has tflint?
-  validate:
-    name: terraform
-    needs: setup
-    uses: ./.github/workflows/validate.yml
-    with:
-      override: true
-      tflint-version: latest
-
   # TODO add tflint into test?
   test:
     name: terraform
-    needs: validate
+    needs: setup
     uses: ./.github/workflows/test.yml
     with:
       override: true
