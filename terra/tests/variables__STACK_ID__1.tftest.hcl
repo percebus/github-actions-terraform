@@ -23,7 +23,7 @@ run "random_id_stack_hex__equals__mocked_value" {
 }
 
 run "local_stack_id__equals__STACK_ID" {
-  command = apply # NOTE: Using apply with a mock_provider is safe and will not create real infrastructure.
+  command = plan
   assert {
     condition     = local.stack_id == "1"
     error_message = "local.stack_id did not match expected value"
@@ -31,7 +31,7 @@ run "local_stack_id__equals__STACK_ID" {
 }
 
 run "local_tags_stack_id__equals__local_stack_id" {
-  command = apply # NOTE: Using apply with a mock_provider is safe and will not create real infrastructure.
+  command = plan
   assert {
     condition     = local.tags.stack_id == local.stack_id
     error_message = "local.tags.stack_id did not match expected value"

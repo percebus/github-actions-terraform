@@ -9,9 +9,12 @@ concurrency:
   group: ${{ github.ref }}-default-ci
   cancel-in-progress: false
 
+# SRC: https://github.com/EnricoMi/publish-unit-test-result-action?tab=readme-ov-file#permissions
+# SRC: https://github.com/dorny/test-reporter?tab=readme-ov-file#recommended-setup-for-public-repositories
 permissions:
   contents: read
   actions: read
+  checks: write
   pull-requests: write
 
 jobs:
@@ -34,6 +37,18 @@ jobs:
       STACK_ID: ${{ steps.set_variables.outputs.STACK_ID }}
       environment: ${{ steps.set_variables.outputs.environment }}
       TF_CLI_ARGS_init: ${{ steps.set_variables.outputs.TF_CLI_ARGS_init }}
+
+  #
+  integration_tests:
+    name: terraform
+    needs: setup
+    uses: ./.github/workflows/integration_tests.yml
+    # with:
+    #   environment: test
+    #   TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
+    #   TF_CLI_ARGS_test: ${{ needs.setup.outputs.TF_CLI_ARGS_test }}
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
   #
   terraform_plan_with_override:

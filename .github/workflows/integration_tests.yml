@@ -1,8 +1,18 @@
-name: terraform test
-
+name: integration_tests
 on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
+    secrets:
+      TF_API_TOKEN:
+        description: Terraform Cloud API token
+        required: false
+
     inputs:
+      environment:
+        description: -var-file={ENV}.tfvars
+        type: string
+        required: false
+        default: test
+
       ref:
         description: The branch, tag or SHA to checkout.
         type: string
@@ -15,38 +25,26 @@ on:
         required: false
         default: ./terra
 
-      fmt-check:
-        description: fmt -check
-        type: boolean
-        required: false
-        default: true
-
-      override:
-        description: override.tf
-        type: boolean
-        required: false
-        default: false
-
       TF_CLI_ARGS_init:
         description: TF_CLI_ARGS_init
         type: string
         required: false
-        default: "-input=false -reconfigure"
-
-      validate:
-        description: validate
-        type: boolean
-        required: false
-        default: true
+        default: "-input=false"
 
       TF_CLI_ARGS_test:
         description: TF_CLI_ARGS_test
         type: string
         required: false
-        default: "-var-file=env/test.tfvars -junit-xml=test-results.xml"
+        default: "-test-directory=integration_tests -var-file=env/test.tfvars -junit-xml=test-results.xml"
 
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
+      environment:
+        description: -var-file={ENV}.tfvars
+        type: string
+        required: false
+        default: test
+
       ref:
         description: The branch, tag or SHA to checkout.
         type: string
@@ -59,35 +57,17 @@ on:
         required: false
         default: ./terra
 
-      fmt-check:
-        description: fmt -check
-        type: boolean
-        required: false
-        default: true
-
-      override:
-        description: override.tf
-        type: boolean
-        required: false
-        default: false
-
       TF_CLI_ARGS_init:
         description: TF_CLI_ARGS_init
         type: string
         required: false
-        default: "-input=false -reconfigure"
-
-      validate:
-        description: validate
-        type: boolean
-        required: false
-        default: true
+        default: "-input=false"
 
       TF_CLI_ARGS_test:
         description: TF_CLI_ARGS_test
         type: string
         required: false
-        default: "-var-file=env/test.tfvars -junit-xml=test-results.xml"
+        default: "-test-directory=integration_tests -var-file=env/test.tfvars -junit-xml=test-results.xml"
 
 env:
   TF_IN_AUTOMATION: true
@@ -101,31 +81,24 @@ permissions:
   pull-requests: write
 
 jobs:
-  test:
-    name: test
+  integration_tests:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    env:
+      TF_WORKSPACE: ${{ vars.ENVIRONMENT }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         with:
           ref: ${{ inputs.ref || github.ref }}
 
       - uses: percebus/github-actions-terraform/.github/actions/setup@main
-
-      - uses: percebus/github-actions-terraform/.github/actions/fmt-check@main
-        if: ${{ inputs.fmt-check }}
         with:
-          working-directory: ${{ inputs.working-directory }}
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - uses: percebus/github-actions-terraform/.github/actions/init@main
         with:
           working-directory: ${{ inputs.working-directory }}
-          override: ${{ inputs.override }}
           TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
-
-      - uses: percebus/github-actions-terraform/.github/actions/validate@main
-        if: ${{ inputs.validate }}
-        with:
-          working-directory: ${{ inputs.working-directory }}
 
       # TODO? break into `terraform -command=plan` & apply?
       - uses: percebus/github-actions-terraform/.github/actions/test@main
@@ -138,12 +111,12 @@ jobs:
           files_pattern: ${{ inputs.working-directory }}/**/*.xml
           # test-reporter inputs
           reporter: jest-junit
-          tests_name: terraform test
+          tests_name: terraform test -test-directory=integration_tests
           list-suites: all
           list-tests: failed
           # test-summary inputs
-          summary_title: terraform test Summary
+          summary_title: integration_tests Summary
           # publish-test-deltas inputs
           publish-test-deltas: true
-          comment_title: "`terraform test` Deltas"
-          check_name: "terraform test Deltas"
+          comment_title: "`integration_tests` Deltas"
+          check_name: integration_tests Deltas
