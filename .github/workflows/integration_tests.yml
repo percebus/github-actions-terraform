@@ -115,7 +115,7 @@ jobs:
           list-suites: all
           list-tests: failed
           # test-summary inputs
-          summary_title: integration_tests Summary
+          summary_title: "`integration_tests` Summary"
           # publish-test-deltas inputs
           publish-test-deltas: true
           comment_title: "`integration_tests` Deltas"
