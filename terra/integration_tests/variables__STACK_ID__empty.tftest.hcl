@@ -6,7 +6,7 @@ variables {
 run "random_id_stack_hex__is_string" {
   command = apply
   assert {
-    condition     = can(asstring(random_id.stack.hex))
+    condition     = can(regex("^[a-f0-9]{8}$", random_id.stack.hex))
     error_message = "random_id.stack.hex is NOT a string."
   }
 }
@@ -14,7 +14,7 @@ run "random_id_stack_hex__is_string" {
 run "local_stack_id__is_string" {
   command = apply
   assert {
-    condition     = can(asstring(local.stack_id))
+    condition     = can(regex("^[a-f0-9]{8}$", local.stack_id))
     error_message = "local.stack_id is NOT a string."
   }
 }
