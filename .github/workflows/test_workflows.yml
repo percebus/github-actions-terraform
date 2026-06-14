@@ -46,6 +46,8 @@ jobs:
     # with:
     #   TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
     #   TF_CLI_ARGS_test: ${{ needs.setup.outputs.TF_CLI_ARGS_test }}
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
   #
   terraform_plan_with_override:

@@ -127,6 +127,7 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
 
+      # TODO? break into `terraform -command=plan` & apply?
       - uses: percebus/github-actions-terraform/.github/actions/test@main
         with:
           working-directory: ${{ inputs.working-directory }}

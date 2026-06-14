@@ -1,6 +1,11 @@
 name: integration_tests
 on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
+    secrets:
+      TF_API_TOKEN:
+        description: Terraform Cloud API token
+        required: false
+    env:
     inputs:
       environment:
         description: -var-file={ENV}.tfvars
@@ -79,12 +84,16 @@ jobs:
   integration_tests:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
+    env:
+      TF_WORKSPACE: ${{ vars.ENVIRONMENT }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         with:
           ref: ${{ inputs.ref || github.ref }}
 
       - uses: percebus/github-actions-terraform/.github/actions/setup@main
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - uses: percebus/github-actions-terraform/.github/actions/init@main
         with:
