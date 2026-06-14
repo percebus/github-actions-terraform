@@ -40,7 +40,7 @@ jobs:
 
   #
   integration_tests:
-    name: terraform integration tests
+    name: terraform
     needs: setup
     uses: ./.github/workflows/integration_tests.yml
     # with:
