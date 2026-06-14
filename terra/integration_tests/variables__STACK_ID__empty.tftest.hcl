@@ -3,11 +3,11 @@ variables {
   STACK_ID = ""
 }
 
-run "random_id_stack_hex__equals__mocked_value" {
+run "random_id_stack_hex__is_string" {
   command = apply
   assert {
     condition     = can(asstring(random_id.stack.hex))
-    error_message = "The mocked hex value did not match."
+    error_message = "random_id.stack.hex is NOT a string."
   }
 }
 
@@ -15,7 +15,7 @@ run "local_stack_id__is_string" {
   command = apply
   assert {
     condition     = can(asstring(local.stack_id))
-    error_message = "local.stack_id did not match expected value"
+    error_message = "local.stack_id is NOT a string."
   }
 }
 

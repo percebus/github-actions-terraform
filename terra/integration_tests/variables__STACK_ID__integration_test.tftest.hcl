@@ -7,7 +7,7 @@ run "random_id_stack_hex__equals__mocked_value" {
   command = apply
   assert {
     condition     = can(asstring(random_id.stack.hex))
-    error_message = "The mocked hex value did not match."
+    error_message = "random_id.stack.hex is NOT a string."
   }
 }
 
