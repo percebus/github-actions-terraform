@@ -5,7 +5,7 @@ on:
       TF_API_TOKEN:
         description: Terraform Cloud API token
         required: false
-    env:
+
     inputs:
       environment:
         description: -var-file={ENV}.tfvars
