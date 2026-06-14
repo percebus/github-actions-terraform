@@ -9,3 +9,7 @@ locals {
     stack_id    = local.stack_id
   }
 }
+
+output "tags" {
+  value = local.tags
+}
