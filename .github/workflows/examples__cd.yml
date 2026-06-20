@@ -92,7 +92,7 @@ jobs:
 
   dev_apply:
     name: "terraform @ dev"
-    needs: ci_apply_plan
+    needs: ci_apply
     uses: ./.github/workflows/plan_and_apply.yml
     with:
       environment: dev
