@@ -65,13 +65,12 @@ jobs:
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
-  ci_plan:
+  ci_apply:
     name: "terraform @ ci-main"
     needs:
       - setup
       - integration_tests
-    # uses: ./.github/workflows/plan_and_apply.yml  # TODO?
-    uses: ./.github/workflows/plan.yml # XXX?
+    uses: ./.github/workflows/plan_and_apply.yml
     with:
       environment: ci-main
       validate: false
@@ -80,18 +79,9 @@ jobs:
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
-  ci_apply_plan:
-    name: "terraform @ ci-main"
-    needs: ci_plan
-    uses: ./.github/workflows/apply_plan.yml
-    with:
-      environment: ci-main
-    secrets:
-      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-
   ci_destroy:
     name: "terraform @ ci-main"
-    needs: ci_apply_plan
+    needs: ci_apply
     uses: ./.github/workflows/apply.yml
     if: always()
     with:
