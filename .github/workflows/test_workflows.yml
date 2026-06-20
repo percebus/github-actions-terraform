@@ -101,11 +101,12 @@ jobs:
     uses: ./.github/workflows/plan_and_apply_.yml # XXX
     with:
       environment: ${{ needs.setup.outputs.environment }}_gate
+      features_directory: features
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
   #
-  terraform-destroy_plan_and_apply:
+  terraform_plan-destroy_and_apply:
     name: terraform
     needs:
       - setup
