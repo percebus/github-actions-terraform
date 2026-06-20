@@ -1,0 +1,127 @@
+name: terraform plan, then apply
+
+on:
+  workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
+    secrets:
+      TF_API_TOKEN:
+        description: Terraform Cloud API token
+        required: false
+
+    inputs:
+      environment:
+        description: environment
+        type: string
+        required: true
+
+      ref:
+        description: The branch, tag or SHA to checkout.
+        type: string
+        required: false
+        default: ""
+
+      working-directory:
+        description: -chdir
+        type: string
+        required: false
+        default: ./terra
+
+      override:
+        description: override.tf
+        type: boolean
+        required: false
+        default: false
+
+      TF_CLI_ARGS_init:
+        description: TF_CLI_ARGS_init
+        type: string
+        required: false
+        default: "-input=false"
+
+      TF_CLI_ARGS_plan:
+        description: TF_CLI_ARGS_plan
+        type: string
+        required: false
+        default: ""
+
+      TF_CLI_ARGS_apply:
+        description: TF_CLI_ARGS_apply
+        type: string
+        required: false
+        default: "-input=false"
+
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+    inputs:
+      environment:
+        description: environment
+        type: string
+        required: true
+
+      ref:
+        description: The branch, tag or SHA to checkout.
+        type: string
+        required: false
+        default: ""
+
+      working-directory:
+        description: -chdir
+        type: string
+        required: false
+        default: ./terra
+
+      override:
+        description: override.tf
+        type: boolean
+        required: false
+        default: false
+
+      TF_CLI_ARGS_init:
+        description: TF_CLI_ARGS_init
+        type: string
+        required: false
+        default: "-input=false"
+
+      TF_CLI_ARGS_plan:
+        description: TF_CLI_ARGS_plan
+        type: string
+        required: false
+        default: ""
+
+      TF_CLI_ARGS_apply:
+        description: TF_CLI_ARGS_apply
+        type: string
+        required: false
+        default: "-input=false"
+
+permissions:
+  contents: read
+  actions: read
+  pull-requests: write
+
+jobs:
+  terraform_plan:
+    name: update
+    uses: percebus/github-actions-terraform/.github/workflows/plan.yml@main
+    with:
+      environment: ${{ inputs.environment }}
+      ref: ${{ inputs.ref }}
+      working-directory: ${{ inputs.working-directory }}
+      override: ${{ inputs.override }}
+      TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
+      TF_CLI_ARGS_plan: ${{ inputs.TF_CLI_ARGS_plan}}
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+
+  terraform_apply_plan:
+    name: update
+    needs: terraform_plan
+    uses: percebus/github-actions-terraform/.github/workflows/apply_plan.yml@main
+    with:
+      environment: ${{ inputs.environment }}_gate
+      ref: ${{ inputs.ref }}
+      working-directory: ${{ inputs.working-directory }}
+      override: ${{ inputs.override }}
+      TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
+      TF_CLI_ARGS_apply: ${{ inputs.TF_CLI_ARGS_apply }}
+      TF_CLI_ARGS_plan: ${{ inputs.TF_CLI_ARGS_plan}}
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}

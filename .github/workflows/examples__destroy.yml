@@ -49,10 +49,10 @@ jobs:
       STACK_ID: ${{ steps.set_variables.outputs.STACK_ID }}
       environment: ${{ steps.set_variables.outputs.environment }}
 
-  terraform_plan-destroy_and_apply:
+  terraform_plan-destroy_then_apply:
     name: terraform
     needs: setup
-    uses: ./.github/workflows/plan-destroy_and_apply.yml
+    uses: ./.github/workflows/plan-destroy_then_apply.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"

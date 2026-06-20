@@ -1,4 +1,4 @@
-name: terraform plan
+name: terraform plan & apply
 
 on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
@@ -61,6 +61,12 @@ on:
         required: false
         default: ""
 
+      TF_CLI_ARGS_apply:
+        description: TF_CLI_ARGS_apply
+        type: string
+        required: false
+        default: "-input=false"
+
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
       environment:
@@ -116,9 +122,16 @@ on:
         required: false
         default: ""
 
+      TF_CLI_ARGS_apply:
+        description: TF_CLI_ARGS_apply
+        type: string
+        required: false
+        default: "-input=false"
+
 env:
   terraform_action: ${{ inputs.destroy && 'destroy' || 'update' }}
   TF_IN_AUTOMATION: true
+  TF_CLI_ARGS_apply: ${{ inputs.destroy && '-destroy' || '' }}
   TF_CLI_ARGS_plan: ${{ inputs.destroy && '-destroy' || '' }}
 
 permissions:
@@ -127,12 +140,12 @@ permissions:
   pull-requests: write
 
 jobs:
-  plan:
+  plan_and_apply:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
       TF_WORKSPACE: ${{ vars.ENVIRONMENT }}
-    name: plan ${{ inputs.destroy && '-destroy' || '' }}
+    name: plan + apply ${{ inputs.destroy && '-destroy' || '' }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         with:
@@ -170,9 +183,15 @@ jobs:
           tfplan_json_path: dist/${{ env.terraform_action }}.tfplan.json
           features_directory: ${{ inputs.features_directory }}
 
-      - uses: percebus/github-actions-common/.github/actions/artifact-upload@main
+      - uses: percebus/github-actions-terraform/.github/actions/apply@main
         with:
-          path: ${{ inputs.working-directory }}/dist
-          name: tfplan_${{ env.terraform_action }}
-          if-no-files-found: error
-          overwrite: true
+          working-directory: ${{ inputs.working-directory }}
+          TF_CLI_ARGS_apply: "${{ inputs.TF_CLI_ARGS_apply }} dist/${{ env.terraform_action }}.tfplan"
+
+      # Drift detection
+      - uses: percebus/github-actions-terraform/.github/actions/plan@main
+        with:
+          github_token: ${{ github.token }}
+          working-directory: ${{ inputs.working-directory }}
+          TF_CLI_ARGS_plan: "${{ inputs.TF_CLI_ARGS_plan }} -var-file=./env/${{ vars.ENVIRONMENT }}.tfvars"
+          header: ""
