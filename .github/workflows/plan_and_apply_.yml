@@ -1,4 +1,4 @@
-name: terraform apply
+name: terraform plan & apply
 
 on:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
@@ -37,23 +37,35 @@ on:
         required: false
         default: "-input=false"
 
+      validate:
+        description: validate
+        type: boolean
+        required: false
+        default: true
+
       destroy:
         description: destroy
         type: boolean
         required: false
         default: false
 
-      TF_CLI_ARGS_apply:
-        description: TF_CLI_ARGS_apply
-        type: string
-        required: false
-        default: "-input=false -auto-approve"
-
       TF_CLI_ARGS_plan:
         description: TF_CLI_ARGS_plan
         type: string
         required: false
         default: ""
+
+      features_directory:
+        description: terraform-compliance
+        type: string
+        required: false
+        default: ""
+
+      TF_CLI_ARGS_apply:
+        description: TF_CLI_ARGS_apply
+        type: string
+        required: false
+        default: "-input=false -auto-approve"
 
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
@@ -86,17 +98,17 @@ on:
         required: false
         default: "-input=false"
 
+      validate:
+        description: validate
+        type: boolean
+        required: false
+        default: true
+
       destroy:
         description: destroy
         type: boolean
         required: false
         default: false
-
-      TF_CLI_ARGS_apply:
-        description: TF_CLI_ARGS_apply
-        type: string
-        required: false
-        default: "-input=false -auto-approve"
 
       TF_CLI_ARGS_plan:
         description: TF_CLI_ARGS_plan
@@ -104,7 +116,20 @@ on:
         required: false
         default: ""
 
+      features_directory:
+        description: terraform-compliance
+        type: string
+        required: false
+        default: ""
+
+      TF_CLI_ARGS_apply:
+        description: TF_CLI_ARGS_apply
+        type: string
+        required: false
+        default: "-input=false"
+
 env:
+  terraform_action: ${{ inputs.destroy && 'destroy' || 'update' }}
   TF_IN_AUTOMATION: true
   TF_CLI_ARGS_apply: ${{ inputs.destroy && '-destroy' || '' }}
   TF_CLI_ARGS_plan: ${{ inputs.destroy && '-destroy' || '' }}
@@ -136,12 +161,32 @@ jobs:
           override: ${{ inputs.override }}
           TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
 
-      # NOTE: We skipped plan.- BY DESIGN
+      - uses: percebus/github-actions-terraform/.github/actions/validate@main
+        if: ${{ inputs.validate }}
+        with:
+          working-directory: ${{ inputs.working-directory }}
+
+      - uses: percebus/github-actions-terraform/.github/actions/plan@main
+        with:
+          github_token: ${{ github.token }}
+          working-directory: ${{ inputs.working-directory }}
+          header: ⚠️ `terraform plan ${{ env.TF_CLI_ARGS_plan }}`
+          tfplan_path: dist/${{ env.terraform_action }}.tfplan
+          include-json: ${{ inputs.features_directory == '' && 'false' || 'true' }}
+          TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars ${{ inputs.TF_CLI_ARGS_plan }}"
+          expand-comment: ${{ inputs.destroy && 'true' || 'false' }}
+
+      - uses: percebus/github-actions-terraform/.github/actions/compliance@main
+        if: ${{ !inputs.destroy && inputs.features_directory != '' }}
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          tfplan_json_path: dist/${{ env.terraform_action }}.tfplan.json
+          features_directory: ${{ inputs.features_directory }}
 
       - uses: percebus/github-actions-terraform/.github/actions/apply@main
         with:
           working-directory: ${{ inputs.working-directory }}
-          TF_CLI_ARGS_apply: "${{ inputs.TF_CLI_ARGS_apply }} -var-file=./env/${{ vars.ENVIRONMENT }}.tfvars"
+          TF_CLI_ARGS_apply: "${{ inputs.TF_CLI_ARGS_apply }} dist/${{ env.terraform_action }}.tfplan"
 
       # Drift detection
       - uses: percebus/github-actions-terraform/.github/actions/plan@main

@@ -91,7 +91,8 @@ jobs:
   dev_apply:
     name: "terraform @ dev"
     needs: ci_apply_plan
-    uses: ./.github/workflows/apply.yml
+    # uses: ./.github/workflows/plan_and_apply.yml  # FIXME
+    uses: ./.github/workflows/plan_and_apply_.yml # XXX
     with:
       environment: dev
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
@@ -110,7 +111,8 @@ jobs:
   prod_apply:
     name: "terraform @ prod"
     needs: dev_validate
-    uses: ./.github/workflows/apply.yml
+    # uses: ./.github/workflows/plan_and_apply.yml  # FIXME
+    uses: ./.github/workflows/plan_and_apply_.yml # XXX
     with:
       environment: prod
       TF_CLI_ARGS_apply: "-input=false -auto-approve"
