@@ -97,8 +97,7 @@ jobs:
     needs:
       - setup
       - terraform_apply-destroy
-    # uses: ./.github/workflows/plan_and_apply.yml  # FIXME
-    uses: ./.github/workflows/plan_and_apply_.yml # XXX
+    uses: ./.github/workflows/plan_and_apply.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}_gate
       features_directory: features
@@ -111,8 +110,7 @@ jobs:
     needs:
       - setup
       - terraform_plan_and_apply
-    # uses: ./.github/workflows/plan_and_apply.yml  # FIXME
-    uses: ./.github/workflows/plan_and_apply_.yml # XXX
+    uses: ./.github/workflows/plan_and_apply.yml
     with:
       environment: ${{ needs.setup.outputs.environment }}_gate
       destroy: true
