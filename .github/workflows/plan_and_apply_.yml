@@ -140,12 +140,12 @@ permissions:
   pull-requests: write
 
 jobs:
-  apply:
+  plan_and_apply:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
       TF_WORKSPACE: ${{ vars.ENVIRONMENT }}
-    name: apply ${{ inputs.destroy && '-destroy' || '' }}
+    name: plan + apply ${{ inputs.destroy && '-destroy' || '' }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         with:
