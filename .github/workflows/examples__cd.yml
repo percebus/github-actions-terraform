@@ -31,10 +31,21 @@ jobs:
     outputs:
       STACK_ID: ${{ steps.set_variables.outputs.STACK_ID }}
 
+  validate:
+    name: terraform
+    needs: setup
+    uses: ./.github/workflows/validate.yml
+    with:
+      override: true
+      tflint-version: latest
+      TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
+
   # TODO add tflint into test?
   test:
     name: terraform
-    needs: setup
+    needs:
+      - setup
+      - validate
     uses: ./.github/workflows/test.yml
     with:
       override: true
@@ -59,7 +70,8 @@ jobs:
     needs:
       - setup
       - integration_tests
-    uses: ./.github/workflows/plan.yml
+    # uses: ./.github/workflows/plan_and_apply.yml  # TODO?
+    uses: ./.github/workflows/plan.yml # XXX?
     with:
       environment: ci-main
       validate: false
@@ -91,8 +103,7 @@ jobs:
   dev_apply:
     name: "terraform @ dev"
     needs: ci_apply_plan
-    # uses: ./.github/workflows/plan_and_apply.yml  # FIXME
-    uses: ./.github/workflows/plan_and_apply_.yml # XXX
+    uses: ./.github/workflows/plan_and_apply.yml
     with:
       environment: dev
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
@@ -111,8 +122,7 @@ jobs:
   prod_apply:
     name: "terraform @ prod"
     needs: dev_validate
-    # uses: ./.github/workflows/plan_and_apply.yml  # FIXME
-    uses: ./.github/workflows/plan_and_apply_.yml # XXX
+    uses: ./.github/workflows/plan_and_apply.yml
     with:
       environment: prod
       TF_CLI_ARGS_apply: "-input=false -auto-approve"
