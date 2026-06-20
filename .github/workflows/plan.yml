@@ -164,7 +164,7 @@ jobs:
           expand-comment: ${{ inputs.destroy && 'true' || 'false' }}
 
       - uses: percebus/github-actions-terraform/.github/actions/compliance@main
-        if: ${{ inputs.features_directory != '' }}
+        if: ${{ !inputs.destroy && inputs.features_directory != '' }}
         with:
           working-directory: ${{ inputs.working-directory }}
           tfplan_json_path: dist/${{ env.terraform_action }}.tfplan.json
