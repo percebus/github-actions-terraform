@@ -42,7 +42,7 @@ jobs:
 
   #
   integration_tests:
-    name: terraform
+    name: terraform @ test
     needs:
       - setup
       - test
