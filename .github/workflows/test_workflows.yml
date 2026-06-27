@@ -73,7 +73,7 @@ jobs:
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
     with:
-      environment: ${{ needs.setup.outputs.environment }}_gate
+      environment: ${{ needs.setup.outputs.environment }}
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
       TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
 
@@ -88,7 +88,7 @@ jobs:
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
     with:
-      environment: ${{ needs.setup.outputs.environment }}_gate
+      environment: ${{ needs.setup.outputs.environment }}
       destroy: true
 
   #
@@ -101,7 +101,7 @@ jobs:
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
     with:
-      environment: ${{ needs.setup.outputs.environment }}_gate
+      environment: ${{ needs.setup.outputs.environment }}
       features_directory: features
 
   #
@@ -114,7 +114,7 @@ jobs:
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
     with:
-      environment: ${{ needs.setup.outputs.environment }}_gate
+      environment: ${{ needs.setup.outputs.environment }}
       destroy: true
 
   # TODO? or XXX?
@@ -144,10 +144,7 @@ jobs:
   #   secrets:
   #     TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
   #   with:
-  #     # NOTE:
-  #     # - ci-branch      has ci-branch ENVIRONMENT
-  #     # - ci-branch_gate has ci-branch ENVIRONMENT as well
-  #     environment: ${{ needs.setup.outputs.environment }}_gate
+  #     environment: ${{ needs.setup.outputs.environment }}
   #     ref: ${{ github.event.workflow_run.head_branch }}
   #     TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
 
@@ -178,7 +175,7 @@ jobs:
   #   secrets:
   #     TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
   #   with:
-  #     environment: ${{ needs.setup.outputs.environment }}_gate
+  #     environment: ${{ needs.setup.outputs.environment }}
   #     ref: ${{ github.event.workflow_run.head_branch }}
   #     destroy: true
 
