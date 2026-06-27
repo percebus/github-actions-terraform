@@ -43,12 +43,12 @@ jobs:
     name: terraform
     needs: setup
     uses: ./.github/workflows/integration_tests.yml
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
     # with:
     #   environment: test
     #   TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
     #   TF_CLI_ARGS_test: ${{ needs.setup.outputs.TF_CLI_ARGS_test }}
-    secrets:
-      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
   #
   terraform_plan_with_override:
@@ -70,12 +70,12 @@ jobs:
       - setup
       - terraform_plan_with_override
     uses: ./.github/workflows/apply.yml
-    with:
-      environment: ${{ needs.setup.outputs.environment }}_gate
-      TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
-      TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+    with:
+      environment: ${{ needs.setup.outputs.environment }}
+      TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
+      TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
 
   #
   terraform_apply-destroy:
@@ -85,11 +85,11 @@ jobs:
       - setup
       - terraform_apply
     uses: ./.github/workflows/apply.yml
-    with:
-      environment: ${{ needs.setup.outputs.environment }}_gate
-      destroy: true
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+    with:
+      environment: ${{ needs.setup.outputs.environment }}
+      destroy: true
 
   #
   terraform_plan_and_apply:
@@ -98,11 +98,11 @@ jobs:
       - setup
       - terraform_apply-destroy
     uses: ./.github/workflows/plan_and_apply.yml
-    with:
-      environment: ${{ needs.setup.outputs.environment }}_gate
-      features_directory: features
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+    with:
+      environment: ${{ needs.setup.outputs.environment }}
+      features_directory: features
 
   #
   terraform_plan-destroy_and_apply:
@@ -111,11 +111,11 @@ jobs:
       - setup
       - terraform_plan_and_apply
     uses: ./.github/workflows/plan_and_apply.yml
-    with:
-      environment: ${{ needs.setup.outputs.environment }}_gate
-      destroy: true
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+    with:
+      environment: ${{ needs.setup.outputs.environment }}
+      destroy: true
 
   # TODO? or XXX?
   # NOTE: Tested by examples__deployment
@@ -126,13 +126,13 @@ jobs:
   #     - setup
   #     - terraform_apply-destroy
   #   uses: ./.github/workflows/plan.yml
+  #   secrets:
+  #     TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
   #   with:
   #     environment: ${{ needs.setup.outputs.environment }}
   #     ref: ${{ github.event.workflow_run.head_branch }}
   #     TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
   #     TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
-  #   secrets:
-  #     TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
   # #
   # terraform_apply_plan:
@@ -141,15 +141,12 @@ jobs:
   #     - setup
   #     - terraform_plan
   #   uses: ./.github/workflows/apply_plan.yml
-  #   with:
-  #     # NOTE:
-  #     # - ci-branch      has ci-branch ENVIRONMENT
-  #     # - ci-branch_gate has ci-branch ENVIRONMENT as well
-  #     environment: ${{ needs.setup.outputs.environment }}_gate
-  #     ref: ${{ github.event.workflow_run.head_branch }}
-  #     TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
   #   secrets:
   #     TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  #   with:
+  #     environment: ${{ needs.setup.outputs.environment }}
+  #     ref: ${{ github.event.workflow_run.head_branch }}
+  #     TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
 
   # TODO? or XXX?
   # NOTE: Tested by examples__destroy
@@ -161,13 +158,12 @@ jobs:
   #     - setup
   #     - terraform_apply_plan
   #   uses: ./.github/workflows/plan.yml
+  #   secrets:
+  #     TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
   #   with:
   #     environment: ${{ needs.setup.outputs.environment }}
   #     ref: ${{ github.event.workflow_run.head_branch }}
-  #     validate: false
   #     destroy: true
-  #   secrets:
-  #     TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
   # #
   # terraform_apply_plan-destroy:
@@ -176,12 +172,12 @@ jobs:
   #     - setup
   #     - terraform_plan-destroy
   #   uses: ./.github/workflows/apply_plan.yml
-  #   with:
-  #     environment: ${{ needs.setup.outputs.environment }}_gate
-  #     ref: ${{ github.event.workflow_run.head_branch }}
-  #     destroy: true
   #   secrets:
   #     TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  #   with:
+  #     environment: ${{ needs.setup.outputs.environment }}
+  #     ref: ${{ github.event.workflow_run.head_branch }}
+  #     destroy: true
 
   #
   # NOTE: plan_then_apply workflow is being tested by examples__deployment

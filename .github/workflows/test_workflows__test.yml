@@ -24,32 +24,18 @@ jobs:
   default:
     name: terraform
     uses: ./.github/workflows/test.yml
-    with:
-      ref: ${{ github.event.workflow_run.head_branch }}
-      override: true
 
   #
-  toggles__matrix:
+  tflint__matrix:
     name: terraform test
     needs: default
     strategy:
       fail-fast: false
       matrix:
-        fmt-check:
-          - true
-          - false
-
-        validate:
-          - true
-          - false
-
-        exclude:
-          - fmt-check: true
-            validate: true
+        tflint-version:
+          - latest
+          - v0.61.0
 
     uses: ./.github/workflows/test.yml
     with:
-      ref: ${{ github.event.workflow_run.head_branch }}
-      override: true
-      fmt-check: ${{ matrix.fmt-check }}
-      validate: ${{ matrix.validate }}
+      tflint-version: ${{ matrix.tflint-version }}
