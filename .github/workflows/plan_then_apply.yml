@@ -111,12 +111,21 @@ jobs:
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
+  approve:
+    name: Approve?
+    needs: terraform_plan
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}_gate
+    steps:
+      - name: echo
+        run: echo "Deployment approved"
+
   terraform_apply_plan:
     name: update
-    needs: terraform_plan
+    needs: approve
     uses: percebus/github-actions-terraform/.github/workflows/apply_plan.yml@main
     with:
-      environment: ${{ inputs.environment }}_gate
+      environment: ${{ inputs.environment }}
       ref: ${{ inputs.ref }}
       working-directory: ${{ inputs.working-directory }}
       override: ${{ inputs.override }}
