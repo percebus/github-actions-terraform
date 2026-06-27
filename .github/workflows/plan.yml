@@ -37,12 +37,6 @@ on:
         required: false
         default: "-input=false"
 
-      validate:
-        description: validate
-        type: boolean
-        required: false
-        default: true
-
       destroy:
         description: destroy
         type: boolean
@@ -91,12 +85,6 @@ on:
         type: string
         required: false
         default: "-input=false"
-
-      validate:
-        description: validate
-        type: boolean
-        required: false
-        default: true
 
       destroy:
         description: destroy
@@ -149,7 +137,6 @@ jobs:
           TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
 
       - uses: percebus/github-actions-terraform/.github/actions/validate@main
-        if: ${{ inputs.validate }}
         with:
           working-directory: ${{ inputs.working-directory }}
 

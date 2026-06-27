@@ -15,17 +15,11 @@ on:
         required: false
         default: ./terra
 
-      fmt-check:
-        description: fmt -check
-        type: boolean
-        required: false
-        default: true
-
       override:
         description: override.tf
         type: boolean
         required: false
-        default: false
+        default: true
 
       TF_CLI_ARGS_init:
         description: TF_CLI_ARGS_init
@@ -33,11 +27,11 @@ on:
         required: false
         default: "-input=false -reconfigure"
 
-      validate:
-        description: validate
-        type: boolean
+      tflint-version:
+        description: tflint version
+        type: string
         required: false
-        default: true
+        default: ""
 
       TF_CLI_ARGS_test:
         description: TF_CLI_ARGS_test
@@ -59,17 +53,11 @@ on:
         required: false
         default: ./terra
 
-      fmt-check:
-        description: fmt -check
-        type: boolean
-        required: false
-        default: true
-
       override:
         description: override.tf
         type: boolean
         required: false
-        default: false
+        default: true
 
       TF_CLI_ARGS_init:
         description: TF_CLI_ARGS_init
@@ -77,11 +65,11 @@ on:
         required: false
         default: "-input=false -reconfigure"
 
-      validate:
-        description: validate
-        type: boolean
+      tflint-version:
+        description: tflint version
+        type: string
         required: false
-        default: true
+        default: ""
 
       TF_CLI_ARGS_test:
         description: TF_CLI_ARGS_test
@@ -112,7 +100,6 @@ jobs:
       - uses: percebus/github-actions-terraform/.github/actions/setup@main
 
       - uses: percebus/github-actions-terraform/.github/actions/fmt-check@main
-        if: ${{ inputs.fmt-check }}
         with:
           working-directory: ${{ inputs.working-directory }}
 
@@ -123,7 +110,16 @@ jobs:
           TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
 
       - uses: percebus/github-actions-terraform/.github/actions/validate@main
-        if: ${{ inputs.validate }}
+        with:
+          working-directory: ${{ inputs.working-directory }}
+
+      - uses: percebus/github-actions-tflint/.github/actions/setup@main
+        if: ${{ inputs.tflint-version != '' }}
+        with:
+          tflint-version: ${{ inputs.tflint-version }}
+
+      - uses: percebus/github-actions-tflint/.github/actions/init_and_run@main
+        if: ${{ inputs.tflint-version != '' }}
         with:
           working-directory: ${{ inputs.working-directory }}
 
