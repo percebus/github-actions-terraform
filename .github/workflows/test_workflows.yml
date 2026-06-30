@@ -119,7 +119,7 @@ jobs:
 
   #
   qa:
-    name: terraform local|test|${{ needs.setup.outputs.environment }}
+    name: terraform
     needs:
       - setup
       - terraform_plan-destroy_and_apply
