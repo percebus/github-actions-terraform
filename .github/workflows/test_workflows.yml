@@ -40,7 +40,7 @@ jobs:
 
   #
   integration_tests:
-    name: terraform test
+    name: terraform @ test
     needs: setup
     uses: ./.github/workflows/integration_tests.yml
     secrets:
@@ -52,7 +52,7 @@ jobs:
 
   #
   terraform_plan_with_override:
-    name: terraform local
+    name: terraform @ local
     needs: setup
     uses: ./.github/workflows/plan.yml
     with:
