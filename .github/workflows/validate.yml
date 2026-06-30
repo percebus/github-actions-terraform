@@ -70,6 +70,10 @@ jobs:
         # with: TODO
 
       - uses: percebus/github-actions-terraform/.github/actions/setup@main
+      - uses: percebus/github-actions-tflint/.github/actions/setup@main
+        if: ${{ inputs.tflint-version != '' }}
+        with:
+          tflint-version: ${{ inputs.tflint-version }}
 
       - uses: percebus/github-actions-terraform/.github/actions/fmt-check@main
         with:
@@ -83,11 +87,6 @@ jobs:
       - uses: percebus/github-actions-terraform/.github/actions/validate@main
         with:
           working-directory: ${{ inputs.working-directory }}
-
-      - uses: percebus/github-actions-tflint/.github/actions/setup@main
-        if: ${{ inputs.tflint-version != '' }}
-        with:
-          tflint-version: ${{ inputs.tflint-version }}
 
       - uses: percebus/github-actions-tflint/.github/actions/init_and_run@main
         if: ${{ inputs.tflint-version != '' }}

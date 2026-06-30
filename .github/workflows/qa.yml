@@ -8,23 +8,6 @@ on:
         required: false
 
     inputs:
-      environment:
-        description: environment
-        type: string
-        required: true
-
-      integration_tests_environment:
-        description: environment
-        type: string
-        required: false
-        default: test
-
-      integration_tests_directory:
-        description: integration tests directory
-        type: string
-        required: false
-        default: ""
-
       ref:
         description: The branch, tag or SHA to checkout.
         type: string
@@ -48,6 +31,29 @@ on:
         type: string
         required: false
         default: ""
+
+      test_environment:
+        description: environment
+        type: string
+        required: false
+        default: test
+
+      unit_tests_directory:
+        description: terraform test
+        type: string
+        required: false
+        default: ""
+
+      integration_tests_directory:
+        description: integration tests directory
+        type: string
+        required: false
+        default: ""
+
+      environment:
+        description: environment
+        type: string
+        required: true
 
       TF_CLI_ARGS_plan:
         description: TF_CLI_ARGS_plan
@@ -69,23 +75,6 @@ on:
 
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
-      environment:
-        description: environment
-        type: string
-        required: true
-
-      integration_tests_environment:
-        description: environment
-        type: string
-        required: false
-        default: "test"
-
-      integration_tests_directory:
-        description: integration tests directory
-        type: string
-        required: false
-        default: ""
-
       ref:
         description: The branch, tag or SHA to checkout.
         type: string
@@ -109,6 +98,29 @@ on:
         type: string
         required: false
         default: ""
+
+      test_environment:
+        description: environment
+        type: string
+        required: false
+        default: test
+
+      unit_tests_directory:
+        description: terraform test
+        type: string
+        required: false
+        default: ""
+
+      integration_tests_directory:
+        description: integration tests directory
+        type: string
+        required: false
+        default: ""
+
+      environment:
+        description: environment
+        type: string
+        required: true
 
       TF_CLI_ARGS_plan:
         description: TF_CLI_ARGS_plan
@@ -141,48 +153,104 @@ permissions:
 
 jobs:
   test:
-    name: "env: local"
-    uses: percebus/github-actions-terraform/.github/workflows/test.yml@main
-    with:
-      ref: ${{ inputs.ref }}
-      working-directory: ${{ inputs.working-directory }}
-      override: true
-      TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
-      tflint-version: ${{ inputs.tflint-version }}
+    name: test
+    runs-on: ubuntu-latest
+    # NOTE: Copy from
+    # uses: percebus/github-actions-terraform/.github/workflows/test.yml@main
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+        with:
+          ref: ${{ inputs.ref || github.ref }}
 
-  integration_tests:
-    name: "env: ${{ inputs.integration_tests_environment }}"
+      - uses: percebus/github-actions-terraform/.github/actions/setup@main
+      - uses: percebus/github-actions-tflint/.github/actions/setup@main
+        if: ${{ inputs.tflint-version != '' }}
+        with:
+          tflint-version: ${{ inputs.tflint-version }}
+
+      - uses: percebus/github-actions-terraform/.github/actions/fmt-check@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+
+      - uses: percebus/github-actions-terraform/.github/actions/init@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          override: true
+          TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
+
+      - uses: percebus/github-actions-terraform/.github/actions/validate@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+
+      - uses: percebus/github-actions-tflint/.github/actions/init_and_run@main
+        if: ${{ inputs.tflint-version != '' }}
+        with:
+          working-directory: ${{ inputs.working-directory }}
+
+      - uses: percebus/github-actions-terraform/.github/actions/test@main
+        if: ${{ inputs.unit_tests_directory != '' }}
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          TF_CLI_ARGS_test: "-test-directory=${{ inputs.unit_tests_directory }} -var-file=env/${{ inputs.test_environment }}.tfvars -junit-xml=test-results.xml"
+
+      - uses: percebus/github-actions-testing/.github/actions/junit@main
+        if: ${{ inputs.unit_tests_directory != '' }}
+        with:
+          files_pattern: ${{ inputs.working-directory }}/**/*.xml
+          # test-reporter inputs
+          reporter: jest-junit
+          tests_name: terraform test
+          list-suites: all
+          list-tests: failed
+          # test-summary inputs
+          summary_title: "terraform test Summary"
+          # publish-test-deltas inputs
+          publish-test-deltas: true
+          comment_title: "`terraform test` Deltas"
+          check_name: "terraform test Deltas"
+
+  #
+  test__integration_tests:
+    name: "env: ${{ inputs.test_environment }}"
     needs: test
-    if: ${{ inputs.integration_tests_directory != '' }}
+    if: |
+      (inputs.integration_tests_directory != '') &&
+      (needs.test.result == 'skipped' || needs.test.result == 'success')
     uses: percebus/github-actions-terraform/.github/workflows/integration_tests.yml@main
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
     with:
       ref: ${{ inputs.ref }}
       working-directory: ${{ inputs.working-directory }}
-      environment: ${{ inputs.integration_tests_environment }}
+      environment: ${{ inputs.test_environment }}
       TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
-      TF_CLI_ARGS_test: "-test-directory=${{ inputs.integration_tests_directory }} -var-file=env/${{ inputs.integration_tests_environment }}.tfvars -junit-xml=test-results.xml"
+      TF_CLI_ARGS_test: "-test-directory=${{ inputs.integration_tests_directory }} -var-file=env/${{ inputs.test_environment }}.tfvars -junit-xml=test-results.xml"
 
-  terraform_plan_and_apply:
+  #
+  plan_and_apply:
     name: "env: ${{ inputs.environment }}"
-    needs: integration_tests
+    needs: test__integration_tests
+    if: |
+      always() && (inputs.environment != '')
     uses: ./.github/workflows/plan_and_apply.yml
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
     with:
       environment: ${{ inputs.environment }}
+      ref: ${{ inputs.ref }}
       features_directory: ${{ inputs.features_directory }}
       TF_CLI_ARGS_plan: "${{ inputs.TF_CLI_ARGS_plan }}"
       TF_CLI_ARGS_apply: "${{ inputs.TF_CLI_ARGS_apply }}"
 
-  terraform_apply-destroy:
+  #
+  apply-destroy:
     name: "env: ${{ inputs.environment }}"
-    needs: terraform_plan_and_apply
+    needs: plan_and_apply
     uses: ./.github/workflows/apply.yml
-    if: always()
+    if: always() && (inputs.environment != '')
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
     with:
       environment: ${{ inputs.environment }}
+      ref: ${{ inputs.ref }}
       destroy: true
