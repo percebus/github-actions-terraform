@@ -81,7 +81,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  integration_tests:
+  test__integration_tests:
     name: test (integration_tests)
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
