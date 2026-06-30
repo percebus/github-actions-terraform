@@ -40,7 +40,7 @@ jobs:
 
   #
   integration_tests:
-    name: terraform
+    name: terraform test
     needs: setup
     uses: ./.github/workflows/integration_tests.yml
     secrets:
@@ -65,7 +65,7 @@ jobs:
 
   #
   terraform_apply:
-    name: terraform
+    name: terraform @ ${{ needs.setup.outputs.environment }}
     needs:
       - setup
       - terraform_plan_with_override
@@ -79,7 +79,7 @@ jobs:
 
   #
   terraform_apply-destroy:
-    name: terraform
+    name: terraform @ ${{ needs.setup.outputs.environment }}
     if: always()
     needs:
       - setup
@@ -93,7 +93,7 @@ jobs:
 
   #
   terraform_plan_and_apply:
-    name: terraform
+    name: terraform @ ${{ needs.setup.outputs.environment }}
     needs:
       - setup
       - terraform_apply-destroy
@@ -106,7 +106,7 @@ jobs:
 
   #
   terraform_plan-destroy_and_apply:
-    name: terraform
+    name: terraform @ ${{ needs.setup.outputs.environment }}
     needs:
       - setup
       - terraform_plan_and_apply
@@ -127,8 +127,9 @@ jobs:
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
     with:
-      environment: ${{ needs.setup.outputs.environment }}
+      tflint-version: latest
       integration_tests_directory: integration_tests
+      environment: ${{ needs.setup.outputs.environment }}
       features_directory: features
 
   # TODO? or XXX?
