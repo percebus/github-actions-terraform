@@ -128,6 +128,9 @@ on:
         required: false
         default: "-input=false"
 
+env:
+  TF_IN_AUTOMATION: true
+
 # SRC: https://github.com/EnricoMi/publish-unit-test-result-action?tab=readme-ov-file#permissions
 # SRC: https://github.com/dorny/test-reporter?tab=readme-ov-file#recommended-setup-for-public-repositories
 permissions:
@@ -136,12 +139,9 @@ permissions:
   checks: write
   pull-requests: write
 
-env:
-  TF_IN_AUTOMATION: true
-
 jobs:
   test:
-    name: terraform
+    name: "env: local"
     uses: percebus/github-actions-terraform/.github/workflows/test.yml@main
     with:
       ref: ${{ inputs.ref }}
@@ -151,7 +151,7 @@ jobs:
       tflint-version: ${{ inputs.tflint-version }}
 
   integration_tests:
-    name: "terraform @ ${{ inputs.integration_tests_environment }}"
+    name: "env: ${{ inputs.integration_tests_environment }}"
     needs: test
     if: ${{ inputs.integration_tests_directory != '' }}
     uses: percebus/github-actions-terraform/.github/workflows/integration_tests.yml@main
@@ -165,7 +165,7 @@ jobs:
       TF_CLI_ARGS_test: "-test-directory=${{ inputs.integration_tests_directory }} -var-file=env/${{ inputs.integration_tests_environment }}.tfvars -junit-xml=test-results.xml"
 
   terraform_plan_and_apply:
-    name: "terraform @ ${{ inputs.environment }}"
+    name: "env: ${{ inputs.environment }}"
     needs: integration_tests
     uses: ./.github/workflows/plan_and_apply.yml
     secrets:
@@ -177,7 +177,7 @@ jobs:
       TF_CLI_ARGS_apply: "${{ inputs.TF_CLI_ARGS_apply }}"
 
   terraform_apply-destroy:
-    name: "terraform @ ${{ inputs.environment }}"
+    name: "env: ${{ inputs.environment }}"
     needs: terraform_plan_and_apply
     uses: ./.github/workflows/apply.yml
     if: always()

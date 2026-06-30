@@ -17,11 +17,11 @@ on:
         required: false
         default: ./terra
 
-permissions:
-  contents: read
-
 env:
   TF_IN_AUTOMATION: true
+
+permissions:
+  contents: read
 
 jobs:
   validate:
