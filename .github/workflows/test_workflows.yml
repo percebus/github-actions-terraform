@@ -119,7 +119,9 @@ jobs:
 
   qa:
     name: QA
-    needs: terraform_plan-destroy_and_apply
+    needs:
+      - setup
+      - terraform_plan-destroy_and_apply
     uses: ./.github/workflows/qa.yml
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
