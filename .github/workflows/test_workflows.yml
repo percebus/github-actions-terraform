@@ -120,7 +120,7 @@ jobs:
   qa:
     name: QA
     needs: terraform_plan-destroy_and_apply
-    uses: ./.github/workflows/verify.yml
+    uses: ./.github/workflows/qa.yml
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
     with:
