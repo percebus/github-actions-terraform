@@ -153,7 +153,7 @@ permissions:
 
 jobs:
   test:
-    name: "env: local"
+    name: test
     runs-on: ubuntu-latest
     # NOTE: Copy from
     # uses: percebus/github-actions-terraform/.github/workflows/test.yml@main
@@ -231,8 +231,7 @@ jobs:
     name: "env: ${{ inputs.environment }}"
     needs: test__integration_tests
     if: |
-      (inputs.environment != '') &&
-      (needs.test__integration_tests.result == 'skipped' || needs.test.test__integration_tests.result == 'success')
+      always() && (inputs.environment != '')
     uses: ./.github/workflows/plan_and_apply.yml
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
@@ -248,7 +247,7 @@ jobs:
     name: "env: ${{ inputs.environment }}"
     needs: plan_and_apply
     uses: ./.github/workflows/apply.yml
-    if: always() && ${{ inputs.environment != '' }}
+    if: always() && (inputs.environment != '')
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
     with:
