@@ -1,0 +1,50 @@
+name: terraform force-unlock
+
+on:
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+    inputs:
+      environment:
+        description: environment
+        type: string
+        required: true
+
+      working-directory:
+        description: -chdir
+        type: string
+        required: false
+        default: ./terra
+
+      lock-id:
+        description: lock ID
+        type: string
+        required: true
+
+env:
+  TF_IN_AUTOMATION: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  force-unlock:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    env:
+      TF_WORKSPACE: ${{ vars.ENVIRONMENT }}
+    name: force-unlock
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+
+      - uses: percebus/github-actions-terraform/.github/actions/setup@main
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - uses: percebus/github-actions-terraform/.github/actions/init@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          override: ${{ inputs.override }}
+          TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
+
+      - name: terraform force-unlock
+        run: terraform -chdir=${{ inputs.working-directory }} force-unlock ${{ inputs.lock-id }}
