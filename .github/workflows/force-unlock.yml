@@ -1,6 +1,7 @@
 name: terraform force-unlock
 
 on:
+  push:
   workflow_call: # SRC: https://docs.github.com/en/actions/using-workflows/reusing-workflows
     secrets:
       TF_API_TOKEN:
