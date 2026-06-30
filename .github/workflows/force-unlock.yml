@@ -47,4 +47,4 @@ jobs:
           TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
 
       - name: terraform force-unlock
-        run: terraform -chdir=${{ inputs.working-directory }} force-unlock ${{ inputs.lock-id }} -force
+        run: terraform -chdir=${{ inputs.working-directory }} force-unlock -force ${{ inputs.lock-id }}
