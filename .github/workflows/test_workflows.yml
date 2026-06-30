@@ -117,6 +117,17 @@ jobs:
       environment: ${{ needs.setup.outputs.environment }}
       destroy: true
 
+  qa:
+    name: QA
+    needs: terraform_plan-destroy_and_apply
+    uses: ./.github/workflows/verify.yml
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+    with:
+      environment: ${{ needs.setup.outputs.environment }}
+      integration_tests_directory: integration_tests
+      features_directory: features
+
   # TODO? or XXX?
   # NOTE: Tested by examples__deployment
   # #
