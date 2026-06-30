@@ -175,7 +175,7 @@ jobs:
       - uses: percebus/github-actions-terraform/.github/actions/init@main
         with:
           working-directory: ${{ inputs.working-directory }}
-          override: ${{ inputs.override }}
+          override: true
           TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
 
       - uses: percebus/github-actions-terraform/.github/actions/validate@main

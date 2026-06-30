@@ -122,6 +122,7 @@ jobs:
     name: terraform
     needs:
       - setup
+      - integration_tests
       - terraform_plan-destroy_and_apply
     uses: ./.github/workflows/qa.yml
     secrets:
