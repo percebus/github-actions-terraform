@@ -119,7 +119,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
-      TF_WORKSPACE: ${{ vars.ENVIRONMENT }}
+      TF_WORKSPACE: ${{ inputs.environment }}
     name: apply ${{ inputs.destroy && '-destroy' || '' }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main

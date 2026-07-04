@@ -86,7 +86,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
-      TF_WORKSPACE: ${{ vars.ENVIRONMENT }}
+      TF_WORKSPACE: ${{ inputs.environment }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         with:
