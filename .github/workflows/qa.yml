@@ -231,7 +231,8 @@ jobs:
     name: "env: ${{ inputs.environment }}"
     needs: test__integration_tests
     if: |
-      always() && (inputs.environment != '')
+      (inputs.environment != '') &&
+      (needs.test__integration_tests.result == 'skipped' || needs.test__integration_tests.result == 'success')
     uses: ./.github/workflows/plan_and_apply.yml
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
@@ -247,7 +248,9 @@ jobs:
     name: "env: ${{ inputs.environment }}"
     needs: plan_and_apply
     uses: ./.github/workflows/apply.yml
-    if: always() && (inputs.environment != '')
+    if: |
+      (inputs.environment != '') &&
+      (needs.plan_and_apply.result == 'skipped' || needs.plan_and_apply.result == 'success' || needs.plan_and_apply.result == 'failed')
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
     with:
