@@ -12,15 +12,15 @@ inputs:
     required: false
     default: "-la"
 
-  TF_CLI_ARGS_init:
-    description: Additional options to pass to 'terraform init'
-    required: false
-    default: "-input=false"
-
   override:
     description: Override TF_CLI_ARGS for 'terraform init'
     required: false
     default: "false"
+
+  TF_CLI_ARGS_init:
+    description: Additional options to pass to 'terraform init'
+    required: false
+    default: "-input=false"
 
 runs:
   using: composite
