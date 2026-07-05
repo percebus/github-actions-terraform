@@ -3,7 +3,7 @@ variables {
   stack_id = "integration_test"
 }
 
-run "random_id_stack_hex__equals__mocked_value" {
+run "random_id_stack_hex__is_string" {
   command = apply
   assert {
     condition     = can(regex("^[a-f0-9]{8}$", random_id.stack.hex))
