@@ -1,14 +1,14 @@
 
-variable "ENVIRONMENT" {
+variable "environment" {
   type = string
 }
 
-variable "STACK_ID" {
+variable "stack_id" {
   type    = string
   default = ""
 }
 
-variable "REPOSITORY_NAME" {
+variable "repository_name" {
   type    = string
   default = "github-actions-terraform"
 }

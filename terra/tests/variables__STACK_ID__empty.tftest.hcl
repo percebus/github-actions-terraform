@@ -1,6 +1,6 @@
 
 variables {
-  STACK_ID = ""
+  stack_id = ""
 }
 
 # TODO? Move to testing/ ?

@@ -27,14 +27,14 @@ jobs:
         run: |
           echo "TF_CLI_ARGS_init=-reconfigure" >> $GITHUB_OUTPUT
           if [[ "${{ github.ref_name }}" == "main" ]]; then
-            echo "STACK_ID=main" >> $GITHUB_OUTPUT
+            echo "stack_id=main" >> $GITHUB_OUTPUT
             echo "environment=ci-main" >> $GITHUB_OUTPUT
           else
-            echo "STACK_ID=pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+            echo "stack_id=pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
             echo "environment=ci-branch" >> $GITHUB_OUTPUT
           fi
     outputs:
-      STACK_ID: ${{ steps.set_variables.outputs.STACK_ID }}
+      stack_id: ${{ steps.set_variables.outputs.stack_id }}
       environment: ${{ steps.set_variables.outputs.environment }}
       TF_CLI_ARGS_init: ${{ steps.set_variables.outputs.TF_CLI_ARGS_init }}
 
@@ -60,7 +60,7 @@ jobs:
       ref: ${{ github.event.workflow_run.head_branch }}
       override: true
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
-      TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
+      TF_CLI_ARGS_plan: "-var stack_id=${{ needs.setup.outputs.stack_id }}"
       features_directory: features
 
   #
@@ -75,7 +75,7 @@ jobs:
     with:
       environment: ${{ needs.setup.outputs.environment }}
       TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
-      TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
+      TF_CLI_ARGS_plan: "-var stack_id=${{ needs.setup.outputs.stack_id }}"
 
   #
   terraform_apply-destroy:
@@ -148,7 +148,7 @@ jobs:
   #     environment: ${{ needs.setup.outputs.environment }}
   #     ref: ${{ github.event.workflow_run.head_branch }}
   #     TF_CLI_ARGS_init: ${{ needs.setup.outputs.TF_CLI_ARGS_init }}
-  #     TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
+  #     TF_CLI_ARGS_plan: "-var stack_id=${{ needs.setup.outputs.stack_id }}"
 
   # #
   # terraform_apply_plan:

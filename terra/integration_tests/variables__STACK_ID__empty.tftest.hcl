@@ -1,6 +1,6 @@
 
 variables {
-  STACK_ID = ""
+  stack_id = ""
 }
 
 run "random_id_stack_hex__is_string" {

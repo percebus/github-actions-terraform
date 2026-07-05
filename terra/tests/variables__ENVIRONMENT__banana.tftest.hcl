@@ -1,9 +1,9 @@
 
 variables {
-  ENVIRONMENT = "banana"
+  environment = "banana"
 }
 
-run "local_environment__equals__ENVIRONMENT" {
+run "local_environment__equals__environment" {
   assert {
     condition     = local.environment == "banana"
     error_message = "local.environment did not match expected value"

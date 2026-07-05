@@ -1,6 +1,6 @@
 
 variables {
-  STACK_ID = "1"
+  stack_id = "1"
 }
 
 # TODO? Move to testing/ ?
@@ -22,7 +22,7 @@ run "random_id_stack_hex__equals__mocked_value" {
   }
 }
 
-run "local_stack_id__equals__STACK_ID" {
+run "local_stack_id__equals__stack_id" {
   command = plan
   assert {
     condition     = local.stack_id == "1"
