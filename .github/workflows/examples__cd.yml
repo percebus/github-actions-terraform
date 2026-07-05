@@ -27,9 +27,9 @@ jobs:
       - name: GITHUB_OUTPUT
         id: set_variables
         run: |
-          echo "STACK_ID=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_OUTPUT
+          echo "stack_id=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_OUTPUT
     outputs:
-      STACK_ID: ${{ steps.set_variables.outputs.STACK_ID }}
+      stack_id: ${{ steps.set_variables.outputs.stack_id }}
 
   test:
     name: terraform
@@ -65,7 +65,7 @@ jobs:
     with:
       environment: ci-main
       features_directory: features
-      TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
+      TF_CLI_ARGS_plan: "-var stack_id=${{ needs.setup.outputs.stack_id }}"
 
   ci_destroy:
     name: "terraform @ ci-main"
@@ -86,7 +86,7 @@ jobs:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
     with:
       environment: dev
-      TF_CLI_ARGS_plan: "-var STACK_ID=${{ needs.setup.outputs.STACK_ID }}"
+      TF_CLI_ARGS_plan: "-var stack_id=${{ needs.setup.outputs.stack_id }}"
       features_directory: features
 
   dev_validate:

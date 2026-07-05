@@ -1,2 +1,2 @@
-# STACK_ID = "1"
-ENVIRONMENT = "dev"
+# stack_id = "1"
+environment = "dev"

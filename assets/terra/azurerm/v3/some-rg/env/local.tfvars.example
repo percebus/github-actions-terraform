@@ -1,2 +1,2 @@
-ENVIRONMENT = "local" # OR {USER_NAME}
+environment = "local" # OR {USER_NAME}
 ARM_LOCATION = "eastus"

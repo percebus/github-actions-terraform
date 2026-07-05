@@ -1,5 +1,5 @@
 
-variable "REPOSITORY_NAME" {
+variable "repository_name" {
   type    = string
   default = "github-actions-terraform"
 }
@@ -9,7 +9,7 @@ variable "ARM_LOCATION" {
   default = "eastus"
 }
 
-variable "ENVIRONMENT" {
+variable "environment" {
   type    = string
   default = "local"
 }

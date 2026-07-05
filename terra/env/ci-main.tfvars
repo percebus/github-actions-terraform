@@ -1,1 +1,1 @@
-ENVIRONMENT = "ci-main"
+environment = "ci-main"

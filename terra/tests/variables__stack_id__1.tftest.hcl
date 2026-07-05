@@ -1,6 +1,6 @@
 
 variables {
-  STACK_ID = ""
+  stack_id = "1"
 }
 
 # TODO? Move to testing/ ?
@@ -22,16 +22,16 @@ run "random_id_stack_hex__equals__mocked_value" {
   }
 }
 
-run "local_stack_id__equals__random_id_stack_hex" {
-  command = apply # NOTE: Using apply with a mock_provider is safe and will not create real infrastructure.
+run "local_stack_id__equals__stack_id" {
+  command = plan
   assert {
-    condition     = local.stack_id == random_id.stack.hex
+    condition     = local.stack_id == "1"
     error_message = "local.stack_id did not match expected value"
   }
 }
 
 run "local_tags_stack_id__equals__local_stack_id" {
-  command = apply # NOTE: Using apply with a mock_provider is safe and will not create real infrastructure.
+  command = plan
   assert {
     condition     = local.tags.stack_id == local.stack_id
     error_message = "local.tags.stack_id did not match expected value"

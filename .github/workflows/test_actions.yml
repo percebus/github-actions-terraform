@@ -16,8 +16,8 @@ concurrency:
 
 env:
   TF_CLI_ARGS_init: -reconfigure
-  TF_VAR_STACK_ID: ${{ github.event.pull_request.number }}
-  TF_VAR_REPOSITORY_NAME: ${{ github.event.repository.name }}
+  TF_VAR_stack_id: ${{ github.event.pull_request.number }}
+  TF_VAR_repository_name: ${{ github.event.repository.name }}
 
 permissions:
   contents: read
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name == 'main' && 'ci-main' || 'ci-branch' }}
     env:
-      TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars"
+      TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.environment }}.tfvars"
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup

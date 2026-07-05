@@ -1,3 +1,3 @@
-# STACK_ID = "1"
-ENVIRONMENT  = "prod"
+# stack_id = "1"
+environment  = "prod"
 ARM_LOCATION = "eastus"

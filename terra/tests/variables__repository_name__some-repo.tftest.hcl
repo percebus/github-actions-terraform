@@ -1,9 +1,9 @@
 
 variables {
-  REPOSITORY_NAME = "some-repo"
+  repository_name = "some-repo"
 }
 
-run "local_repo_name__equals__REPOSITORY_NAME" {
+run "local_repo_name__equals__repository_name" {
   assert {
     condition     = local.repo_name == "some-repo"
     error_message = "local.repo_name did not match expected value"

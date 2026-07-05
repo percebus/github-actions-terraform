@@ -1,2 +1,2 @@
-ENVIRONMENT  = "dev"
+environment  = "dev"
 ARM_LOCATION = "eastus"

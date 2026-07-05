@@ -1,1 +1,1 @@
-ENVIRONMENT = "ci-branch"
+environment = "ci-branch"
