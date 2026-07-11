@@ -36,11 +36,11 @@
 
 ## Workflows X Workflows
 
-| Workflow                                                   | `test` | `integration_test` | `-destroy` | `plan` | `apply_plan` | `plan_and_apply` | `apply`    |
-| ---------------------------------------------------------- | ------ | ------------------ | ---------- | ------ | ------------ | ---------------- | ---------- |
-| [`plan_then_apply`](./plan_then_apply.yml)                 |        |                    |            | ✅     | ✅           |                  |            |
-| [`plan-destroy_then_apply`](./plan-destroy_then_apply.yml) |        |                    | ✅         | ✅     | ✅           |                  |            |
-| [`qa`](./qa.yml)                                           | ✅     | ✅                 |            |        |              | ✅               | `-destroy` |
+| Workflow                                                   | `test` | `integration_test` | `plan_and_apply` | `apply`    | `plan`     | `apply_plan` |
+| ---------------------------------------------------------- | ------ | ------------------ | ---------------- | ---------- | ---------- | ------------ |
+| [`plan_then_apply`](./plan_then_apply.yml)                 |        |                    |                  |            | ✅         | ✅           |
+| [`plan-destroy_then_apply`](./plan-destroy_then_apply.yml) |        |                    |                  |            | `-destroy` | ✅           |
+| [`qa`](./qa.yml)                                           | ✅     | ✅                 | ✅               | `-destroy` |            |              |
 
 ## Update VS Destroy
 
