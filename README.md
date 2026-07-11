@@ -10,21 +10,6 @@ GitHub re-usable actions and/or workflows for terraform
 
 ## Github
 
-| action                                       | workflow                                                       | workflow destroy                                                           |
-| -------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| [setup](./.github/actions/setup)             |                                                                |                                                                            |
-| [`init`](./.github/actions/init)             |                                                                |                                                                            |
-| [`fmt-check`](./.github/actions/fmt-check)   | [`fmt-check`](.github/workflows/fmt-check.yml)                 |                                                                            |
-| [`validate`](./.github/actions/validate)     | [`validate`](.github/workflows/validate.yml)                   |                                                                            |
-| [`plan`](./.github/actions/plan)             | [`plan`](.github/workflows/plan.yml)                           |                                                                            |
-| [`compliance`](./.github/actions/compliance) |                                                                |                                                                            |
-| [`apply`](./.github/actions/apply)           | [`apply`](.github/workflows/apply.yml)                         |                                                                            |
-|                                              | [`apply_plan`](.github/workflows/apply_plan.yml)               |                                                                            |
-|                                              | [`plan_and_apply`](.github/workflows/plan_and_apply.yml)       |                                                                            |
-|                                              | [`plan_then_apply`](.github/workflows/plan_then_apply.yml)     | [`plan-destroy_then_apply`](.github/workflows/plan-destroy_then_apply.yml) |
-| [`test`](./.github/actions/test)             | [`test`](.github/workflows/test.yml)                           | Auto-tears-down                                                            |
-|                                              | [`integration_tests`](.github/workflows/integration_tests.yml) | Auto-tears-down                                                            |
-
 ### Actions
 
 | Name                                         | Test                                                                                                                                                                                                                                              |
@@ -52,6 +37,43 @@ GitHub re-usable actions and/or workflows for terraform
 | [`plan-destroy_then_apply`](.github/workflows/plan-destroy_then_apply.yml) | [![Un-Deployment](https://github.com/percebus/github-actions-terraform/actions/workflows/examples__destroy.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/examples__destroy.yml)                            |
 | [`test`](.github/workflows/test.yml)                                       | [![Test workflows/test](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__test.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__test.yml)                |
 | [`integration_tests`](.github/workflows/integration_tests.yml)             | [![Test workflows/*](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows.yml/badge.svg?event=pull_request)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows.yml)            |
+| [`qa`](.github/workflows/qa.yml)                                           | [![Test workflows/*](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows.yml/badge.svg?event=pull_request)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows.yml)            |
+
+### Workflows X Actions
+
+#### Without environment
+
+| workflow                                       | `fmt -check` | `init` | `validate` | `tflint` | `test` |
+| ---------------------------------------------- | ------------ | ------ | ---------- | -------- | ------ |
+| [`fmt-check`](.github/workflows/fmt-check.yml) | ✅           |        |            |          |        |
+| [`validate`](.github/workflows/validate.yml)   | ✅           | ✅     | ✅         | ✅       |        |
+| [`test`](.github/workflows/test.yml)           | ✅           | ✅     | ✅         | ✅       | ✅     |
+
+#### With environment
+
+| workflow                                                       | `fmt -check` | `init` | `validate` | `test` | `plan` | `compliance` | `upload` | `download` | `apply` | `plan` |
+| -------------------------------------------------------------- | ------------ | ------ | ---------- | ------ | ------ | ------------ | -------- | ---------- | ------- | ------ |
+| [`integration_tests`](.github/workflows/integration_tests.yml) | ✅           | ✅     | ✅         | ✅     |        |              |          |            |         |        |
+| [`plan`](.github/workflows/plan.yml)                           | ✅           | ✅     | ✅         |        | ✅     | ✅           | ✅       |            |         |
+| [`apply_plan`](.github/workflows/apply_plan.yml)               | ✅           | ✅     |            |        |        |              |          | ✅         | ✅      | ✅     |
+| [`apply`](.github/workflows/apply.yml)                         | ✅           | ✅     |            |        |        |              |          |            | ✅      | ✅     |
+| [`plan_and_apply`](.github/workflows/plan_and_apply.yml)       | ✅           | ✅     | ✅         |        | ✅     | ✅           |          |            | ✅      |        |
+
+### Workflows X Workflows
+
+| workflow                                                                   | `test` | `integration_test` | `-destroy` | `plan` | `apply_plan` | `plan_and_apply` | `apply`    |
+| -------------------------------------------------------------------------- | ------ | ------------------ | ---------- | ------ | ------------ | ---------------- | ---------- |
+| [`plan_then_apply`](.github/workflows/plan_then_apply.yml)                 |        |                    |            | ✅     | ✅           |                  |            |
+| [`plan-destroy_then_apply`](.github/workflows/plan-destroy_then_apply.yml) |        |                    | ✅         | ✅     | ✅           |                  |            |
+| [`qa`](.github/workflows/qa.yml)                                           | ✅     | ✅                 |            |        |              | ✅               | `-destroy` |
+
+### Update VS Destroy
+
+| update                                                         | `-destroy`                                                                 |
+| -------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| [`integration_tests`](.github/workflows/integration_tests.yml) | Auto-tears-down                                                            |
+| [`qa`](.github/workflows/qa.yml)                               | ✅                                                                         |
+| [`plan_then_apply`](.github/workflows/plan_then_apply.yml)     | [`plan-destroy_then_apply`](.github/workflows/plan-destroy_then_apply.yml) |
 
 ### Environments
 
