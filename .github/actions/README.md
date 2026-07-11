@@ -1,0 +1,14 @@
+# actions
+
+GitHub re-usable actions
+
+| Name                         | Test                                                                                                                                                                                                                                              |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [setup](./setup)             | [![Test actions/setup](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__setup.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__setup.yml)                 |
+| [`init`](./init)             | [![Test actions/init](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__init.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__init.yml)                    |
+| [`fmt-check`](./fmt-check)   | [![Test actions/fmt-check](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__fmt-check.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__fmt-check.yml)     |
+| [`validate`](./validate)     | [![Test actions/validate](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__validate.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__validate.yml)        |
+| [`test`](./test)             | [![Test actions/test](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__test.yml/badge.svg?event=pull_request)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__test.yml) |
+| [`plan`](./plan)             | [![Test actions/*](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions.yml/badge.svg?event=pull_request)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions.yml)                |
+| [`compliance`](./compliance) | [![Test actions/compliance](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__compliance.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__compliance.yml)  |
+| [`apply`](./apply)           | [![Test actions/*](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions.yml/badge.svg?event=pull_request)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions.yml)                |

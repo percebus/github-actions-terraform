@@ -10,52 +10,12 @@ GitHub re-usable actions and/or workflows for terraform
 
 ## Github
 
-| action                                       | workflow                                                       | workflow destroy                                                           |
-| -------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| [setup](./.github/actions/setup)             |                                                                |                                                                            |
-| [`init`](./.github/actions/init)             |                                                                |                                                                            |
-| [`fmt-check`](./.github/actions/fmt-check)   | [`fmt-check`](.github/workflows/fmt-check.yml)                 |                                                                            |
-| [`validate`](./.github/actions/validate)     | [`validate`](.github/workflows/validate.yml)                   |                                                                            |
-| [`plan`](./.github/actions/plan)             | [`plan`](.github/workflows/plan.yml)                           |                                                                            |
-| [`compliance`](./.github/actions/compliance) |                                                                |                                                                            |
-| [`apply`](./.github/actions/apply)           | [`apply`](.github/workflows/apply.yml)                         |                                                                            |
-|                                              | [`apply_plan`](.github/workflows/apply_plan.yml)               |                                                                            |
-|                                              | [`plan_and_apply`](.github/workflows/plan_and_apply.yml)       |                                                                            |
-|                                              | [`plan_then_apply`](.github/workflows/plan_then_apply.yml)     | [`plan-destroy_then_apply`](.github/workflows/plan-destroy_then_apply.yml) |
-| [`test`](./.github/actions/test)             | [`test`](.github/workflows/test.yml)                           | Auto-tears-down                                                            |
-|                                              | [`integration_tests`](.github/workflows/integration_tests.yml) | Auto-tears-down                                                            |
-
-### Actions
-
-| Name                                         | Test                                                                                                                                                                                                                                              |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [setup](./.github/actions/setup)             | [![Test actions/setup](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__setup.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__setup.yml)                 |
-| [`init`](./.github/actions/init)             | [![Test actions/init](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__init.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__init.yml)                    |
-| [`fmt-check`](./.github/actions/fmt-check)   | [![Test actions/fmt-check](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__fmt-check.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__fmt-check.yml)     |
-| [`validate`](./.github/actions/validate)     | [![Test actions/validate](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__validate.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__validate.yml)        |
-| [`plan`](./.github/actions/plan)             | [![Test actions/*](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions.yml/badge.svg?event=pull_request)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions.yml)                |
-| [`compliance`](./.github/actions/compliance) | [![Test actions/compliance](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__compliance.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__compliance.yml)  |
-| [`apply`](./.github/actions/apply)           | [![Test actions/*](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions.yml/badge.svg?event=pull_request)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions.yml)                |
-| [`test`](./.github/actions/test)             | [![Test actions/test](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__test.yml/badge.svg?event=pull_request)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_actions__test.yml) |
-
-### Workflows
-
-| Name                                                                       | Test                                                                                                                                                                                                                                                |
-| -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`fmt-check`](.github/workflows/fmt-check.yml)                             | [![Test workflows/fmt-check](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__fmt-check.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__fmt-check.yml) |
-| [`validate`](.github/workflows/validate.yml)                               | [![Test workflows/validate](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__validate.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__validate.yml)    |
-| [`plan`](.github/workflows/plan.yml)                                       | [![Test workflows/*](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows.yml/badge.svg?event=pull_request)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows.yml)            |
-| [`apply_plan`](.github/workflows/apply_plan.yml)                           | [![Test workflows/*](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows.yml/badge.svg?event=pull_request)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows.yml)            |
-| [`apply`](.github/workflows/apply.yml)                                     | [![Test workflows/*](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows.yml/badge.svg?event=pull_request)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows.yml)            |
-| [`plan_and_apply`](.github/workflows/plan_and_apply.yml)                   | [![Test workflows/*](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows.yml/badge.svg?event=pull_request)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows.yml)            |
-| [`plan_then_apply`](.github/workflows/plan_then_apply.yml)                 | [![Deployment](https://github.com/percebus/github-actions-terraform/actions/workflows/examples__deployment.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/examples__deployment.yml)                         |
-| [`plan-destroy_then_apply`](.github/workflows/plan-destroy_then_apply.yml) | [![Un-Deployment](https://github.com/percebus/github-actions-terraform/actions/workflows/examples__destroy.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/examples__destroy.yml)                            |
-| [`test`](.github/workflows/test.yml)                                       | [![Test workflows/test](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__test.yml/badge.svg)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows__test.yml)                |
-| [`integration_tests`](.github/workflows/integration_tests.yml)             | [![Test workflows/*](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows.yml/badge.svg?event=pull_request)](https://github.com/percebus/github-actions-terraform/actions/workflows/test_workflows.yml)            |
+- [`actions/`](./.github/actions)
+- [`workflows/`](./.github/workflows)
 
 ### Environments
 
-| actual                                                                                    | gate                                                                                                | description                                               |
+| Actual                                                                                    | `_gate`                                                                                             | Description                                               |
 | ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
 | [`test`](https://github.com/percebus/github-actions-terraform/deployments/test)           | N/A                                                                                                 | `integration_tests`                                       |
 | [`ci-branch`](https://github.com/percebus/github-actions-terraform/deployments/ci-branch) | [`ci-branch_gate`](https://github.com/percebus/github-actions-terraform/deployments/ci-branch_gate) | [C]ontinuous [I]ntegration for branches other than `main` |
