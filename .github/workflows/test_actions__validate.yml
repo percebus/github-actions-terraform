@@ -35,6 +35,7 @@ jobs:
     needs: default
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         project:
           - azurerm/v3/some-rg

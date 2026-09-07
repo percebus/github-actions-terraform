@@ -41,6 +41,7 @@ jobs:
     needs: default
 
     strategy:
+      fail-fast: false
       matrix:
         tflint-version:
           - latest
@@ -60,6 +61,7 @@ jobs:
       - setup
 
     strategy:
+      fail-fast: false
       matrix:
         project:
           - azurerm/v3/some-rg
