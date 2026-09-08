@@ -5,7 +5,7 @@ inputs:
   terraform_version:
     description: "A specific version of Terraform CLI can be installed"
     required: false
-    
+
     # HACK
     # "terraform_compliance v1.15.1 initiated"
     # "FATAL ERROR: Unsupported terraform version (1.16.1)."
