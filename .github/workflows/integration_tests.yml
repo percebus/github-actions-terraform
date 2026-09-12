@@ -25,6 +25,12 @@ on:
         required: false
         default: ./terra
 
+      terraform_version:
+        description: "A specific version of Terraform CLI can be installed"
+        type: string
+        required: false
+        default: ""
+
       TF_CLI_ARGS_init:
         description: TF_CLI_ARGS_init
         type: string
@@ -56,6 +62,12 @@ on:
         type: string
         required: false
         default: ./terra
+
+      terraform_version:
+        description: "A specific version of Terraform CLI can be installed"
+        type: string
+        required: false
+        default: ""
 
       TF_CLI_ARGS_init:
         description: TF_CLI_ARGS_init
@@ -94,6 +106,7 @@ jobs:
 
       - uses: percebus/github-actions-terraform/.github/actions/setup@main
         with:
+          terraform_version: ${{ inputs.terraform_version }}
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - uses: percebus/github-actions-terraform/.github/actions/init@main
