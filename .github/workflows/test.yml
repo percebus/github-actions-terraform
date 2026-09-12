@@ -15,6 +15,12 @@ on:
         required: false
         default: ./terra
 
+      terraform_version:
+        description: "A specific version of Terraform CLI can be installed"
+        type: string
+        required: false
+        default: ""
+
       override:
         description: override.tf
         type: boolean
@@ -52,6 +58,12 @@ on:
         type: string
         required: false
         default: ./terra
+
+      terraform_version:
+        description: "A specific version of Terraform CLI can be installed"
+        type: string
+        required: false
+        default: ""
 
       override:
         description: override.tf
@@ -98,6 +110,9 @@ jobs:
           ref: ${{ inputs.ref || github.ref }}
 
       - uses: percebus/github-actions-terraform/.github/actions/setup@main
+        with:
+          terraform_version: ${{ inputs.terraform_version }}
+
       - uses: percebus/github-actions-tflint/.github/actions/setup@main
         if: ${{ inputs.tflint-version != '' }}
         with:
