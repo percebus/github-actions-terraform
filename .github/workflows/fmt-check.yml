@@ -9,6 +9,12 @@ on:
         required: false
         default: ./terra
 
+      terraform_version:
+        description: "A specific version of Terraform CLI can be installed"
+        type: string
+        required: false
+        default: ""
+
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
     inputs:
       working-directory:
@@ -16,6 +22,12 @@ on:
         type: string
         required: false
         default: ./terra
+
+      terraform_version:
+        description: "A specific version of Terraform CLI can be installed"
+        type: string
+        required: false
+        default: ""
 
 env:
   TF_IN_AUTOMATION: true
@@ -34,6 +46,8 @@ jobs:
         # with: TODO
 
       - uses: percebus/github-actions-terraform/.github/actions/setup@main
+        with:
+          terraform_version: ${{ inputs.terraform_version }}
 
       - uses: percebus/github-actions-terraform/.github/actions/fmt-check@main
         with:
