@@ -57,4 +57,5 @@ jobs:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
     with:
       environment: ${{ needs.setup.outputs.environment }}
+      terraform_version: "1.15.1"
       TF_CLI_ARGS_plan: "-var stack_id=${{ needs.setup.outputs.stack_id }}"

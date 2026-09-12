@@ -20,6 +20,19 @@ on:
         required: false
         default: ./terra
 
+      #
+      terraform_version:
+        description: "A specific version of Terraform CLI can be installed"
+        type: string
+        required: false
+
+        # HACK
+        # "terraform_compliance v1.15.1 initiated"
+        # "FATAL ERROR: Unsupported terraform version (1.16.1)."
+        # default: "" # TODO
+        default: 1.15.1 # XXX
+
+      #
       TF_CLI_ARGS_init:
         description: TF_CLI_ARGS_init
         type: string
@@ -87,6 +100,19 @@ on:
         required: false
         default: ./terra
 
+      #
+      terraform_version:
+        description: "A specific version of Terraform CLI can be installed"
+        type: string
+        required: false
+
+        # HACK
+        # "terraform_compliance v1.15.1 initiated"
+        # "FATAL ERROR: Unsupported terraform version (1.16.1)."
+        # default: "" # TODO
+        default: 1.15.1 # XXX
+
+      #
       TF_CLI_ARGS_init:
         description: TF_CLI_ARGS_init
         type: string
@@ -163,6 +189,9 @@ jobs:
           ref: ${{ inputs.ref || github.ref }}
 
       - uses: percebus/github-actions-terraform/.github/actions/setup@main
+        with:
+          terraform_version: ${{ inputs.terraform_version }}
+
       - uses: percebus/github-actions-tflint/.github/actions/setup@main
         if: ${{ inputs.tflint-version != '' }}
         with:
@@ -220,9 +249,10 @@ jobs:
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
     with:
+      environment: ${{ inputs.test_environment }}
       ref: ${{ inputs.ref }}
       working-directory: ${{ inputs.working-directory }}
-      environment: ${{ inputs.test_environment }}
+      # terraform_version: ${{ inputs.terraform_version }} # TODO
       TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
       TF_CLI_ARGS_test: "-test-directory=${{ inputs.integration_tests_directory }} -var-file=env/${{ inputs.test_environment }}.tfvars -junit-xml=test-results.xml"
 
@@ -233,12 +263,13 @@ jobs:
     if: |
       (inputs.environment != '') &&
       (needs.test__integration_tests.result == 'skipped' || needs.test__integration_tests.result == 'success')
-    uses: ./.github/workflows/plan_and_apply.yml
+    uses: percebus/github-actions-terraform/.github/workflows/plan_and_apply.yml@main
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
     with:
       environment: ${{ inputs.environment }}
       ref: ${{ inputs.ref }}
+      # terraform_version: ${{ inputs.terraform_version }} # TODO
       features_directory: ${{ inputs.features_directory }}
       TF_CLI_ARGS_plan: "${{ inputs.TF_CLI_ARGS_plan }}"
       TF_CLI_ARGS_apply: "${{ inputs.TF_CLI_ARGS_apply }}"
@@ -247,7 +278,7 @@ jobs:
   apply-destroy:
     name: "env: ${{ inputs.environment }}"
     needs: plan_and_apply
-    uses: ./.github/workflows/apply.yml
+    uses: percebus/github-actions-terraform/.github/workflows/apply.yml@main
     if: |
       (inputs.environment != '') &&
       (needs.plan_and_apply.result == 'skipped' || needs.plan_and_apply.result == 'success' || needs.plan_and_apply.result == 'failed')
@@ -256,4 +287,5 @@ jobs:
     with:
       environment: ${{ inputs.environment }}
       ref: ${{ inputs.ref }}
+      # terraform_version: ${{ inputs.terraform_version }} # TODO
       destroy: true

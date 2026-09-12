@@ -25,6 +25,19 @@ on:
         required: false
         default: ./terra
 
+      #
+      terraform_version:
+        description: "A specific version of Terraform CLI can be installed"
+        type: string
+        required: false
+
+        # HACK
+        # "terraform_compliance v1.15.1 initiated"
+        # "FATAL ERROR: Unsupported terraform version (1.16.1)."
+        # default: "" # TODO
+        default: 1.15.1 # XXX
+
+      #
       override:
         description: override.tf
         type: boolean
@@ -80,6 +93,19 @@ on:
         required: false
         default: ./terra
 
+      #
+      terraform_version:
+        description: "A specific version of Terraform CLI can be installed"
+        type: string
+        required: false
+
+        # HACK
+        # "terraform_compliance v1.15.1 initiated"
+        # "FATAL ERROR: Unsupported terraform version (1.16.1)."
+        # default: "" # TODO
+        default: 1.15.1 # XXX
+
+      #
       override:
         description: override.tf
         type: boolean
@@ -141,6 +167,7 @@ jobs:
 
       - uses: percebus/github-actions-terraform/.github/actions/setup@main
         with:
+          terraform_version: ${{ inputs.terraform_version }}
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - uses: percebus/github-actions-terraform/.github/actions/init@main
