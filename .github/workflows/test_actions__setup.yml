@@ -21,3 +21,20 @@ jobs:
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/setup
+
+  terraform_version__matrix:
+    needs: default
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        terraform_version:
+          - "1.15.1"
+          - "1.16.0"
+    
+    name: terraform @ ${{ matrix.terraform_version }}
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: ./.github/actions/setup
+        with:
+          terraform_version: ${{ matrix.terraform_version }}
