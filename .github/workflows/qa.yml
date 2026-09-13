@@ -252,7 +252,7 @@ jobs:
       environment: ${{ inputs.test_environment }}
       ref: ${{ inputs.ref }}
       working-directory: ${{ inputs.working-directory }}
-      # terraform_version: ${{ inputs.terraform_version }} # TODO
+      terraform_version: ${{ inputs.terraform_version }}
       TF_CLI_ARGS_init: ${{ inputs.TF_CLI_ARGS_init }}
       TF_CLI_ARGS_test: "-test-directory=${{ inputs.integration_tests_directory }} -var-file=env/${{ inputs.test_environment }}.tfvars -junit-xml=test-results.xml"
 
@@ -269,7 +269,7 @@ jobs:
     with:
       environment: ${{ inputs.environment }}
       ref: ${{ inputs.ref }}
-      # terraform_version: ${{ inputs.terraform_version }} # TODO
+      terraform_version: ${{ inputs.terraform_version }}
       features_directory: ${{ inputs.features_directory }}
       TF_CLI_ARGS_plan: "${{ inputs.TF_CLI_ARGS_plan }}"
       TF_CLI_ARGS_apply: "${{ inputs.TF_CLI_ARGS_apply }}"
@@ -287,5 +287,5 @@ jobs:
     with:
       environment: ${{ inputs.environment }}
       ref: ${{ inputs.ref }}
-      # terraform_version: ${{ inputs.terraform_version }} # TODO
+      terraform_version: ${{ inputs.terraform_version }}
       destroy: true
