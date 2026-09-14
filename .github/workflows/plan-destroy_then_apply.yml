@@ -126,7 +126,7 @@ permissions:
 jobs:
   terraform_plan:
     name: destroy
-    uses: percebus/github-actions-terraform/.github/workflows/plan.yml@main
+    uses: ./.github/workflows/plan.yml
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
     with:
@@ -151,7 +151,7 @@ jobs:
   terraform_apply_plan:
     name: destroy
     needs: approve
-    uses: percebus/github-actions-terraform/.github/workflows/apply_plan.yml@main
+    uses: ./.github/workflows/apply_plan.yml
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
     with:
