@@ -182,7 +182,7 @@ jobs:
     name: test
     runs-on: ubuntu-latest
     # NOTE: Copy from
-    # uses: percebus/github-actions-terraform/.github/workflows/test.yml@main
+    # uses: ./.github/workflows/test.yml
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
         with:
@@ -245,7 +245,7 @@ jobs:
     if: |
       (inputs.integration_tests_directory != '') &&
       (needs.test.result == 'skipped' || needs.test.result == 'success')
-    uses: percebus/github-actions-terraform/.github/workflows/integration_tests.yml@main
+    uses: ./.github/workflows/integration_tests.yml
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
     with:
@@ -263,7 +263,7 @@ jobs:
     if: |
       (inputs.environment != '') &&
       (needs.test__integration_tests.result == 'skipped' || needs.test__integration_tests.result == 'success')
-    uses: percebus/github-actions-terraform/.github/workflows/plan_and_apply.yml@main
+    uses: ./.github/workflows/plan_and_apply.yml
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
     with:
@@ -278,7 +278,7 @@ jobs:
   apply-destroy:
     name: "env: ${{ inputs.environment }}"
     needs: plan_and_apply
-    uses: percebus/github-actions-terraform/.github/workflows/apply.yml@main
+    uses: ./.github/workflows/apply.yml
     if: |
       (inputs.environment != '') &&
       (needs.plan_and_apply.result == 'skipped' || needs.plan_and_apply.result == 'success' || needs.plan_and_apply.result == 'failed')
