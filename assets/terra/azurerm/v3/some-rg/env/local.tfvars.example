@@ -1,2 +1,0 @@
-environment = "local" # OR {USER_NAME}
-ARM_LOCATION = "eastus"

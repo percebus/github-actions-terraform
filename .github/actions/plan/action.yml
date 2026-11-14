@@ -14,7 +14,7 @@ inputs:
   tfplan_path:
     description: The path where the Terraform plan will be saved
     required: false
-    default: dist/update.tfplan
+    default: out/update.tfplan
 
   # NOTE: dist is relative to `chdir`
   TF_CLI_ARGS_plan:

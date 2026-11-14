@@ -157,7 +157,7 @@ jobs:
       - uses: percebus/github-actions-terraform/.github/actions/apply@main
         with:
           working-directory: ${{ inputs.working-directory }}
-          TF_CLI_ARGS_apply: "${{ inputs.TF_CLI_ARGS_apply }} dist/${{ env.terraform_action }}.tfplan"
+          TF_CLI_ARGS_apply: "${{ inputs.TF_CLI_ARGS_apply }} out/${{ env.terraform_action }}.tfplan"
 
       # Drift detection
       - uses: percebus/github-actions-terraform/.github/actions/plan@main

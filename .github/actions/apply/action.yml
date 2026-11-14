@@ -10,7 +10,7 @@ inputs:
   TF_CLI_ARGS_apply:
     description: Additional options to pass to 'terraform apply'
     required: false
-    default: "-input=false dist/update.tfplan"
+    default: "-input=false out/update.tfplan"
 
 runs:
   using: composite

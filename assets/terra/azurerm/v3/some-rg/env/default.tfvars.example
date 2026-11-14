@@ -1,0 +1,2 @@
+environment = "default" # OR {USER_NAME}
+ARM_LOCATION = "eastus"
