@@ -21,12 +21,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
-      - uses: ./.github/actions/setup
-      - uses: ./.github/actions/init
+      - uses: $/.github/actions/setup
+      - uses: $/.github/actions/init
         with:
           override: true
 
-      - uses: ./.github/actions/test
+      - uses: $/.github/actions/test
 
   TF_CLI_ARGS_test__matrix:
     needs: default
@@ -41,11 +41,11 @@ jobs:
     name: terraform test ${{ matrix.TF_CLI_ARGS_test }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
-      - uses: ./.github/actions/setup
-      - uses: ./.github/actions/init
+      - uses: $/.github/actions/setup
+      - uses: $/.github/actions/init
         with:
           override: true
 
-      - uses: ./.github/actions/test
+      - uses: $/.github/actions/test
         with:
           TF_CLI_ARGS_test: ${{ matrix.TF_CLI_ARGS_test }}
