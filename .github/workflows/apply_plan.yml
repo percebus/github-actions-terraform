@@ -152,7 +152,7 @@ jobs:
       - uses: percebus/github-actions-common/.github/actions/artifact-download@main
         with:
           name: tfplan_${{ env.terraform_action }}
-          path: ${{ inputs.working-directory }}/dist
+          path: ${{ inputs.working-directory }}/out
 
       - uses: percebus/github-actions-terraform/.github/actions/apply@main
         with:

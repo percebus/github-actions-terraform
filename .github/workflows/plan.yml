@@ -185,7 +185,7 @@ jobs:
 
       - uses: percebus/github-actions-common/.github/actions/artifact-upload@main
         with:
-          path: ${{ inputs.working-directory }}/dist
+          path: ${{ inputs.working-directory }}/out
           name: tfplan_${{ env.terraform_action }}
           if-no-files-found: error
           overwrite: true
