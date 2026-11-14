@@ -31,7 +31,7 @@ jobs:
         terraform_version:
           - "1.15.1"
           - "1.16.0"
-    
+
     name: terraform @ ${{ matrix.terraform_version }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main

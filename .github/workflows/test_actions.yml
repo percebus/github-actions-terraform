@@ -91,16 +91,16 @@ jobs:
         with:
           github_token: ${{ github.token }}
           TF_CLI_ARGS_plan: -destroy
-          tfplan_path: dist/destroy.tfplan
+          tfplan_path: out/destroy.tfplan
           header: 🗑️ `terraform plan -destroy`
 
       - uses: ./.github/actions/apply
         with:
-          TF_CLI_ARGS_apply: -destroy dist/destroy.tfplan
+          TF_CLI_ARGS_apply: -destroy out/destroy.tfplan
 
       - uses: ./.github/actions/plan
         with:
           github_token: ${{ github.token }}
           TF_CLI_ARGS_plan: -destroy
-          tfplan_path: dist/destroy.tfplan
+          tfplan_path: out/destroy.tfplan
           header: ""

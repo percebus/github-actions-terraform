@@ -185,7 +185,7 @@ jobs:
           github_token: ${{ github.token }}
           working-directory: ${{ inputs.working-directory }}
           header: 📝 `terraform plan ${{ env.TF_CLI_ARGS_plan }}`
-          tfplan_path: dist/${{ env.terraform_action }}.tfplan
+          tfplan_path: out/${{ env.terraform_action }}.tfplan
           include-json: ${{ inputs.features_directory == '' && 'false' || 'true' }}
           TF_CLI_ARGS_plan: "-var-file=./env/${{ vars.ENVIRONMENT }}.tfvars ${{ inputs.TF_CLI_ARGS_plan }}"
 
@@ -193,13 +193,13 @@ jobs:
         if: ${{ !inputs.destroy && inputs.features_directory != '' }}
         with:
           working-directory: ${{ inputs.working-directory }}
-          tfplan_json_path: dist/${{ env.terraform_action }}.tfplan.json
+          tfplan_json_path: out/${{ env.terraform_action }}.tfplan.json
           features_directory: ${{ inputs.features_directory }}
 
       - uses: percebus/github-actions-terraform/.github/actions/apply@main
         with:
           working-directory: ${{ inputs.working-directory }}
-          TF_CLI_ARGS_apply: "${{ inputs.TF_CLI_ARGS_apply }} dist/${{ env.terraform_action }}.tfplan"
+          TF_CLI_ARGS_apply: "${{ inputs.TF_CLI_ARGS_apply }} out/${{ env.terraform_action }}.tfplan"
 
       # Drift detection
       - uses: percebus/github-actions-terraform/.github/actions/plan@main
