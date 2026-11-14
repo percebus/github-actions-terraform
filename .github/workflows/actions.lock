@@ -4,43 +4,14 @@
 version: 'v0.0.3'
 workflows:
     '.github/workflows/always.yml': []
-    '.github/workflows/apply.yml':
-        - 'percebus/github-actions-common@main'
-        - 'percebus/github-actions-terraform@main'
-    '.github/workflows/apply_plan.yml':
-        - 'percebus/github-actions-common@main'
-        - 'percebus/github-actions-terraform@main'
     '.github/workflows/examples__cd.yml': []
     '.github/workflows/examples__deployment.yml':
         - 'percebus/github-actions-common@main'
     '.github/workflows/examples__destroy.yml':
         - 'percebus/github-actions-common@main'
-    '.github/workflows/fmt-check.yml':
-        - 'percebus/github-actions-common@main'
-        - 'percebus/github-actions-terraform@main'
-    '.github/workflows/integration_tests.yml':
-        - 'percebus/github-actions-common@main'
-        - 'percebus/github-actions-terraform@main'
-        - 'percebus/github-actions-testing@main'
     '.github/workflows/plan-destroy_then_apply.yml': []
-    '.github/workflows/plan.yml':
-        - 'percebus/github-actions-common@main'
-        - 'percebus/github-actions-terraform@main'
-    '.github/workflows/plan_and_apply.yml':
-        - 'percebus/github-actions-common@main'
-        - 'percebus/github-actions-terraform@main'
     '.github/workflows/plan_then_apply.yml': []
     '.github/workflows/pull_request.yml': []
-    '.github/workflows/qa.yml':
-        - 'percebus/github-actions-common@main'
-        - 'percebus/github-actions-terraform@main'
-        - 'percebus/github-actions-testing@main'
-        - 'percebus/github-actions-tflint@main'
-    '.github/workflows/test.yml':
-        - 'percebus/github-actions-common@main'
-        - 'percebus/github-actions-terraform@main'
-        - 'percebus/github-actions-testing@main'
-        - 'percebus/github-actions-tflint@main'
     '.github/workflows/test_actions.yml':
         - 'borchero/terraform-plan-comment@v3.2.0'
         - 'hashicorp/setup-terraform@v4.0.1'
@@ -67,10 +38,6 @@ workflows:
     '.github/workflows/test_workflows__fmt-check.yml': []
     '.github/workflows/test_workflows__test.yml': []
     '.github/workflows/test_workflows__validate.yml': []
-    '.github/workflows/validate.yml':
-        - 'percebus/github-actions-common@main'
-        - 'percebus/github-actions-terraform@main'
-        - 'percebus/github-actions-tflint@main'
 dependencies:
     'actions/checkout@v7.0.1':
         ref: 'v7.0.1'
